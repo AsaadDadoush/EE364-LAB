@@ -1,3 +1,8 @@
+package ee364.hajj.group;
+
+import ee364.hajj.Gender;
+import ee364.hajj.Priority;
+
 public class Pilgrim {
 
     //keep track of all pilgrim object count.

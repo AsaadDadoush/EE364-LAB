@@ -1,3 +1,5 @@
+package ee364.hajj.transport;
+
 public abstract class Vehicle {
 
     private double vehicleSize;

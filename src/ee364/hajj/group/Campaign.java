@@ -1,3 +1,7 @@
+package ee364.hajj.group;
+
+import ee364.hajj.Priority;
+
 public class Campaign implements PermitedForHaj {
 
     private int UID;

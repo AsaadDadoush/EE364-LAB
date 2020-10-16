@@ -1,3 +1,5 @@
+package ee364.hajj.transport;
+
 public class TrafficPoliceCar extends Vehicle implements CanFixAccident {
 
     public final double ADDED_EFFICIENCY = 0.05; // 5%

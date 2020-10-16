@@ -1,3 +1,5 @@
+package ee364.hajj.transport;
+
 import java.util.Date;
 
 public interface Breakable {
