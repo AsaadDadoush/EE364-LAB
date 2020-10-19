@@ -1,17 +1,16 @@
 public abstract class Vehicle {
 
     private double vehicleSize;
-    private boolean govtCar;
 
-    public Vehicle(double vehicleSize, boolean govtCar){
-        this.vehicleSize = vehicleSize;
-        this.govtCar = govtCar;
+    public Vehicle(double vehicleSize){
+        setVehicleSize(vehicleSize);
     }
     public double getVehicleSize() {
         return vehicleSize;
     }
 
-    public boolean isGovtCar() {
-        return govtCar;
+    public void setVehicleSize(double vehicleSize) {
+        if (vehicleSize <= 0) throw new IllegalArgumentException("Vehicle can not be negative in length!");
+        else this.vehicleSize = vehicleSize;
     }
 }

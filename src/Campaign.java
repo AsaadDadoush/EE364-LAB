@@ -1,4 +1,4 @@
-public class Campaign implements PermitedForHaj {
+public class Campaign {
 
     private int UID;
     private int workers;
@@ -7,7 +7,6 @@ public class Campaign implements PermitedForHaj {
     private String name;
     private boolean local;
 
-    private Pilgrim[] pilgrims;
 
     public Campaign(int numberOfPeople){
         /*
@@ -17,21 +16,12 @@ public class Campaign implements PermitedForHaj {
          */
     }
 
-    public Campaign(Pilgrim[] pilgrims){
-        /*
-        Calculate number of workers based on number of pilgrims (pilgrims.length;)
-        Assume not local
-         */
-    }
-    @Override
-    public int hasUID() {
-        return UID;
-    }
-
-    @Override
-    public boolean isLocal() {
-        return local;
-    }
+//    public Campaign(Pilgrim[] pilgrims){
+//        /*
+//        Calculate number of workers based on number of pilgrims (pilgrims.length;)
+//        Assume not local
+//         */
+//    }
 
     public int getNumberofCars(){
         //Assume each car holds 4 workers
@@ -39,13 +29,6 @@ public class Campaign implements PermitedForHaj {
     }
 
     public int getNumberOfBusses(){
-        int highPriorityPilgrims = 0;
-        int totalBusses = 0;
-        for (Pilgrim pilgrim : pilgrims){
-            if (pilgrim.getPriority() == Priority.HIGH) highPriorityPilgrims++;
-        }
-        totalBusses += highPriorityPilgrims/20; //Assume pilgims with physical disability
-        totalBusses += (pilgrims.length - highPriorityPilgrims)/40; //Remaining pilgrims fill busses
-        return totalBusses;
+        return 0;//TODO: calc buses?
     }
 }

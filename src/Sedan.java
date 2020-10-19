@@ -5,8 +5,8 @@ public class Sedan extends Vehicle implements Breakable {
     private boolean accident;
     private int capacity;
 
-    public Sedan(double vehicleSize, boolean govtCar){
-        super(vehicleSize, govtCar);
+    public Sedan(double vehicleSize){
+        super(vehicleSize);
         capacity = 4; //Should make this attr. in vehicle.
     }
 
