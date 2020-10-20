@@ -1,5 +1,3 @@
-package ee364.hajj.transport;
-
 import java.util.Date;
 
 public class Sedan extends Vehicle implements Breakable {
@@ -7,16 +5,28 @@ public class Sedan extends Vehicle implements Breakable {
     private final int TIME_TO_FIX = 15; //in minutes
     private boolean broken;
     private boolean accident;
+    private int capacity;
 
-    public Sedan(double vehicleSize, boolean govtCar){
-        super(vehicleSize, govtCar, 4);
+    public Sedan(double vehicleSize){
+        super(vehicleSize);
+        capacity = 4; //Should make this attr. in vehicle.
     }
 
     public boolean isBroken(){ return broken; }
     public boolean isInAccident(){ return accident; }
-    public void _break(Date time) { this.broken = true; } //TODO
-    public void collide(Breakable car, Date time) { this.accident = true; }//TODO //Maybe add time of accident and other breakable args
+
+    @Override
+    public void collide(Breakable car, Date time) {
+
+    }
+
+    @Override
+    public void _break(Date time) {
+
+    }
+
     public int getTimeToFix(){ return TIME_TO_FIX; }
+    public int getCapacity() { return capacity; }
 
 
     public void fixed() { this.broken = false; this.accident = false; }

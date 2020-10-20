@@ -1,5 +1,3 @@
-package ee364.hajj.transport;
-
 import java.util.Date;
 
 public class Accident {
@@ -17,7 +15,7 @@ public class Accident {
         Date startOfSimDate = new Date(15000000);
         //TODO: make a static final class with needed values
         if (date.before(startOfSimDate)){
-            throw new IllegalArgumentException("Date of ee364.hajj.transport.Accident before t zero");
+            throw new IllegalArgumentException("Date of Accident before t zero");
         }
         else this.date = date;
     }
