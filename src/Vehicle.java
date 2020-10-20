@@ -9,7 +9,7 @@ public abstract class Vehicle {
         return vehicleSize;
     }
 
-    public void setVehicleSize(double vehicleSize) {
+    private void setVehicleSize(double vehicleSize) {
         if (vehicleSize <= 0) throw new IllegalArgumentException("Vehicle can not be negative in length!");
         else this.vehicleSize = vehicleSize;
     }

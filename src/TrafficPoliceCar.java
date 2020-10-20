@@ -1,4 +1,4 @@
-public class TrafficPoliceCar extends Vehicle implements CanBeGovtCar {
+public class TrafficPoliceCar extends Vehicle implements CanBeGovtCar, CanFixAccident {
 
     private final double ADDED_EFFICIENCY = 0.05; // 5%
     private int govtID;
