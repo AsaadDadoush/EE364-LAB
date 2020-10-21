@@ -1,4 +1,3 @@
-import java.util.Date;
 
 public class Sedan extends CivilVehicle {
 
