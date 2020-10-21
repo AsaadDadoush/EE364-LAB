@@ -1,34 +1,63 @@
+import java.util.Date;
+
 public class Campaign {
 
     private int UID;
-    private int workers;
     private int numberOfPeople;
-    private String district;
+    private int housingNumber;
     private String name;
     private boolean local;
 
+    private Route housingToDestRoute;
+    private Route destToHousingRoute;
+
+    private Vehicle[] vehicles;
+
+    //Will be of type PDate after extention
+    private Date timeToLeaveToDest;
+    private Date timeToLeaveToHousing;
+
+    public Campaign(int numberOfPeople, String name, Route housingToDestRoute, Route destToHousingRoute) {
+        setNumberOfPeople(numberOfPeople);
+        this.name = name;
+        this.housingToDestRoute = housingToDestRoute;
+        this.destToHousingRoute = destToHousingRoute;
+    }
 
     public Campaign(int numberOfPeople){
-        /*
-        Make an array of pilgrims based on number of people with
-        a set ration pilgrims:workers
-        Assume not local
-         */
+        setNumberOfPeople(numberOfPeople);
     }
 
-//    public Campaign(Pilgrim[] pilgrims){
-//        /*
-//        Calculate number of workers based on number of pilgrims (pilgrims.length;)
-//        Assume not local
-//         */
-//    }
-
-    public int getNumberofCars(){
-        //Assume each car holds 4 workers
-        return (int)workers/4;
+    public int getNumberOfPeople() {
+        return numberOfPeople;
     }
 
-    public int getNumberOfBusses(){
-        return 0;//TODO: calc buses?
+    public void setNumberOfPeople(int numberOfPeople) {
+        if (numberOfPeople > 0) this.numberOfPeople = numberOfPeople;
+        else throw new IllegalArgumentException("Negative number of people in camp");
+    }
+
+    public Route getHousingToDestRoute() {
+        return housingToDestRoute;
+    }
+
+    public void setHousingToDestRoute(Route housingToDestRoute) {
+        this.housingToDestRoute = housingToDestRoute;
+    }
+
+    public Route getDestToHousingRoute() {
+        return destToHousingRoute;
+    }
+
+    public void setDestToHousingRoute(Route destToHousingRoute) {
+        this.destToHousingRoute = destToHousingRoute;
+    }
+
+    public int getNumberOfBusses() {
+        int busses = 0;
+        for (Vehicle vehicle : vehicles){
+            if (vehicle instanceof Bus) busses++;
+        }
+        return busses;
     }
 }

@@ -7,5 +7,6 @@ public interface Breakable {
     boolean isInAccident();
     void collide(Breakable car, Date time);
     void _break(Date time);
+    void fix();
 
 }
