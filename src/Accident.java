@@ -12,12 +12,8 @@ public class Accident {
     }
 
     private void setDate(Date date){
-        Date startOfSimDate = new Date(15000000);
-        //TODO: make a static final class with needed values
-        if (date.before(startOfSimDate)){
-            throw new IllegalArgumentException("Date of Accident before t zero");
-        }
-        else this.date = date;
+        //TODO: maybe change to Calendar type
+        this.date = date;
     }
 
     private void setInvovledCars(Breakable[] cars){
