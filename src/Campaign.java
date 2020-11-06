@@ -1,5 +1,5 @@
 import java.util.Date;
-
+..
 public class Campaign {
 
     private String UID;
