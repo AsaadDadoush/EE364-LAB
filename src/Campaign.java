@@ -2,11 +2,10 @@ import java.util.Date;
 
 public class Campaign {
 
-    private int UID;
-    private int numberOfPeople;
-    private int housingNumber;
+    private String UID;
+    //private int housingNumber;
     private String name;
-    private boolean local;
+    private District hotelDistrict;
 
     private Route housingToDestRoute;
     private Route destToHousingRoute;
@@ -17,24 +16,17 @@ public class Campaign {
     private Date timeToLeaveToDest;
     private Date timeToLeaveToHousing;
 
-    public Campaign(int numberOfPeople, String name, Route housingToDestRoute, Route destToHousingRoute) {
-        setNumberOfPeople(numberOfPeople);
+    private static int numeberOfCampains;
+
+    public Campaign(String name, District hotelDistrict) {
+        numeberOfCampains++;
         this.name = name;
-        this.housingToDestRoute = housingToDestRoute;
-        this.destToHousingRoute = destToHousingRoute;
+        this.hotelDistrict = hotelDistrict;
+        this.UID = String.format("%4d", numeberOfCampains);
     }
 
     public Campaign(int numberOfPeople){
-        setNumberOfPeople(numberOfPeople);
-    }
 
-    public int getNumberOfPeople() {
-        return numberOfPeople;
-    }
-
-    public void setNumberOfPeople(int numberOfPeople) {
-        if (numberOfPeople > 0) this.numberOfPeople = numberOfPeople;
-        else throw new IllegalArgumentException("Negative number of people in camp");
     }
 
     public Route getHousingToDestRoute() {
@@ -59,5 +51,17 @@ public class Campaign {
             if (vehicle instanceof Bus) busses++;
         }
         return busses;
+    }
+
+    public void setVehicles(Vehicle[] vehicles){
+        /*TODO
+        check if vehicles is not null then set vehicles.
+         */
+    }
+
+    public void generateBusses(int number){
+        /*TODO
+        generate "number"  of busses and set them to vehicles array.
+         */
     }
 }
