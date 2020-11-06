@@ -88,6 +88,10 @@ public class Campaign {
 
     private void generateUID() {
         numeberOfCampains++;
-        this.UID = String.format("%4d", numeberOfCampains);
+        this.UID = String.format("%04d", numeberOfCampains);
+    }
+
+    public String getUID(){
+        return this.UID;
     }
 }
