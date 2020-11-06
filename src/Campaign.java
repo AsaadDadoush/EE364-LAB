@@ -18,15 +18,16 @@ public class Campaign {
 
     private static int numeberOfCampains;
 
-    public Campaign(String name, District hotelDistrict) {
-        numeberOfCampains++;
-        this.name = name;
+    public Campaign(District hotelDistrict, int numberofBusses) {
         this.hotelDistrict = hotelDistrict;
-        this.UID = String.format("%4d", numeberOfCampains);
+        generateBusses(numberofBusses);
+        generateUID();
     }
 
-    public Campaign(int numberOfPeople){
-
+    public Campaign(District hotelDistrict, Vehicle[] vehicles) {
+        this.hotelDistrict = hotelDistrict;
+        setVehicles(vehicles);
+        generateUID();
     }
 
     public Route getHousingToDestRoute() {
@@ -45,6 +46,26 @@ public class Campaign {
         this.destToHousingRoute = destToHousingRoute;
     }
 
+    public District getHotelDistrict(){ return this.hotelDistrict; }
+
+    public Date getTimeToLeaveToDest() {
+        return timeToLeaveToDest;
+    }
+
+    public void setTimeToLeaveToDest(Date timeToLeaveToDest) {
+        //TODO: check if date is before or after Project Date
+        this.timeToLeaveToDest = timeToLeaveToDest;
+    }
+
+    public Date getTimeToLeaveToHousing() {
+        return timeToLeaveToHousing;
+    }
+
+    public void setTimeToLeaveToHousing(Date timeToLeaveToHousing) {
+        //TODO: check if date is before or after Project Date
+        this.timeToLeaveToHousing = timeToLeaveToHousing;
+    }
+
     public int getNumberOfBusses() {
         int busses = 0;
         for (Vehicle vehicle : vehicles){
@@ -58,14 +79,15 @@ public class Campaign {
     }
 
     public void setVehicles(Vehicle[] vehicles){
-        /*TODO
-        check if vehicles is not null then set vehicles.
-         */
+        /*TODO: check if vehicles is not null then set vehicles. */
     }
 
     public void generateBusses(int number){
-        /*TODO
-        generate "number"  of busses and set them to vehicles array.
-         */
+        /*TODO: generate "number"  of busses and set them to vehicles array. */
+    }
+
+    private void generateUID() {
+        numeberOfCampains++;
+        this.UID = String.format("%4d", numeberOfCampains);
     }
 }
