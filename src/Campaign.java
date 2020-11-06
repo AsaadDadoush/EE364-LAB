@@ -53,6 +53,10 @@ public class Campaign {
         return busses;
     }
 
+    public Vehicle[] getVehicles() {
+        return this.vehicles;
+    }
+
     public void setVehicles(Vehicle[] vehicles){
         /*TODO
         check if vehicles is not null then set vehicles.
