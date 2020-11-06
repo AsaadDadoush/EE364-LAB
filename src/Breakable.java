@@ -4,8 +4,7 @@ public interface Breakable {
 
     int getTimeToFix();
     boolean isBroken();
-    boolean isInAccident();
-    Accident collide(Breakable car, Date time);
+    Accident collide(Breakable car, Date time, Street location);
     void _break(Date time);
     void fix();
 

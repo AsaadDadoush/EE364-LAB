@@ -4,11 +4,12 @@ public class Accident {
 
     private Date date;
     private Breakable[] involvedCars;
-    //private Street street;
+    private Street location;
 
-    public Accident(Date date, Breakable[] involvedCars) {
+    public Accident(Date date, Breakable[] involvedCars, Street location) {
         setDate(date);
         setInvovledCars(involvedCars);
+        this.location = location;
     }
 
     private void setDate(Date date){
@@ -27,6 +28,10 @@ public class Accident {
 
     public Breakable[] getInvolvedCars() {
         return involvedCars;
+    }
+
+    public Street getLocation(){
+        return this.location;
     }
 
     public int getTimeToFix(){
