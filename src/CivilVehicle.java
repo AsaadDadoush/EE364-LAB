@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public abstract class  CivilVehicle extends Vehicle implements Breakable {
+public abstract class CivilVehicle extends Vehicle implements Breakable {
 
     private boolean broken;
     private Accident currentAccident;
@@ -22,7 +22,7 @@ public abstract class  CivilVehicle extends Vehicle implements Breakable {
             cars[0] = this;
             cars[1] = car;
             Accident accident = new Accident(time, cars, location);
-            this.currentAccident = accident;
+            this.setCurrentAccident(accident);
             if (car instanceof CivilVehicle)
                 ((CivilVehicle)car).setCurrentAccident(accident);
             return accident;
@@ -51,6 +51,9 @@ public abstract class  CivilVehicle extends Vehicle implements Breakable {
     }
 
     public void setCurrentAccident(Accident accident){
-        if (accident != null) this.currentAccident = accident;
+        if (accident != null) {
+            this.currentAccident = accident;
+            this._break(accident.getDate());
+        }
     }
 }
