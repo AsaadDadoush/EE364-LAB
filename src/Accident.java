@@ -41,4 +41,19 @@ public class Accident {
         }
         return max;
     }
+
+    public boolean isDone(){
+        for (Breakable car : this.involvedCars){
+            /*
+            if broken flag is set and currAcc is ref to this instance
+            then the accident is not done.
+            The ref to accident should be null if fix() of car is invoked
+             */
+            if (car.isBroken() &&
+                    ((CivilVehicle)car).getCurrentAccident() == this) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
