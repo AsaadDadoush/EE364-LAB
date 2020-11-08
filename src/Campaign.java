@@ -1,16 +1,17 @@
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Campaign {
 
     private String UID;
     //private int housingNumber;
-    private String name;
+    //private String name; //TODO ‰»€« —«Ìﬂ Ì« Â‘«„ (:  
     private District hotelDistrict;
 
     private Route housingToDestRoute;
     private Route destToHousingRoute;
 
-    private Vehicle[] vehicles;
+    private ArrayList<Vehicle> vehicles;
 
     //Will be of type PDate after extention
     private Date timeToLeaveToDest;
@@ -24,7 +25,7 @@ public class Campaign {
         generateUID();
     }
 
-    public Campaign(District hotelDistrict, Vehicle[] vehicles) {
+    public Campaign(District hotelDistrict, ArrayList<Vehicle> vehicles) {
         this.hotelDistrict = hotelDistrict;
         setVehicles(vehicles);
         generateUID();
@@ -76,21 +77,28 @@ public class Campaign {
         return busses;
     }
 
-    public Vehicle[] getVehicles() {
-        return this.vehicles;
-    }
+   
 
-    public void setVehicles(Vehicle[] vehicles){
-        /*TODO: Osama check if vehicles is not null then set vehicles. */
-    }
+    public ArrayList<Vehicle> getVehicles() {
+		return vehicles;
+	}
+
+	public void setVehicles(ArrayList<Vehicle> vehicles) {
+		if (vehicles != null)
+		this.vehicles = vehicles;
+	}
+
 
     public void generateBusses(int number){
-        /*TODO: Asaad generate "number"  of busses and set them to vehicles array. */
+    	for (int i = 1; i <= number; i++) {
+    		vehicles.add(new Bus(10));
+    		
+    	}
     }
 
     private void generateUID() {
         numeberOfCampains++;
-        this.UID = String.format("%04d", numeberOfCampains);
+        this.UID = String.format("CAMP%04d", numeberOfCampains);
     }
 
     public String getUID(){
