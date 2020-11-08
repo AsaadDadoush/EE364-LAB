@@ -52,18 +52,20 @@ public class Campaign {
         return timeToLeaveToDest;
     }
 
-    public void setTimeToLeaveToDest(Date timeToLeaveToDest) {
-        //TODO: Hesham check if date is before or after Project Date
-        this.timeToLeaveToDest = timeToLeaveToDest;
+    public void setTimeToLeaveToDest(Date timeToLeaveToDest) throws OutOfSimulationTimeException {
+        if(PDate.isValidTime(timeToLeaveToDest))
+            this.timeToLeaveToDest = timeToLeaveToDest;
+        else throw new OutOfSimulationTimeException();
     }
 
     public Date getTimeToLeaveToHousing() {
         return timeToLeaveToHousing;
     }
 
-    public void setTimeToLeaveToHousing(Date timeToLeaveToHousing) {
-        //TODO: Hesham check if date is before or after Project Date
-        this.timeToLeaveToHousing = timeToLeaveToHousing;
+    public void setTimeToLeaveToHousing(Date timeToLeaveToHousing) throws OutOfSimulationTimeException {
+        if(PDate.isValidTime(timeToLeaveToHousing))
+            this.timeToLeaveToHousing = timeToLeaveToHousing;
+        else throw new OutOfSimulationTimeException();
     }
 
     public int getNumberOfBusses() {
