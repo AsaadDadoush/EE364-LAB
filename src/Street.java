@@ -41,7 +41,7 @@ public class Street {
     
     public double capcity() {
     	double totalLength =  length * numberOfLanes;
-    	//TODO  return (total length - (length of cars + padding))
+    	//TODO Ammar return (total length - (length of cars + padding))
     	return 0;
     }
     
@@ -51,9 +51,9 @@ public class Street {
     	else
     		return true;
     }
-   /* 
+   
     public void addVehicle( Vehicle vehicle ) {
-    	//TODO
+    	//TODO Ammar
     }
-  */
+  
 }

@@ -53,7 +53,7 @@ public class Campaign {
     }
 
     public void setTimeToLeaveToDest(Date timeToLeaveToDest) {
-        //TODO: check if date is before or after Project Date
+        //TODO: Hesham check if date is before or after Project Date
         this.timeToLeaveToDest = timeToLeaveToDest;
     }
 
@@ -62,7 +62,7 @@ public class Campaign {
     }
 
     public void setTimeToLeaveToHousing(Date timeToLeaveToHousing) {
-        //TODO: check if date is before or after Project Date
+        //TODO: Hesham check if date is before or after Project Date
         this.timeToLeaveToHousing = timeToLeaveToHousing;
     }
 
@@ -79,11 +79,11 @@ public class Campaign {
     }
 
     public void setVehicles(Vehicle[] vehicles){
-        /*TODO: check if vehicles is not null then set vehicles. */
+        /*TODO: Osama check if vehicles is not null then set vehicles. */
     }
 
     public void generateBusses(int number){
-        /*TODO: generate "number"  of busses and set them to vehicles array. */
+        /*TODO: Asaad generate "number"  of busses and set them to vehicles array. */
     }
 
     private void generateUID() {

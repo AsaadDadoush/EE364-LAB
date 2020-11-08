@@ -13,7 +13,6 @@ public class Accident {
     }
 
     private void setDate(Date date){
-        //TODO: maybe change to Calendar type
         this.date = date;
     }
 
