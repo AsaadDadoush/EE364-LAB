@@ -1,63 +1,62 @@
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Class to manage and track timeline of Hajj-Simulation
  */
 public class PDate extends Calendar {
 
-    private final Calendar startCalendar = Calendar.getInstance();
-    private final Calendar endCalendar= Calendar.getInstance();
-    private final Calendar currentCalendar = Calendar.getInstance();
-    private boolean ended;
+    public static final Calendar startCalendar = new GregorianCalendar(2020,Calendar.JANUARY,15,13,0,0);
+    public static final Calendar endCalendar= new GregorianCalendar(2020,Calendar.JANUARY,15,20,0,0);
+    private static final Calendar currentCalendar = (GregorianCalendar)startCalendar.clone();
+    private static boolean ended;
 
-    public PDate(){
-        startCalendar.set(2020,0,15,13,0,0);
-        endCalendar.set(2020,0,15,20,0,0);
-        currentCalendar.setTime(startCalendar.getTime());
-    }
-
-    public PDate(Calendar startCalendar, Calendar endCalendar){
-        this.startCalendar.setTime(startCalendar.getTime());
-        this.endCalendar.setTime(endCalendar.getTime());
-        currentCalendar.setTime(startCalendar.getTime());
-    }
-
-    public Calendar getStartCalendar() {
+    public static Calendar getStartCalendar() {
         return startCalendar;
     }
 
-    public Calendar getEndCalendar() {
+    public static Calendar getEndCalendar() {
         return endCalendar;
     }
 
-    public Calendar getCurrentCalendar() {
+    public static Calendar getCurrentCalendar() {
         return currentCalendar;
     }
 
-    public Date getStartTime() {
+    public static Date getStartTime() {
         return startCalendar.getTime();
     }
 
-    public Date getEndTime(){
+    public static Date getEndTime(){
         return endCalendar.getTime();
     }
 
-    public Date getCurrentTime() {
+    public static Date getCurrentTime() {
         return currentCalendar.getTime();
     }
 
-    public void step(int key, int value){
+    public static void step(int key, int value){
         if (currentCalendar.before(endCalendar)){
             currentCalendar.add(key, value);
         }
         else if (currentCalendar.after(endCalendar) || currentCalendar.equals(endCalendar)) {
             ended = true;
         }
-
     }
 
-    public boolean isEnded(){
+    /**
+    Check if time/date provided falls within the simulation timeline
+     */
+    public static boolean isValidTime(Date timeToLeaveToDest) {
+        if (timeToLeaveToDest.after(PDate.endCalendar.getTime()) ||
+                timeToLeaveToDest.before(PDate.startCalendar.getTime()))
+            return false;
+        else
+            return true;
+    }
+
+    public static boolean isEnded(){
         return ended;
     }
 
@@ -100,4 +99,8 @@ public class PDate extends Calendar {
     public int getLeastMaximum(int i) {
         return 0;
     }
+}
+
+class OutOfSimulationTimeException extends Exception {
+
 }
