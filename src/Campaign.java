@@ -90,9 +90,10 @@ public class Campaign {
 
 
     public void generateBusses(int number){
+        //TODO: discuss. Make new list or add to old list?
+        vehicles = new ArrayList<Vehicle>();
     	for (int i = 1; i <= number; i++) {
-    		vehicles.add(new Bus(10));
-    		
+    		vehicles.add(new Bus(10));//Throws NullPtrEx
     	}
     }
 
