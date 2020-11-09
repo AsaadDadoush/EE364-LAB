@@ -1,3 +1,3 @@
 public interface CanBeGovtCar {
-    int getGovtID();
+    void generateGovtID();
 }
