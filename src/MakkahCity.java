@@ -14,6 +14,7 @@ public class MakkahCity {
 		generateCamps(District.ALAZIZIYA, getRandom(100, 150));
 		generateCamps(District.ALMANSOOR, getRandom(90, 120));
 		generateCamps(District.ALHIJRA, getRandom(80, 110));
+		fillBusesToList();
 		//Make Streets
 		makeStreets();
 		//Make Routes
@@ -57,6 +58,8 @@ public class MakkahCity {
 	}
 
 	private static void fillBusesToList() {
-		//TODO: add all buses from campaigns to vehiclesList
+		for (Campaign camp : allCampgains) {
+			vehiclesList.addAll(camp.getVehicles());
+		}
 	}
 }
