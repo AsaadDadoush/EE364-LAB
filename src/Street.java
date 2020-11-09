@@ -56,6 +56,10 @@ public class Street {
         }
         return totalLength -(totalLenthofCar + 0.5*(vehicles.size() - 2));
     }
+
+    public int getPercentRemainingCapacity() {
+        return (int) (capcity()/(this.length*this.numberOfLanes))*100;
+    }
     
     public boolean canTakeVehicles( Vehicle vehicle ) {
     	if ( vehicle.getVehicleSize() > capcity() )
