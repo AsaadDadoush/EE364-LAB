@@ -8,20 +8,10 @@ public class TrafficPoliceCar extends Vehicle implements CanBeGovtCar, CanFixAcc
      * construct instance with random GovtID
      * @param vehicleSize Length of vehicle in meters
      */
-    public TrafficPoliceCar(double vehicleSize){
+    public TrafficPoliceCar(double vehicleSize) {
         super(vehicleSize);
-        getGovtID();
+        generateGovtID();
     }
-
-    /**
-     * Construct instance with given GovtID
-     * @param vehicleSize Length of vehicle in meters
-     * @param govtID Provided Govt ID
-     */
-//    public TrafficPoliceCar(double vehicleSize, int govtID) {
-//        super(vehicleSize);
-//        this.govtID = govtID;
-//    } //TODO „« ÌÕ «Ã «‰‰« ‰‰‘∆ ÌÊ «Ì œÌ »„« «‰Â «·«‰‘«¡ ⁄ «·” « ﬂ 
 
     @Override
     public void generateGovtID(){
@@ -29,9 +19,8 @@ public class TrafficPoliceCar extends Vehicle implements CanBeGovtCar, CanFixAcc
     	this.TPC_UID = String.format("TPC%03d", numeberOfTPC);
     }
     
-    
+    @Override
     public String getGovtID() {
     	return this.TPC_UID;
-        
     }
 }
