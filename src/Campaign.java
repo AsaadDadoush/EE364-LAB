@@ -5,13 +5,13 @@ public class Campaign {
 
     private String UID;
     //private int housingNumber;
-    //private String name; //TODO ‰»€« —«Ìﬂ Ì« Â‘«„ (:  
+    //private String name;
     private District hotelDistrict;
 
     private Route housingToDestRoute;
     private Route destToHousingRoute;
 
-    private ArrayList<Vehicle> vehicles;
+    private ArrayList<Vehicle> vehicles = new ArrayList<>();
 
     //Will be of type PDate after extention
     private Date timeToLeaveToDest;
@@ -77,8 +77,6 @@ public class Campaign {
         return busses;
     }
 
-   
-
     public ArrayList<Vehicle> getVehicles() {
 		return vehicles;
 	}
@@ -88,12 +86,9 @@ public class Campaign {
 		this.vehicles = vehicles;
 	}
 
-
-    public void generateBusses(int number){
-        //TODO: discuss. Make new list or add to old list?
-        vehicles = new ArrayList<Vehicle>();
+    private void generateBusses(int number){
     	for (int i = 1; i <= number; i++) {
-    		vehicles.add(new Bus(10));//Throws NullPtrEx
+    		vehicles.add(new Bus());
     	}
     }
 

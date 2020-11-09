@@ -5,8 +5,10 @@ public class Bus extends CivilVehicle {
 	private static int numeberOfBuses;
     private final int TIME_TO_FIX = 20; //in minutes
 
-    public Bus(double vehicleSize) {
-        super(vehicleSize);
+    public static final double STD_BUS_SIZE = 10;
+
+    public Bus() {
+        super(STD_BUS_SIZE);
         generateUID();
     }
 
