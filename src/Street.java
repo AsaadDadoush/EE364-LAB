@@ -46,7 +46,7 @@ public class Street {
         for(int i=0;i<vehicles.size();i++) {
             totalLenthofCar+=vehicles.get(i).getVehicleSize();
         }
-        return totalLength -(totalLenthofCar + 0.5);
+        return totalLength -(totalLenthofCar + 0.5*(vehicles.size() - 2));
     }
     
     public boolean canTakeVehicles( Vehicle vehicle ) {
