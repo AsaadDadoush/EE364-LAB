@@ -38,11 +38,15 @@ public class Street {
     public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
-    
+
     public double capcity() {
-    	double totalLength =  length * numberOfLanes;
-    	//TODO Ammar return (total length - (length of cars + padding))
-    	return 0;
+        double totalLength =  length * numberOfLanes;
+        //TODO Ammar return (total length - (length of cars + padding))
+        double totalLenthofCar=0;
+        for(int i=0;i<vehicles.size();i++) {
+            totalLenthofCar+=vehicles.get(i).getVehicleSize();
+        }
+        return totalLength -(totalLenthofCar + 0.5);
     }
     
     public boolean canTakeVehicles( Vehicle vehicle ) {
@@ -51,9 +55,14 @@ public class Street {
     	else
     		return true;
     }
-   
+
     public void addVehicle( Vehicle vehicle ) {
-    	//TODO Ammar
+        if(capcity()>0) {
+            for(int i=0;i<getVehicles().size();i++) {
+                addVehicle.set(i, getVehicles().get(i));
+            }
+        }
+        //TODO Ammar i hope that
     }
   
 }
