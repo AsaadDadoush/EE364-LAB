@@ -56,11 +56,10 @@ public class Street {
     		return true;
     }
 
-    public void addVehicle( Vehicle vehicle ) {
-        if(capcity()>0) {
-            for(int i=0;i<getVehicles().size();i++) {
-                addVehicle.set(i, getVehicles().get(i));
-            }
+    public void addVehicle(Vehicle vehicle) {
+        if(capcity() > 0) {
+            //adds incoming vehicle in last.
+            vehicles.add(vehicle);
         }
         //TODO Ammar i hope that
     }
