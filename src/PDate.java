@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 public class PDate extends Calendar {
 
     public static final Calendar startCalendar = new GregorianCalendar(2020,Calendar.JANUARY,15,13,0,0);
-    public static final Calendar endCalendar= new GregorianCalendar(2020,Calendar.JANUARY,15,20,0,0);
+    public static final Calendar endCalendar= new GregorianCalendar(2020,Calendar.JANUARY,16,20,0,0);
     private static final Calendar currentCalendar = (GregorianCalendar)startCalendar.clone();
     private static boolean ended;
 
@@ -37,12 +37,13 @@ public class PDate extends Calendar {
     }
 
     public static void step(int key, int value){
-        if (currentCalendar.before(endCalendar)){
+        ended = false;
+        Calendar dummy = (GregorianCalendar)currentCalendar.clone();
+        dummy.add(key, value);
+        if (dummy.before(endCalendar)){
             currentCalendar.add(key, value);
         }
-        else if (currentCalendar.after(endCalendar) || currentCalendar.equals(endCalendar)) {
-            ended = true;
-        }
+        else ended = true;
     }
 
     /**
