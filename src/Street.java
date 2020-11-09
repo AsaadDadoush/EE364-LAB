@@ -31,6 +31,15 @@ public class Street {
         return length;
     }
 
+    /**
+     * Gets total length of one lane * number of lanes
+     * As if it is a sigle longer lane.
+     * @return Total length of all lanes combined
+     */
+    public double getCombinedLength() {
+        return this.length * this.numberOfLanes;
+    }
+
     public int getNumberOfLanes() {
         return numberOfLanes;
     }
@@ -41,7 +50,6 @@ public class Street {
 
     public double capcity() {
         double totalLength =  length * numberOfLanes;
-        //TODO Ammar return (total length - (length of cars + padding))
         double totalLenthofCar=0;
         for(int i=0;i<vehicles.size();i++) {
             totalLenthofCar+=vehicles.get(i).getVehicleSize();
@@ -57,11 +65,10 @@ public class Street {
     }
 
     public void addVehicle(Vehicle vehicle) {
-        if(capcity() > 0) {
+        if(capcity() > vehicle.getVehicleSize() + 0.5) {
             //adds incoming vehicle in last.
             vehicles.add(vehicle);
         }
-        //TODO Ammar i hope that
     }
   
 }
