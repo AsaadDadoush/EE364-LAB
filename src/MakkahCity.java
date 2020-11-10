@@ -11,12 +11,15 @@ public class MakkahCity {
 	public static void main(String[] args) {
 
 		//Gen Camp
-		generateCamps(District.ALAZIZIYA, getRandom(100, 150));
-		generateCamps(District.ALMANSOOR, getRandom(90, 120));
+		generateCamps(District.ALAZIZIYA, getRandom(70, 100));
+		generateCamps(District.ALMANSOOR, getRandom(110, 160));
 		generateCamps(District.ALHIJRA, getRandom(80, 110));
+
 		fillBusesToList();
+
 		//Make Streets
 		makeStreets();
+		
 		//Make Routes
 		makeRoutes();
 
@@ -42,19 +45,20 @@ public class MakkahCity {
 	}
 
 	private static void makeStreets(){
-		//TODO: find values
-		stdStreet[StreetNames.KA_STREET] = new Street(500,3);
-		stdStreet[StreetNames.FOURTH_HISHWAY] = new Street(500,4);
-		stdStreet[StreetNames.THIRD_HIGHWAY] = new Street(500,3);
-		stdStreet[StreetNames.STREET1] = new Street(500,2);
-		stdStreet[StreetNames.STREET2] = new Street(500,2);
-		stdStreet[StreetNames.STREET3] = new Street(500,2);
-		stdStreet[StreetNames.STREET4] = new Street(500,2);
-		stdStreet[StreetNames.STREET5] = new Street(500,2);
+		stdStreet[StreetNames.KA_STREET] = new Street(22700,3);
+		stdStreet[StreetNames.FOURTH_HISHWAY] = new Street(24600,4);
+		stdStreet[StreetNames.THIRD_HIGHWAY] = new Street(22000,3);
+		stdStreet[StreetNames.STREET1] = new Street(4000,2);
+		stdStreet[StreetNames.STREET2] = new Street(7000,2);
+		stdStreet[StreetNames.STREET3] = new Street(400,2);
+		stdStreet[StreetNames.STREET4] = new Street(8200,2);
+		stdStreet[StreetNames.STREET5] = new Street(100,2); //TODO: Change numbers
 	}
 
 	private static void makeRoutes() {
-		//TODO: find using maps.
+	//	stdRoutes [RouteName.mashierToAlMansoor1] = new Route({stdStreet[]}, hotelArea, mashier) 
+			
+		
 	}
 
 	private static void fillBusesToList() {
