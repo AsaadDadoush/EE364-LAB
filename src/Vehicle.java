@@ -39,4 +39,16 @@ public abstract class Vehicle {
         //TODO: Check if at end of street move to next street in Route.
         this.currentLocation += distance;
     }
+
+    /**
+     * @return Distance in meters to next car on same street. -1 if Can not calculate.
+     */
+    public double getDistanceToNextVehicle() {
+        if (getCurrentStreet() != null) {
+            int indexOfNxt = getCurrentStreet().getVehicles().indexOf(this) + 1; //next
+            Vehicle nextVehicle = getCurrentStreet().getVehicles().get(indexOfNxt);
+            return nextVehicle.getCurrentLocation() - this.getCurrentLocation();
+        }
+        return -1;//open or unlimited
+    }
 }
