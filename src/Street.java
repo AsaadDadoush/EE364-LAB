@@ -12,6 +12,7 @@ public class Street {
         setNumberOfLanes(numberOfLanes);
     }
 
+    //TODO: should be removed. list can be over the capacity Unless we check with street cap.
     public Street(double length, int numberOfLanes, ArrayList<Vehicle> vehicles) {
         this(length, numberOfLanes);
         this.vehicles = vehicles;
