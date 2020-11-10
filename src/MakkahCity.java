@@ -26,10 +26,12 @@ public class MakkahCity {
 		//Set Routes for Campaigns
 		setRoutesForCampaigns();
 
+		//TODO: Set Schedule for Campaigns
+
 		while(!PDate.isEnded()) {
 			PDate.step(Calendar.MINUTE, 1);
 			System.out.println(PDate.getCurrentTime());
-			//TODO: add civil cars in loop itirations.
+			//TODO: add civil cars in loop iterations. (noise)
 
 			//TODO: Move busses and vehicles.
 
@@ -138,5 +140,24 @@ public class MakkahCity {
 		for (Campaign camp : listOfCampaigns) {
 			listOfVehicles.addAll(camp.getVehicles());
 		}
+	}
+
+	/**
+	 * Generates 'noise' cars to be used in streets
+	 * @param numberOfCars
+	 * @return Array of 70% Sedans and 30% SUVs
+	 */
+	private static CivilVehicle[] generateCivilVehicles(int numberOfCars) {
+		CivilVehicle[] cars = new CivilVehicle[numberOfCars];
+		int sedans = (int)(numberOfCars*0.7);
+		int SUVs = numberOfCars - sedans;
+		for (int i = 0; i < sedans; i++) {
+			cars[i] = new Sedan(getRandom(25,32)/10);
+		}
+
+		for (int i = 0; i < SUVs; i++) {
+			cars[sedans+i] = new SUV(getRandom(35,45)/10);
+		}
+		return cars;
 	}
 }
