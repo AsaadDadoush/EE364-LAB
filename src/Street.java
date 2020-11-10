@@ -12,6 +12,7 @@ public class Street {
         setNumberOfLanes(numberOfLanes);
     }
 
+    //TODO: should be removed. list can be over the capacity Unless we check with street cap.
     public Street(double length, int numberOfLanes, ArrayList<Vehicle> vehicles) {
         this(length, numberOfLanes);
         this.vehicles = vehicles;
@@ -55,6 +56,10 @@ public class Street {
             totalLenthofCar+=vehicles.get(i).getVehicleSize();
         }
         return totalLength -(totalLenthofCar + 0.5*(vehicles.size() - 2));
+    }
+
+    public int getPercentRemainingCapacity() {
+        return (int) (capcity()/(this.length*this.numberOfLanes))*100;
     }
     
     public boolean canTakeVehicles( Vehicle vehicle ) {
