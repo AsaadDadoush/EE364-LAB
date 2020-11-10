@@ -8,14 +8,9 @@ public class Street {
   
 
     public Street(double length, int numberOfLanes) {
+        vehicles = new ArrayList<>();
         setLength(length);
         setNumberOfLanes(numberOfLanes);
-    }
-
-    //TODO: should be removed. list can be over the capacity Unless we check with street cap.
-    public Street(double length, int numberOfLanes, ArrayList<Vehicle> vehicles) {
-        this(length, numberOfLanes);
-        this.vehicles = vehicles;
     }
 
     private void setLength(double length) {
@@ -63,10 +58,10 @@ public class Street {
     }
     
     public boolean canTakeVehicles( Vehicle vehicle ) {
-    	if ( vehicle.getVehicleSize() > capcity() )
-    		return false;
-    	else
+    	if ( vehicle.getVehicleSize() + 0.5 < capcity() )
     		return true;
+    	else
+    		return false;
     }
 
     public void addVehicle(Vehicle vehicle) {
