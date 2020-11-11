@@ -35,7 +35,24 @@ public class MakkahCity {
 
 		while(!timeManager.isEnded()) {
 			timeManager.step(Calendar.MINUTE, 1);
-			System.out.println(timeManager.getCurrentTime());
+			//System.out.println(timeManager.getCurrentTime());
+			Vehicle v = listOfVehicles.get(0);
+			Vehicle v2 = listOfVehicles.get(1);
+			//Start of Every hour
+			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 0){
+
+			}
+			//Start of Every half-hour
+			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 30){
+
+			}
+
+			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
+		 		&& timeManager.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
+
+			}
+			System.out.println("v1 "+ v.getCurrentLocation()+ " " + v.getCurrentStreet().getName().name());
+			System.out.println("v2 "+ v2.getCurrentLocation()+ " " + v.getCurrentStreet().getName().name());
 			//TODO: [2]add civil cars in loop iterations. (noise)
 			//noise based on time of day (From PDate)
 			//TODO: [3]Move busses and vehicles.
