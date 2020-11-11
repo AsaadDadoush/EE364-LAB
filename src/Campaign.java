@@ -45,6 +45,9 @@ public class Campaign {
 
     public void setDestToHousingRoute(Route destToHousingRoute) {
         this.destToHousingRoute = destToHousingRoute;
+        for(Vehicle vehicle : this.getVehicles()){
+            vehicle.setRoute(destToHousingRoute);
+        }
     }
 
     public District getHotelDistrict(){ return this.hotelDistrict; }

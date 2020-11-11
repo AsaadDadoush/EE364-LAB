@@ -5,7 +5,7 @@ public class MakkahCity {
 	private static final ArrayList<Campaign> listOfCampaigns = new ArrayList<>();
 
 	private static final ArrayList<Vehicle> listOfVehicles = new ArrayList<>();
-	private static final Route[] stdRoutes = new Route[9];
+	private static final Route[] stdRoutes = new Route[6];
 	private static final Street[] stdStreet = new Street[8];
 
 	private static final PDate timeManager = new PDate(
@@ -31,37 +31,33 @@ public class MakkahCity {
 		//Set Routes for Campaigns
 		setRoutesForCampaigns();
 
-		//TODO: Set Schedule for Campaigns
+		//TODO: [1]Set Schedule for Campaigns
 
 		while(!timeManager.isEnded()) {
 			timeManager.step(Calendar.MINUTE, 1);
 			System.out.println(timeManager.getCurrentTime());
-			//TODO: add civil cars in loop iterations. (noise)
+			//TODO: [2]add civil cars in loop iterations. (noise)
 			//noise based on time of day (From PDate)
-			//TODO: Move busses and vehicles.
+			//TODO: [3]Move busses and vehicles.
 
-			//TODO: Update streets.
+			//TODO: [4]Update streets.
 
-			//TODO: Streets move forward.
+			//TODO: [5]Streets move forward.
 
-			//TODO: update vehicles on street.
+			//TODO: [6]update vehicles on street.
 		}
 	}
 
 	private static void setRoutesForCampaigns() {
 		for (Campaign camp : listOfCampaigns){
-			if (camp.getHotelDistrict() == District.ALAZIZIYA) {
-				setUpCampaginRoute(camp, RouteName.mashierToAlAzizi1);
-			}
-			else if (camp.getHotelDistrict() == District.ALMANSOOR){
-				setUpCampaginRoute(camp, RouteName.mashierToAlMansoor2);
-			}
-			else {
-				setUpCampaginRoute(camp, RouteName.mashierToAlHijra1);
-			}
+			camp.setDestToHousingRoute(getShortestRoute(camp));
 		}
 	}
 
+	/*
+	This is not used. The campaign object sets the routes for the busses
+	 */
+	@Deprecated
 	private static void setUpCampaginRoute(Campaign camp, int routeName) {
 		Route route = stdRoutes[routeName];
 		camp.setDestToHousingRoute(route);
@@ -90,7 +86,7 @@ public class MakkahCity {
 		stdStreet[StreetNames.STREET2] = new Street(7000,2);
 		stdStreet[StreetNames.STREET3] = new Street(400,2);
 		stdStreet[StreetNames.STREET4] = new Street(8200,2);
-		stdStreet[StreetNames.IBRAHIM_ALKHALIL] = new Street(100,2); //TODO: Change numbers
+		stdStreet[StreetNames.IBRAHIM_ALKHALIL] = new Street(100,2); //TODO: [7]Change numbers
 	}
 
 	private static void makeRoutes() {
@@ -106,7 +102,7 @@ public class MakkahCity {
 						stdStreet[StreetNames.STREET1],
 						stdStreet[StreetNames.FOURTH_HIGHWAY],
 						stdStreet[StreetNames.STREET4]
-		},District.ALAZIZIYA, Mashier.ARAFAT);
+		},District.ALHIJRA, Mashier.ARAFAT);
 
 		stdRoutes[RouteName.mashierToAlMansoor1] = new Route(
 				new Street[]{
@@ -121,7 +117,7 @@ public class MakkahCity {
 						stdStreet[StreetNames.STREET1],
 						stdStreet[StreetNames.STREET2],
 						stdStreet[StreetNames.KUDAY],
-						stdStreet[StreetNames.IBRAHIM_ALKHALIL]//TODO: is actually half of ibrahim khalil.
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL]//TODO: [8]is actually half of ibrahim khalil.
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
 		//Optimal for Almansoor
@@ -176,4 +172,39 @@ public class MakkahCity {
 	public static PDate getTimeManager() {
 		return timeManager;
 	}
+
+	/**
+	 * Find shortest path without respect to traffic
+	 * @param campaign
+	 * @return
+	 */
+	private static Route getShortestRoute(Campaign campaign) {
+		Route[] routes = getRoutesToDistrict(campaign.getHotelDistrict());
+		Route route = null;
+		double min = Double.MAX_VALUE;
+		for (Route r : routes) {
+			if (r.getTotalLength() < min) {
+				min = r.getTotalLength();
+				route = r;
+			}
+		}
+		return route;
+	}
+
+	/**
+	 * Find routes that connect to a certain district.
+	 * @param district
+	 * @return Array of routes that connect to 'district'
+	 */
+	private static Route[] getRoutesToDistrict(District district) {
+		ArrayList<Route> routes = new ArrayList<>();
+		for (Route route : stdRoutes) {
+			if (route.getHotelArea() == district) {
+				routes.add(route);
+			}
+		}
+		Route[] routesArray = new Route[routes.size()];
+		return routes.toArray(routesArray);
+	}
+
 }
