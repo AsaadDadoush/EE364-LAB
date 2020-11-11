@@ -79,60 +79,60 @@ public class MakkahCity {
 	}
 
 	private static void makeStreets(){
-		stdStreet[StreetNames.KA_STREET] = new Street(22700,3);
-		stdStreet[StreetNames.FOURTH_HIGHWAY] = new Street(24600,4);
-		stdStreet[StreetNames.KUDAY] = new Street(22000,3);
-		stdStreet[StreetNames.STREET1] = new Street(4000,2);
-		stdStreet[StreetNames.STREET2] = new Street(7000,2);
-		stdStreet[StreetNames.STREET3] = new Street(400,2);
-		stdStreet[StreetNames.STREET4] = new Street(8200,2);
-		stdStreet[StreetNames.IBRAHIM_ALKHALIL] = new Street(100,2); //TODO: [7]Change numbers
+		stdStreet[StreetNames.KA_STREET.ordinal()] = new Street(22700,3);
+		stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()] = new Street(24600,4);
+		stdStreet[StreetNames.KUDAY.ordinal()] = new Street(22000,3);
+		stdStreet[StreetNames.STREET1.ordinal()] = new Street(4000,2);
+		stdStreet[StreetNames.STREET2.ordinal()] = new Street(7000,2);
+		stdStreet[StreetNames.STREET3.ordinal()] = new Street(400,2);
+		stdStreet[StreetNames.STREET4.ordinal()] = new Street(8200,2);
+		stdStreet[StreetNames.IBRAHIM_ALKHALIL.ordinal()] = new Street(100,2); //TODO: [7]Change numbers
 	}
 
 	private static void makeRoutes() {
 
-		stdRoutes[RouteName.mashierToAlHijra1] = new Route(
+		stdRoutes[RouteName.mashierToAlHijra1.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1],
-						stdStreet[StreetNames.STREET2],
-						stdStreet[StreetNames.KUDAY]},
+						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.KUDAY.ordinal()]},
 				District.ALHIJRA, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlHijra2] = new Route(new Street[]{
-						stdStreet[StreetNames.STREET1],
-						stdStreet[StreetNames.FOURTH_HIGHWAY],
-						stdStreet[StreetNames.STREET4]
+		stdRoutes[RouteName.mashierToAlHijra2.ordinal()] = new Route(new Street[]{
+						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()],
+						stdStreet[StreetNames.STREET4.ordinal()]
 		},District.ALHIJRA, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlMansoor1] = new Route(
+		stdRoutes[RouteName.mashierToAlMansoor1.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1],
-						stdStreet[StreetNames.STREET2],
-						stdStreet[StreetNames.KA_STREET],
-						stdStreet[StreetNames.STREET3]
+						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.KA_STREET.ordinal()],
+						stdStreet[StreetNames.STREET3.ordinal()]
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlMansoor2] = new Route(
+		stdRoutes[RouteName.mashierToAlMansoor2.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1],
-						stdStreet[StreetNames.STREET2],
-						stdStreet[StreetNames.KUDAY],
-						stdStreet[StreetNames.IBRAHIM_ALKHALIL]//TODO: [8]is actually half of ibrahim khalil.
+						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.KUDAY.ordinal()],
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL.ordinal()]//TODO: [8]is actually half of ibrahim khalil.
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
 		//Optimal for Almansoor
-		stdRoutes[RouteName.mashierToAlMansoor3] = new Route(
+		stdRoutes[RouteName.mashierToAlMansoor3.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1],
-						stdStreet[StreetNames.FOURTH_HIGHWAY],
-						stdStreet[StreetNames.IBRAHIM_ALKHALIL]
+						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()],
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL.ordinal()]
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlAzizi1] = new Route(
+		stdRoutes[RouteName.mashierToAlAzizi1.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1],
-						stdStreet[StreetNames.STREET2],
-						stdStreet[StreetNames.KA_STREET]
+						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.KA_STREET.ordinal()]
 		},District.ALAZIZIYA, Mashier.ARAFAT);
 
 	}
