@@ -37,7 +37,7 @@ public class MakkahCity {
 			timeManager.step(Calendar.MINUTE, 1);
 			System.out.println(timeManager.getCurrentTime());
 			//TODO: add civil cars in loop iterations. (noise)
-
+			//noise based on time of day (From PDate)
 			//TODO: Move busses and vehicles.
 
 			//TODO: Update streets.
@@ -153,15 +153,22 @@ public class MakkahCity {
 	 * @return Array of 70% Sedans and 30% SUVs
 	 */
 	private static CivilVehicle[] generateCivilVehicles(int numberOfCars) {
+
 		CivilVehicle[] cars = new CivilVehicle[numberOfCars];
 		int sedans = (int)(numberOfCars*0.7);
 		int SUVs = numberOfCars - sedans;
+
 		for (int i = 0; i < sedans; i++) {
 			cars[i] = new Sedan(getRandom(25,32)/10);
 		}
 
 		for (int i = 0; i < SUVs; i++) {
-			cars[sedans+i] = new SUV(getRandom(35,45)/10);
+			try {
+				cars[sedans+i] = new SUV(getRandom(35,45)/10);
+			}
+			catch (IndexOutOfBoundsException ex) {
+				break;
+			}
 		}
 		return cars;
 	}
