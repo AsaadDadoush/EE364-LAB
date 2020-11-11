@@ -8,6 +8,11 @@ public class MakkahCity {
 	private static final Route[] stdRoutes = new Route[9];
 	private static final Street[] stdStreet = new Street[8];
 
+	private static final PDate timeManager = new PDate(
+		new GregorianCalendar(2020, Calendar.JANUARY, 1, 8, 0, 0),
+		new GregorianCalendar(2020, Calendar.JANUARY, 2, 8, 0, 0)
+	);
+
 	public static void main(String[] args) {
 
 		//Gen Camp
@@ -28,9 +33,9 @@ public class MakkahCity {
 
 		//TODO: Set Schedule for Campaigns
 
-		while(!PDate.isEnded()) {
-			PDate.step(Calendar.MINUTE, 1);
-			System.out.println(PDate.getCurrentTime());
+		while(!timeManager.isEnded()) {
+			timeManager.step(Calendar.MINUTE, 1);
+			System.out.println(timeManager.getCurrentTime());
 			//TODO: add civil cars in loop iterations. (noise)
 
 			//TODO: Move busses and vehicles.
@@ -159,5 +164,9 @@ public class MakkahCity {
 			cars[sedans+i] = new SUV(getRandom(35,45)/10);
 		}
 		return cars;
+	}
+
+	public static PDate getTimeManager() {
+		return timeManager;
 	}
 }

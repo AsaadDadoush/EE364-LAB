@@ -54,7 +54,7 @@ public class Campaign {
     }
 
     public void setTimeToLeaveToDest(Date timeToLeaveToDest) throws OutOfSimulationTimeException {
-        if(PDate.isValidTime(timeToLeaveToDest))
+        if(PDate.isWithInTimeline(timeToLeaveToDest, MakkahCity.getTimeManager()))
             this.timeToLeaveToDest = timeToLeaveToDest;
         else throw new OutOfSimulationTimeException();
     }
@@ -64,7 +64,7 @@ public class Campaign {
     }
 
     public void setTimeToLeaveToHousing(Date timeToLeaveToHousing) throws OutOfSimulationTimeException {
-        if(PDate.isValidTime(timeToLeaveToHousing))
+        if(PDate.isWithInTimeline(timeToLeaveToHousing, MakkahCity.getTimeManager()))
             this.timeToLeaveToHousing = timeToLeaveToHousing;
         else throw new OutOfSimulationTimeException();
     }

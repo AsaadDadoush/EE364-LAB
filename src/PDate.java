@@ -7,36 +7,42 @@ import java.util.GregorianCalendar;
  */
 public class PDate extends Calendar {
 
-    public static final Calendar startCalendar = new GregorianCalendar(2020,Calendar.JANUARY,15,13,0,0);
-    public static final Calendar endCalendar= new GregorianCalendar(2020,Calendar.JANUARY,16,20,0,0);
-    private static final Calendar currentCalendar = (GregorianCalendar)startCalendar.clone();
-    private static boolean ended;
+    public final Calendar startCalendar;
+    public final Calendar endCalendar;
+    private final Calendar currentCalendar;
+    private boolean ended;
 
-    public static Calendar getStartCalendar() {
+    public PDate(GregorianCalendar start, GregorianCalendar end) {
+        this.startCalendar = start;
+        this.endCalendar = end;
+        this.currentCalendar = (GregorianCalendar)start.clone();
+    }
+
+    public Calendar getStartCalendar() {
         return startCalendar;
     }
 
-    public static Calendar getEndCalendar() {
+    public Calendar getEndCalendar() {
         return endCalendar;
     }
 
-    public static Calendar getCurrentCalendar() {
+    public Calendar getCurrentCalendar() {
         return currentCalendar;
     }
 
-    public static Date getStartTime() {
+    public Date getStartTime() {
         return startCalendar.getTime();
     }
 
-    public static Date getEndTime(){
+    public Date getEndTime(){
         return endCalendar.getTime();
     }
 
-    public static Date getCurrentTime() {
+    public Date getCurrentTime() {
         return currentCalendar.getTime();
     }
 
-    public static void step(int key, int value){
+    public void step(int key, int value){
         ended = false;
         Calendar dummy = (GregorianCalendar)currentCalendar.clone();
         dummy.add(key, value);
@@ -46,19 +52,28 @@ public class PDate extends Calendar {
         else ended = true;
     }
 
+    public boolean isEnded(){
+        return ended;
+    }
+
     /**
     Check if time/date provided falls within the simulation timeline
      */
-    public static boolean isValidTime(Date timeToLeaveToDest) {
-        if (timeToLeaveToDest.after(PDate.endCalendar.getTime()) ||
-                timeToLeaveToDest.before(PDate.startCalendar.getTime()))
+    public boolean isWithInTimeline(Date time) {
+        if (time.after(this.endCalendar.getTime()) ||
+                time.before(this.startCalendar.getTime()))
             return false;
         else
             return true;
     }
 
-    public static boolean isEnded(){
-        return ended;
+    /**
+     Check if time/date provided falls within the simulation timeline
+     with reference to a PDate instance.
+     */
+    public static boolean isWithInTimeline(Date time, PDate timeManeger) {
+        return time.after(timeManeger.getStartTime()) &&
+                time.before(timeManeger.getEndTime());
     }
 
     @Override
