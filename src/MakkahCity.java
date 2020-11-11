@@ -9,8 +9,8 @@ public class MakkahCity {
 	private static final Street[] stdStreet = new Street[8];
 
 	private static final PDate timeManager = new PDate(
-		new GregorianCalendar(2020, Calendar.JANUARY, 1, 8, 0, 0),
-		new GregorianCalendar(2020, Calendar.JANUARY, 2, 8, 0, 0)
+		new GregorianCalendar(2020, Calendar.JANUARY, 1, 4, 0, 0),
+		new GregorianCalendar(2020, Calendar.JANUARY, 1, 20, 0, 0)
 	);
 
 	public static void main(String[] args) {
@@ -31,7 +31,7 @@ public class MakkahCity {
 		//Set Routes for Campaigns
 		setRoutesForCampaigns();
 
-		//TODO: [1]Set Schedule for Campaigns
+
 
 		while(!timeManager.isEnded()) {
 			timeManager.step(Calendar.MINUTE, 1);
@@ -43,6 +43,12 @@ public class MakkahCity {
 			//TODO: [4]Update streets.
 
 			//TODO: [5]Streets move forward.
+
+			for (Campaign campaign : listOfCampaigns){
+				for (Vehicle vehicle : campaign.getVehicles()){
+					vehicle.moveForward(((Bus)vehicle).MAX_FORWARD);
+				}
+			}
 
 			//TODO: [6]update vehicles on street.
 		}
@@ -79,14 +85,14 @@ public class MakkahCity {
 	}
 
 	private static void makeStreets(){
-		stdStreet[StreetNames.KA_STREET.ordinal()] = new Street(22700,3);
-		stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()] = new Street(24600,4);
-		stdStreet[StreetNames.KUDAY.ordinal()] = new Street(22000,3);
-		stdStreet[StreetNames.STREET1.ordinal()] = new Street(4000,2);
-		stdStreet[StreetNames.STREET2.ordinal()] = new Street(7000,2);
-		stdStreet[StreetNames.STREET3.ordinal()] = new Street(400,2);
-		stdStreet[StreetNames.STREET4.ordinal()] = new Street(8200,2);
-		stdStreet[StreetNames.IBRAHIM_ALKHALIL.ordinal()] = new Street(100,2); //TODO: [7]Change numbers
+		stdStreet[StreetNames.KA_STREET.ordinal()] = new Street(22700,3, StreetNames.KA_STREET);
+		stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()] = new Street(24600,4, StreetNames.FOURTH_HIGHWAY);
+		stdStreet[StreetNames.KUDAY.ordinal()] = new Street(22000,3, StreetNames.KUDAY);
+		stdStreet[StreetNames.STREET1.ordinal()] = new Street(4000,2, StreetNames.STREET1);
+		stdStreet[StreetNames.STREET2.ordinal()] = new Street(7000,2,StreetNames.STREET2);
+		stdStreet[StreetNames.STREET3.ordinal()] = new Street(400,2, StreetNames.STREET3);
+		stdStreet[StreetNames.STREET4.ordinal()] = new Street(8200,2,StreetNames.STREET4);
+		stdStreet[StreetNames.IBRAHIM_ALKHALIL.ordinal()] = new Street(100,2, StreetNames.IBRAHIM_ALKHALIL); //TODO: [7]Change numbers
 	}
 
 	private static void makeRoutes() {

@@ -25,6 +25,7 @@ public abstract class Vehicle {
     public void setRoute(Route route) {
         this.route = route;
         this.currentStreetIndex = 0;
+        this.currentStreet = route.getStreets()[0];
         this.route.getStreets()[0].addVehicle(this);//TODO: [9]street might not add if capacity is low
     }
 
@@ -42,12 +43,22 @@ public abstract class Vehicle {
     }
 
     public void moveForward(double distance) {
-        if (moving && !arrivedToDest){
+        if (!moving && !arrivedToDest) moving = true;
+        if (!arrivedToDest){
             if (isAtEndOfCurrentStreet()) {
                 moveToNextStreet();
                 //this.currentLocation += distance;
             }
-            else this.currentLocation += distance;
+            else {
+                double dToNext = getDistanceToNextVehicle();
+                double trafficFactor = getCurrentStreet().getPercentRemainingCapacity() / 100.0;
+                if (dToNext == -1 ) {
+                    this.currentLocation += distance * trafficFactor;
+                } else if (dToNext < distance){//TODO after I wake up
+                     this.currentLocation += distance;
+                }
+
+            }
         }
     }
 
@@ -60,7 +71,7 @@ public abstract class Vehicle {
         this.currentStreetIndex++;
         Street nextStreet;
         try { nextStreet = this.getRoute().getStreets()[currentStreetIndex]; }
-        catch (IndexOutOfBoundsException e) { this.arrivedToDest = true; return;}
+        catch (IndexOutOfBoundsException e) { this.arrivedToDest = true; this.moving = false; return;}
         if (nextStreet.canTakeVehicles(this)){
             this.currentStreet = nextStreet;
             this.currentLocation = 0;

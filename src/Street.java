@@ -5,12 +5,14 @@ public class Street {
     private double length;
     private int numberOfLanes;
     private ArrayList<Vehicle> vehicles;
+    private StreetNames name;
   
 
-    public Street(double length, int numberOfLanes) {
+    public Street(double length, int numberOfLanes, StreetNames name) {
         vehicles = new ArrayList<>();
         setLength(length);
         setNumberOfLanes(numberOfLanes);
+        this.name = name;
     }
 
     private void setLength(double length) {
@@ -44,6 +46,10 @@ public class Street {
         return vehicles;
     }
 
+    public StreetNames getName() {
+        return name;
+    }
+
     public double capcity() {
         double totalLength =  length * numberOfLanes;
         double totalLenthofCar=0;
@@ -70,5 +76,4 @@ public class Street {
             vehicles.add(vehicle);
         }
     }
-  
 }
