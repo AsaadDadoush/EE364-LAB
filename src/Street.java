@@ -71,9 +71,20 @@ public class Street {
     }
 
     public void addVehicle(Vehicle vehicle) {
-        if(capcity() > vehicle.getVehicleSize() + 0.5) {
+        //if(capcity() > vehicle.getVehicleSize() + 0.5) {
             //adds incoming vehicle in last.
             vehicles.add(vehicle);
+        //}
+    }
+
+    public double capcityPoint(double min, double max) {
+        double totalLength =  (max - min) * numberOfLanes;
+        double totalLenthofCar=0;
+        for(int i=0;i<vehicles.size();i++) {
+            if (vehicles.get(i).getCurrentLocation() >= min &&
+                    vehicles.get(i).getCurrentLocation() <= max)
+                totalLenthofCar+=vehicles.get(i).getVehicleSize();
         }
+        return totalLenthofCar / totalLength;
     }
 }

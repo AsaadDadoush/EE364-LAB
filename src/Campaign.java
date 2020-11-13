@@ -13,9 +13,10 @@ public class Campaign {
 
     private ArrayList<Vehicle> vehicles = new ArrayList<>();
 
-    //Will be of type PDate after extention
     private Date timeToLeaveToDest;
     private Date timeToLeaveToHousing;
+
+    private boolean startedMoving;
 
     private static int numeberOfCampains;
 
@@ -88,6 +89,10 @@ public class Campaign {
 		if (vehicles != null)
 		this.vehicles = vehicles;
 	}
+
+	public void setStartedMoving(){
+        this.startedMoving = true;
+    }
 
     private void generateBusses(int number){
     	for (int i = 1; i <= number; i++) {
