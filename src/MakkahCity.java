@@ -31,7 +31,7 @@ public class MakkahCity {
 		//Set Routes for Campaigns
 		setRoutesForCampaigns();
 
-		//TODO: use Qeues or Wating area for each street?
+		//TODO: use Queues or Wating area for each street?
 
 		while(!timeManager.isEnded()) {
 			timeManager.step(Calendar.MINUTE, 1);
@@ -49,41 +49,42 @@ public class MakkahCity {
 
 			}
 
-			for (Street street : stdStreet) {
-				int lanes = street.getNumberOfLanes();
-				ArrayList<Vehicle> vehicles = street.getVehicles();
-				//Changes
-
-				for (int i = 1; i < lanes; i++) {
-
-				}
-			}
-
 			for (Vehicle vehicle : listOfVehicles) {
-				Street st = vehicle.getCurrentStreet();
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
-				if (currentLocation >= st.getLength()){
-					//Move to next street
-					vehicle.setCurrentLocation(0);
-					int nxtIndex = route.indexOf(st) +1;
-					if (nxtIndex <= route.getStreets().length - 1)
-						vehicle.setCurrentStreet(route.getStreets()[nxtIndex]);
-					else vehicle.arrive();
+				if (vehicle.getCurrentStreet() == null &&
+				route.getStreets()[0].capcityPoint(0,1500) < 1) {
+					vehicle.setCurrentStreet(route.getStreets()[0]);
 				}
-				if (!vehicle.isArrivedToDest()){
-					if (vehicle instanceof Bus) vehicle.move(Bus.MAX_FORWARD - Bus.STD_BUS_SIZE - getRandom(10,15));
-					else if (vehicle instanceof Sedan) vehicle.move(Sedan.MAX_FORWARD);
-					else if (vehicle instanceof SUV) vehicle.move(SUV.MAX_FORWARD);
-					else if (vehicle instanceof Truck) vehicle.move(Bus.MAX_FORWARD);
-				}
+				else if (vehicle.getCurrentStreet() != null && vehicle.getCurrentStreet().capcityPoint(currentLocation+1500,
+						currentLocation+1500*2) < 1 ) { //May test diff values.
 
+					if (currentLocation >= vehicle.getCurrentStreet().getLength()) {
+						//Move to next street
+						vehicle.setCurrentLocation(0);
+						int nxtIndex = route.indexOf(vehicle.getCurrentStreet()) + 1;
+						if (nxtIndex <= route.getStreets().length - 1)
+							vehicle.setCurrentStreet(route.getStreets()[nxtIndex]);
+						else vehicle.arrive();
+					}
+					if (!vehicle.isArrivedToDest()) {
+						if (vehicle instanceof Bus) vehicle.move(Bus.MAX_FORWARD);
+						else if (vehicle instanceof Sedan) vehicle.move(Sedan.MAX_FORWARD);
+						else if (vehicle instanceof SUV) vehicle.move(SUV.MAX_FORWARD);
+						else if (vehicle instanceof Truck) vehicle.move(Bus.MAX_FORWARD);
+					}
+				}
 			}
-			Vehicle v = listOfVehicles.get(0);
-			System.out.printf("St: %s distance: %f total: %f\n",
-					v.getCurrentStreet().getName(),
-					v.getCurrentLocation(),
-					v.getTotalDistanceTraveled());
+			Vehicle v = listOfVehicles.get(320);
+			if (v.getCurrentStreet() != null) {
+				System.out.printf("St: %s distance: %f total: %f %s\n",
+						v.getCurrentStreet().getName(),
+						v.getCurrentLocation(),
+						v.getTotalDistanceTraveled(),
+						timeManager.getCurrentTime());
+			}
+
+
 			//System.out.println(v.getTimeStartedMoving());
 			//TODO: [2]add civil cars in loop iterations. (noise)
 			//noise based on time of day (From PDate)

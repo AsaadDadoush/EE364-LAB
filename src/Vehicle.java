@@ -15,6 +15,7 @@ public abstract class Vehicle {
     public Vehicle(double vehicleSize){
         setVehicleSize(vehicleSize);
     }
+
     public double getVehicleSize() {
         return vehicleSize;
     }
@@ -40,8 +41,8 @@ public abstract class Vehicle {
 
     public void setRoute(Route route) {
         this.route = route;
-        this.currentStreet = route.getStreets()[0];
-        this.route.getStreets()[0].addVehicle(this);
+        //this.currentStreet = route.getStreets()[0];
+        //this.route.getStreets()[0].addVehicle(this);
     }
 
     private void setVehicleSize(double vehicleSize) {
@@ -74,7 +75,9 @@ public abstract class Vehicle {
     }
 
     public void setCurrentStreet(Street currentStreet) {
-        this.currentStreet.getVehicles().remove(this);
+        if (this.currentStreet != null) {
+            this.currentStreet.getVehicles().remove(this);
+        }
         this.currentStreet = currentStreet;
         this.currentStreet.addVehicle(this);
     }
