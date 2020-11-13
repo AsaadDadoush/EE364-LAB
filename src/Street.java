@@ -71,9 +71,9 @@ public class Street {
     }
 
     public void addVehicle(Vehicle vehicle) {
-        if(capcity() > vehicle.getVehicleSize() + 0.5) {
+        //if(capcity() > vehicle.getVehicleSize() + 0.5) {
             //adds incoming vehicle in last.
             vehicles.add(vehicle);
-        }
+        //}
     }
 }

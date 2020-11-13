@@ -4,7 +4,7 @@ public class Bus extends CivilVehicle {
 	private String UID;
 	private static int numeberOfBuses;
     private final int TIME_TO_FIX = 20; //in minutes
-    public final int MAX_FORWARD = 900; //Meter/Min
+    public static final int MAX_FORWARD = 900; //Meter/Min
 
     public static final double STD_BUS_SIZE = 10;
 

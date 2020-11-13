@@ -6,10 +6,11 @@ public abstract class Vehicle {
     private Route route;
     private Street currentStreet;
     private double currentLocation;
-    private int currentStreetIndex;
+    private double totalDistanceTraveled;
     private boolean arrivedToDest;
     private boolean moving;
     private Date timeStartedMoving;
+    private Date timeOfArrival;
 
     public Vehicle(double vehicleSize){
         setVehicleSize(vehicleSize);
@@ -22,11 +23,25 @@ public abstract class Vehicle {
         return route;
     }
 
+    public void arrive() {
+        setArrivedToDest(true);
+        setMoving(false);
+        setTimeOfArrival(MakkahCity.getTimeManager().getCurrentTime());
+    }
+
+    public void move(double distance) {
+        if (!isMoving()) {
+            setMoving(true);
+            setTimeStartedMoving(MakkahCity.getTimeManager().getCurrentTime());
+        }
+        setCurrentLocation(getCurrentLocation() + distance);
+        setTotalDistanceTraveled(getTotalDistanceTraveled() + distance);
+    }
+
     public void setRoute(Route route) {
         this.route = route;
-        this.currentStreetIndex = 0;
         this.currentStreet = route.getStreets()[0];
-        this.route.getStreets()[0].addVehicle(this);//TODO: [9]street might not add if capacity is low
+        this.route.getStreets()[0].addVehicle(this);
     }
 
     private void setVehicleSize(double vehicleSize) {
@@ -40,42 +55,6 @@ public abstract class Vehicle {
 
     public double getCurrentLocation() {
         return currentLocation;
-    }
-
-    public void moveForward(double distance) {
-        if (!moving && !arrivedToDest) moving = true;
-        if (!arrivedToDest){
-            if (isAtEndOfCurrentStreet()) {
-                moveToNextStreet();
-                //this.currentLocation += distance;
-            }
-            else {
-                double dToNext = getDistanceToNextVehicle();
-                double trafficFactor = getCurrentStreet().getPercentRemainingCapacity() / 100.0;
-                if (dToNext == -1 ) {
-                    this.currentLocation += distance * trafficFactor;
-                } else if (dToNext < distance){//TODO after I wake up
-                     this.currentLocation += distance;
-                }
-
-            }
-        }
-    }
-
-    private boolean isAtEndOfCurrentStreet() {
-        //At last meter of current street
-        return (this.currentStreet.getLength() - this.currentLocation) < 1;
-    }
-
-    private void moveToNextStreet() {
-        this.currentStreetIndex++;
-        Street nextStreet;
-        try { nextStreet = this.getRoute().getStreets()[currentStreetIndex]; }
-        catch (IndexOutOfBoundsException e) { this.arrivedToDest = true; this.moving = false; return;}
-        if (nextStreet.canTakeVehicles(this)){
-            this.currentStreet = nextStreet;
-            this.currentLocation = 0;
-        }
     }
 
     /**
@@ -92,5 +71,55 @@ public abstract class Vehicle {
             catch (IndexOutOfBoundsException e) {return -1;}
         }
         return -1;//open or unlimited
+    }
+
+    public void setCurrentStreet(Street currentStreet) {
+        this.currentStreet.getVehicles().remove(this);
+        this.currentStreet = currentStreet;
+        this.currentStreet.addVehicle(this);
+    }
+
+    public void setCurrentLocation(double currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    public double getTotalDistanceTraveled() {
+        return totalDistanceTraveled;
+    }
+
+    public void setTotalDistanceTraveled(double totalDistanceTraveled) {
+        this.totalDistanceTraveled = totalDistanceTraveled;
+    }
+
+    public boolean isArrivedToDest() {
+        return arrivedToDest;
+    }
+
+    public void setArrivedToDest(boolean arrivedToDest) {
+        this.arrivedToDest = arrivedToDest;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public Date getTimeStartedMoving() {
+        return timeStartedMoving;
+    }
+
+    public void setTimeStartedMoving(Date timeStartedMoving) {
+        this.timeStartedMoving = timeStartedMoving;
+    }
+
+    public Date getTimeOfArrival() {
+        return timeOfArrival;
+    }
+
+    public void setTimeOfArrival(Date timeOfArrival) {
+        this.timeOfArrival = timeOfArrival;
     }
 }

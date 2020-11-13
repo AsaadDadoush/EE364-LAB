@@ -10,6 +10,13 @@ public class Route {
         setMashier(mashier);
     }
 
+    public int indexOf(Street street){
+        for (int i = 0; i < streets.length; i++) {
+            if (street == streets[i]) return i;
+        }
+        return -1;
+    }
+
     public Street[] getStreets() {
         return this.streets;
     }

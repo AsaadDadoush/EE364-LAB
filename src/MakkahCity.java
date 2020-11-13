@@ -10,15 +10,15 @@ public class MakkahCity {
 
 	private static final PDate timeManager = new PDate(
 		new GregorianCalendar(2020, Calendar.JANUARY, 1, 4, 0, 0),
-		new GregorianCalendar(2020, Calendar.JANUARY, 1, 20, 0, 0)
+		new GregorianCalendar(2020, Calendar.JANUARY, 1, 17, 0, 0)
 	);
 
 	public static void main(String[] args) {
 
 		//Gen Camp
-		generateCamps(District.ALAZIZIYA, getRandom(70, 100));
-		generateCamps(District.ALMANSOOR, getRandom(110, 160));
-		generateCamps(District.ALHIJRA, getRandom(80, 110));
+		generateCamps(District.ALAZIZIYA, (int)getRandom(70, 100));
+		generateCamps(District.ALMANSOOR, (int)getRandom(110, 160));
+		generateCamps(District.ALHIJRA, (int)getRandom(80, 110));
 
 		fillBusesToList();
 
@@ -31,19 +31,16 @@ public class MakkahCity {
 		//Set Routes for Campaigns
 		setRoutesForCampaigns();
 
-
+		//TODO: use Qeues or Wating area for each street?
 
 		while(!timeManager.isEnded()) {
 			timeManager.step(Calendar.MINUTE, 1);
-			//System.out.println(timeManager.getCurrentTime());
-			Vehicle v = listOfVehicles.get(0);
-			Vehicle v2 = listOfVehicles.get(1);
 			//Start of Every hour
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 
 			}
 			//Start of Every half-hour
-			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 30){
+			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
 			}
 
@@ -51,23 +48,48 @@ public class MakkahCity {
 		 		&& timeManager.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
 
 			}
-			System.out.println("v1 "+ v.getCurrentLocation()+ " " + v.getCurrentStreet().getName().name());
-			System.out.println("v2 "+ v2.getCurrentLocation()+ " " + v.getCurrentStreet().getName().name());
-			//TODO: [2]add civil cars in loop iterations. (noise)
-			//noise based on time of day (From PDate)
-			//TODO: [3]Move busses and vehicles.
 
-			//TODO: [4]Update streets.
+			for (Street street : stdStreet) {
+				int lanes = street.getNumberOfLanes();
+				ArrayList<Vehicle> vehicles = street.getVehicles();
+				//Changes
 
-			//TODO: [5]Streets move forward.
+				for (int i = 1; i < lanes; i++) {
 
-			for (Campaign campaign : listOfCampaigns){
-				for (Vehicle vehicle : campaign.getVehicles()){
-					vehicle.moveForward(((Bus)vehicle).MAX_FORWARD);
 				}
 			}
 
-			//TODO: [6]update vehicles on street.
+			for (Vehicle vehicle : listOfVehicles) {
+				Street st = vehicle.getCurrentStreet();
+				Route route = vehicle.getRoute();
+				double currentLocation = vehicle.getCurrentLocation();
+				if (currentLocation >= st.getLength()){
+					//Move to next street
+					vehicle.setCurrentLocation(0);
+					int nxtIndex = route.indexOf(st) +1;
+					if (nxtIndex <= route.getStreets().length - 1)
+						vehicle.setCurrentStreet(route.getStreets()[nxtIndex]);
+					else vehicle.arrive();
+				}
+				if (!vehicle.isArrivedToDest()){
+					if (vehicle instanceof Bus) vehicle.move(Bus.MAX_FORWARD - Bus.STD_BUS_SIZE - getRandom(10,15));
+					else if (vehicle instanceof Sedan) vehicle.move(Sedan.MAX_FORWARD);
+					else if (vehicle instanceof SUV) vehicle.move(SUV.MAX_FORWARD);
+					else if (vehicle instanceof Truck) vehicle.move(Bus.MAX_FORWARD);
+				}
+
+			}
+			Vehicle v = listOfVehicles.get(0);
+			System.out.printf("St: %s distance: %f total: %f\n",
+					v.getCurrentStreet().getName(),
+					v.getCurrentLocation(),
+					v.getTotalDistanceTraveled());
+			//System.out.println(v.getTimeStartedMoving());
+			//TODO: [2]add civil cars in loop iterations. (noise)
+			//noise based on time of day (From PDate)
+
+			//TODO: [5]Streets move forward.
+
 		}
 	}
 
@@ -90,13 +112,13 @@ public class MakkahCity {
 		}
 	}
 
-	private static int getRandom(int min, int max) {
-		return (int)(Math.random() * (max - min) + min);
+	private static double getRandom(int min, int max) {
+		return (Math.random() * (max - min) + min);
 	}
 
 	private static void generateCamps(District area, int count) {
 		for (int i = 0; i < count; i++){
-			Campaign camp = new Campaign(area, getRandom(10, 15));
+			Campaign camp = new Campaign(area, (int)getRandom(10, 15));
 			listOfCampaigns.add(camp);
 		}
 	}
