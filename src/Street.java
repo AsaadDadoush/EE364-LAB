@@ -56,15 +56,15 @@ public class Street {
         for(int i=0;i<vehicles.size();i++) {
             totalLenthofCar+=vehicles.get(i).getVehicleSize();
         }
-        return totalLength -(totalLenthofCar + 0.5*(vehicles.size() - 2));
+        return totalLength -totalLenthofCar;
     }
 
     public int getPercentRemainingCapacity() {
-        return (int) (capcity()/(this.length*this.numberOfLanes))*100;
+        return (int) (capcity()/(this.length*this.numberOfLanes)*100);
     }
     
     public boolean canTakeVehicles( Vehicle vehicle ) {
-    	if ( vehicle.getVehicleSize() + 0.5 < capcity() )
+    	if ( vehicle.getVehicleSize() < capcity() )
     		return true;
     	else
     		return false;
@@ -85,6 +85,12 @@ public class Street {
                     vehicles.get(i).getCurrentLocation() <= max)
                 totalLenthofCar+=vehicles.get(i).getVehicleSize();
         }
-        return totalLenthofCar / totalLength;
+        double capcity = totalLenthofCar / totalLength;
+        if (capcity > 1)
+        	return 1;
+        else if (capcity < 0 )
+        	return 0;
+        else
+        	return capcity;
     }
 }
