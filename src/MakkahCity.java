@@ -15,9 +15,9 @@ public class MakkahCity {
 	public static void main(String[] args) {
 
 		//Gen Camp
-		generateCamps(District.ALAZIZIYA, (int)getRandom(70, 100));
-		generateCamps(District.ALMANSOOR, (int)getRandom(110, 160));
-		generateCamps(District.ALHIJRA, (int)getRandom(80, 110));
+		generateCamps(District.ALAZIZIYA, (int)getRandom(700, 1000));
+		generateCamps(District.ALMANSOOR, (int)getRandom(1000, 1200));
+		generateCamps(District.ALHIJRA, (int)getRandom(850, 1100));
 
 		fillBusesToList();
 
@@ -36,7 +36,10 @@ public class MakkahCity {
 		while(!timeManager.isEnded()) {
 			//Start of Every hour
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 0){
-
+				if (isAllArrived()) {
+					System.out.println("\nAll campaigns have arrived befor " + timeManager.getCurrentTime());
+					break;
+				}
 			}
 			//Start of Every half-hour
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
@@ -45,8 +48,8 @@ public class MakkahCity {
 			//Start of every 10min
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
 				addCivilVehicleNoise();
-				printReport();
-				System.out.println();
+				System.out.println("\n\n" + getStreetsReport());
+				printFinalRep();
 			}
 
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
@@ -58,26 +61,31 @@ public class MakkahCity {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
 				if (vehicle.getCurrentStreet() == null &&
-				route.getStreets()[0].capcityPoint(0,1500) < 1) {
+				route.getStreets()[0].capcityPoint(0,1000) < 1) {
 					vehicle.setCurrentStreet(route.getStreets()[0]);
 				}
-				else if (vehicle.getCurrentStreet() != null && vehicle.getCurrentStreet().capcityPoint(currentLocation+1500,
-						currentLocation+1500*2) < 1 ) { //May test diff values.
+				 if (vehicle.getCurrentStreet() != null && vehicle.getCurrentStreet().capcityPoint(currentLocation,
+						currentLocation+1000) < 1 ) { //May test diff values.
 
 					if (currentLocation >= vehicle.getCurrentStreet().getLength()) {
 						//Move to next street
-						vehicle.setCurrentLocation(0);
 						int nxtIndex = route.indexOf(vehicle.getCurrentStreet()) + 1;
-						if (nxtIndex <= route.getStreets().length - 1)
+						if (nxtIndex <= route.getStreets().length - 1) {
+							if (vehicle.getRoute().getStreets()[nxtIndex].capcityPoint(0, 1000) < 1) {
 							vehicle.setCurrentStreet(route.getStreets()[nxtIndex]);
+							vehicle.setCurrentLocation(0);
+							}
+						}
 						else
 							vehicle.arrive();
 					}
 					if (!vehicle.isArrivedToDest()) {
-						if (vehicle instanceof Bus) vehicle.move(Bus.MAX_FORWARD);
-						else if (vehicle instanceof Sedan) vehicle.move(Sedan.MAX_FORWARD);
-						else if (vehicle instanceof SUV) vehicle.move(SUV.MAX_FORWARD);
-						else if (vehicle instanceof Truck) vehicle.move(Bus.MAX_FORWARD);
+						double factor = 1-(vehicle.getCurrentStreet().capcityPoint(vehicle.getCurrentLocation(),
+										vehicle.getCurrentLocation()+1000)) ;
+						if (vehicle instanceof Bus) vehicle.move(Bus.MAX_FORWARD * factor );
+						else if (vehicle instanceof Sedan) vehicle.move(Sedan.MAX_FORWARD * factor );
+						else if (vehicle instanceof SUV) vehicle.move(SUV.MAX_FORWARD * factor );
+						else if (vehicle instanceof Truck) vehicle.move(Bus.MAX_FORWARD * factor );
 					}
 				}
 			}
@@ -90,11 +98,7 @@ public class MakkahCity {
 //						timeManager.getCurrentTime());
 			//}
 			
-			
-			
 			//noise based on time of day (From PDate)
-			//TODO: [5]Streets move forward.
-			//TODO: Get real car values.
 		
 
 			/*
@@ -104,6 +108,7 @@ public class MakkahCity {
 			 */
 			timeManager.step(Calendar.MINUTE, 1);
 		}
+		//TODO: print final report 
 	}
 
 	private static void setRoutesForCampaigns() {
@@ -112,18 +117,6 @@ public class MakkahCity {
 		}
 	}
 
-	/*
-	This is not used. The campaign object sets the routes for the busses
-	 */
-	@Deprecated
-	private static void setUpCampaginRoute(Campaign camp, int routeName) {
-		Route route = stdRoutes[routeName];
-		camp.setDestToHousingRoute(route);
-		//For now set all busses to one route
-		for(Vehicle vehicle : camp.getVehicles()){
-			vehicle.setRoute(route);
-		}
-	}
 
 	private static double getRandom(double min, double max) {
 		return (Math.random() * (max - min) + min);
@@ -323,19 +316,64 @@ public class MakkahCity {
 	
 	private static void printReport() {
 		for(Street street : stdStreet) {
-			System.out.printf("StreetName: %s NumberOfVheciles : %d  Capcity: %f\n",street.getName().name(),street.getVehicles().size(), street.capcity());
+			System.out.printf("StreetName: %s NumberOfVheciles : %d  Capcity: %f\n",
+					street.getName().name(),street.getVehicles().size(), street.capcity());
 			int qurter = (int) street.getLength()/4;
 			double capcity = 0;
 				for(int i = 0; i < 4; i++) {
 					capcity = street.capcityPoint(i * qurter, qurter * (i+1));
-					System.out.printf("qurter%d : %.2f", (1+1) , capcity );
+					System.out.printf("qurter%d: %.2f ", (i+1) , capcity );
 					}
-				System.out.println("\n");
-			
-			
+				System.out.println("\n");	
+		}	
+	}
+	
+	
+	private static String getStreetsReport() {
+		String headerFormat = "******Streets report*****\n" +
+						"Time: %s\n";
+		String report = "";
+		report = report + String.format(headerFormat, timeManager.getCurrentTime());
+		String entryFormat = "Street name: %-9s | remaining capacity: %%%-4s | cars: %d\n";
+		for (Street street : stdStreet) {
+			int cap = street.getPercentRemainingCapacity();
+			report = report + String.format(entryFormat,
+					street.getName().name(),
+					cap,
+					street.getVehicles().size());
 		}
+		return report;
+	}
+	
+	private static void printFinalRep() {
+		int numberOfBusses = 0;
+		int numberOfArrivedBuses = getNumberOfArrivedBusses();
+		//Redundant loops slow down execution. find better sol.
+		for (Campaign campaign : listOfCampaigns) {
+			numberOfBusses += campaign.getNumberOfBusses();
+		}
+		System.out.printf("Buses: %d Buses done: %d\n",
+				numberOfBusses, numberOfArrivedBuses);
+	}
+	
+	private static int getNumberOfArrivedBusses() {
+		int num = 0;
+		for (Campaign campaign : listOfCampaigns) {
+			for (Vehicle vehicle : campaign.getVehicles()){
+				if (vehicle instanceof  Bus &&
+				vehicle.isArrivedToDest()) num++;
+			}
+		}
+		return num;
+	}
+	
+	private static boolean isAllArrived() {
+		for (Campaign campaign : listOfCampaigns)
+			for (Vehicle vehicle : campaign.getVehicles())
+				if (!vehicle.isArrivedToDest())
+					return false;
 		
-		
+		return true;
 	}
 
 }
