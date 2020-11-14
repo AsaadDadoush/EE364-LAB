@@ -334,7 +334,7 @@ public class MakkahCity {
 						"Time: %s\n";
 		String report = "";
 		report = report + String.format(headerFormat, timeManager.getCurrentTime());
-		String entryFormat = "Street name: %-9s | remaining capacity: %%%-4s | cars: %d\n";
+		String entryFormat = "Street name:%-16s| remaining capacity: %%%-4s | cars: %d\n";
 		for (Street street : stdStreet) {
 			int cap = street.getPercentRemainingCapacity();
 			report = report + String.format(entryFormat,
