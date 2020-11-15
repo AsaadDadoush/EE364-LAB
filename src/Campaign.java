@@ -4,6 +4,7 @@ import java.util.Date;
 public class Campaign {
 
     private String UID;
+    private int numberOfAriivedBuses;
     //private int housingNumber;
     //private String name;
     private District hotelDistrict;
@@ -28,6 +29,16 @@ public class Campaign {
         this.hotelDistrict = hotelDistrict;
         setVehicles(vehicles);
         generateUID();
+    }
+
+    public void busArived(Bus bus) {
+        if(numberOfAriivedBuses < vehicles.size())
+            numberOfAriivedBuses++;
+        //Check if it is in list before increment?
+    }
+
+    public boolean isDone() {
+        return numberOfAriivedBuses == vehicles.size();
     }
 
     public Route getHousingToDestRoute() {
@@ -90,7 +101,9 @@ public class Campaign {
 
     private void generateBusses(int number){
     	for (int i = 1; i <= number; i++) {
-    		vehicles.add(new Bus());
+    	    Bus bus = new Bus();
+    		vehicles.add(bus);
+    		bus.setCampaign(this);
     	}
     }
 

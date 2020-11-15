@@ -371,9 +371,8 @@ public class MakkahCity {
 	
 	private static boolean isAllArrived() {
 		for (Campaign campaign : listOfCampaigns)
-			for (Vehicle vehicle : campaign.getVehicles())
-				if (!vehicle.isArrivedToDest())
-					return false;
+			if (!campaign.isDone())
+				return false;
 		
 		return true;
 	}
