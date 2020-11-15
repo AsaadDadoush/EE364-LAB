@@ -37,7 +37,7 @@ public class MakkahCity {
 			//Start of Every hour
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				if (isAllArrived()) {
-					System.out.println("\nAll campaigns have arrived befor " + timeManager.getCurrentTime());
+					System.out.println("\nAll campaigns have arrived before " + timeManager.getCurrentTime());
 					break;
 				}
 			}
@@ -65,7 +65,8 @@ public class MakkahCity {
 					vehicle.setCurrentStreet(route.getStreets()[0]);
 				}
 				 if (vehicle.getCurrentStreet() != null && vehicle.getCurrentStreet().capcityPoint(currentLocation,
-						currentLocation+1000) < 1 ) { //May test diff values.
+						currentLocation+1000) < 1 ) {
+				 	//TODO: Possible bug. Checks 1Km ahead. Street may not be that long(checks as ok).
 
 					if (currentLocation >= vehicle.getCurrentStreet().getLength()) {
 						//Move to next street
@@ -331,10 +332,11 @@ public class MakkahCity {
 	
 	private static String getStreetsReport() {
 		String headerFormat = "******Streets report*****\n" +
-						"Time: %s\n";
+						"Time: %s\n" +
+						"Street name      |remaining capacity| cars\n";
 		String report = "";
 		report = report + String.format(headerFormat, timeManager.getCurrentTime());
-		String entryFormat = "Street name:%-16s| remaining capacity: %%%-4s | cars: %d\n";
+		String entryFormat = "%-16s | %%%-15s | %d\n";
 		for (Street street : stdStreet) {
 			int cap = street.getPercentRemainingCapacity();
 			report = report + String.format(entryFormat,

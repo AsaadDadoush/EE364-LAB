@@ -16,8 +16,6 @@ public class Campaign {
     private Date timeToLeaveToDest;
     private Date timeToLeaveToHousing;
 
-    private boolean startedMoving;
-
     private static int numeberOfCampains;
 
     public Campaign(District hotelDistrict, int numberofBusses) {
@@ -89,10 +87,6 @@ public class Campaign {
 		if (vehicles != null)
 		this.vehicles = vehicles;
 	}
-
-	public void setStartedMoving(){
-        this.startedMoving = true;
-    }
 
     private void generateBusses(int number){
     	for (int i = 1; i <= number; i++) {
