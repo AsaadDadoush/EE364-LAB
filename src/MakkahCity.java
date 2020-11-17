@@ -325,16 +325,18 @@ public class MakkahCity {
 	private static String getStreetsReport() {
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s\n" +
-						"Street name      |remaining capacity| cars\n";
+						"   Street name   |remaining capacity| Total | Buses | Local Vehicles |\n";
 		String report = "";
 		report = report + String.format(headerFormat, timeManager.getCurrentTime());
-		String entryFormat = "%-16s | %%%-15s | %d\n";
+		String entryFormat = "%-16s | %%%-15s | %5d | %5d | %14d |\n";
 		for (Street street : stdStreet) {
 			int cap = street.getPercentRemainingCapacity();
 			report = report + String.format(entryFormat,
 					street.getName().name(),
 					cap,
-					street.getVehicles().size());
+					street.getVehicles().size(),
+					getNumnberOfBuses(street),
+					getNumberOfCivilCars(street));
 		}
 		return report;
 	}
@@ -346,10 +348,37 @@ public class MakkahCity {
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
 		}
-		System.out.printf("Buses: %d Buses done: %d\n",
-				numberOfBusses, numberOfArrivedBuses);
+		System.out.printf("Buses: %d Buses done: %d Average trip time: %s\n",
+				numberOfBusses, numberOfArrivedBuses, avgTimeOfTrip());
+		avgTimeOfTrip();
 	}
-	
+
+	/**
+	 * Calculate average trip time for last 10 minutes
+	 * @return "hh:mm"
+	 */
+	private static String avgTimeOfTrip() {
+		Calendar now = timeManager.getCurrentCalendar();
+		Calendar from = (GregorianCalendar)now.clone();
+		from.roll(Calendar.MINUTE, -10);
+		int counter = 1;
+		int sum = 0;
+		for (Campaign campaign : listOfCampaigns){
+			for (Vehicle bus : campaign.getVehicles()){
+				if (bus.isArrivedToDest() && bus.getTimeOfArrival().before(now.getTime())
+				&& bus.getTimeOfArrival().after(from.getTime())) {
+					long minutes = (bus.getTimeOfArrival().getTime() - bus.getTimeStartedMoving().getTime())/60000;
+					sum+= minutes;
+					counter++;
+				}
+			}
+		}
+		sum = sum /counter;
+		int hours = sum / 60;
+		int minutes = sum % 60;
+		return String.format("%2d:%02d", hours,minutes);
+	}
+
 	private static int getNumberOfArrivedBusses() {
 		int num = 0;
 		for (Campaign campaign : listOfCampaigns) {
@@ -367,6 +396,22 @@ public class MakkahCity {
 				return false;
 		
 		return true;
+	}
+
+	private static int getNumnberOfBuses(Street street) {
+		int number = 0;
+		for (Vehicle vehicle : street.getVehicles()) {
+			if (vehicle instanceof Bus) number++;
+		}
+		return number;
+	}
+
+	private static int getNumberOfCivilCars(Street street) {
+		int number = 0;
+		for (Vehicle vehicle : street.getVehicles()) {
+			if (vehicle instanceof CivilVehicle && !(vehicle instanceof Bus)) number++;
+		}
+		return number;
 	}
 
 }

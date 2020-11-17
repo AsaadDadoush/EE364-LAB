@@ -57,17 +57,18 @@ public class Street {
         for(int i=0;i<vehicles.size();i++) {
             totalLenthofCar+=vehicles.get(i).getVehicleSize();
         }
-        int percent = 0;
-        if (totalLenthofCar > totalLength){
-            percent = (int) (totalLength/totalLenthofCar);
-            percent *= 100;
-            percent +=  totalLength - (totalLength % totalLenthofCar);
-        }
-        else {
-            percent = (int)(totalLength - totalLenthofCar);
-        }
-
-        return percent;
+//        int percent = 0;
+//        if (totalLenthofCar > totalLength){
+//            percent = (int) (totalLength/totalLenthofCar);
+//            percent *= 100;
+//            percent +=  totalLength - (totalLength % totalLenthofCar);
+//        }
+//        else {
+//            percent = (int)(totalLength - totalLenthofCar);
+//        }
+//
+//        return percent;
+        return totalLength - totalLenthofCar;
     }
 
     public int getPercentRemainingCapacity() {
