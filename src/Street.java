@@ -7,6 +7,7 @@ public class Street {
     private ArrayList<Vehicle> vehicles;
     private StreetNames name;
   
+  
 
     public Street(double length, int numberOfLanes, StreetNames name) {
         vehicles = new ArrayList<>();
@@ -56,7 +57,17 @@ public class Street {
         for(int i=0;i<vehicles.size();i++) {
             totalLenthofCar+=vehicles.get(i).getVehicleSize();
         }
-        return totalLength -totalLenthofCar;
+        int percent = 0;
+        if (totalLenthofCar > totalLength){
+            percent = (int) (totalLength/totalLenthofCar);
+            percent *= 100;
+            percent +=  totalLength - (totalLength % totalLenthofCar);
+        }
+        else {
+            percent = (int)(totalLength - totalLenthofCar);
+        }
+
+        return percent;
     }
 
     public int getPercentRemainingCapacity() {
@@ -93,4 +104,38 @@ public class Street {
         else
         	return capcity;
     }
+    
+    public double capcityPoint(double min, double max, Vehicle vehicle) {
+    	
+    	if(max > getLength() && getNextStreet(vehicle) != null) {
+    		double reamingLength = max - getLength();
+    		double y = capcityPoint(min, getLength(),vehicle);
+    		double z = getNextStreet(vehicle).capcityPoint(0, reamingLength, vehicle);
+    			return ((y + z)/2);
+    	}
+        double totalLength =  (max - min) * numberOfLanes;
+        double totalLenthofCar=0;
+        for(int i=0;i<vehicles.size();i++) {
+            if (vehicles.get(i).getCurrentLocation() >= min &&
+                    vehicles.get(i).getCurrentLocation() <= max)
+                totalLenthofCar+=vehicles.get(i).getVehicleSize();
+        }
+        double capcity = totalLenthofCar / totalLength;
+        if (capcity > 1)
+        	return 1;
+        else if (capcity < 0 )
+        	return 0;
+        else
+        	return capcity;
+    }
+    
+    	public Street getNextStreet(Vehicle vehicle) {
+    		int nextIndex = vehicle.getRoute().indexOf(vehicle.getCurrentStreet()) +1 ;
+    		if(vehicle.getRoute().getStreets().length > nextIndex) 
+    		return 	(vehicle.getRoute().getStreets()[nextIndex]);
+    			else
+    				return null;
+    	
+    		
+    	}
 }

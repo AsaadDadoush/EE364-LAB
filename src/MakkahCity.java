@@ -15,9 +15,9 @@ public class MakkahCity {
 	public static void main(String[] args) {
 
 		//Gen Camp
-		generateCamps(District.ALAZIZIYA, (int)getRandom(700, 1000));
-		generateCamps(District.ALMANSOOR, (int)getRandom(1000, 1200));
-		generateCamps(District.ALHIJRA, (int)getRandom(850, 1100));
+		generateCamps(District.ALAZIZIYA, (int)getRandom(1200, 1400));
+		generateCamps(District.ALMANSOOR, (int)getRandom(1600, 1800));
+		generateCamps(District.ALHIJRA, (int)getRandom(1400, 1600));
 
 		fillBusesToList();
 
@@ -70,19 +70,11 @@ public class MakkahCity {
 
 					if (currentLocation >= vehicle.getCurrentStreet().getLength()) {
 						//Move to next street
-						int nxtIndex = route.indexOf(vehicle.getCurrentStreet()) + 1;
-						if (nxtIndex <= route.getStreets().length - 1) {
-							if (vehicle.getRoute().getStreets()[nxtIndex].capcityPoint(0, 1000) < 1) {
-							vehicle.setCurrentStreet(route.getStreets()[nxtIndex]);
-							vehicle.setCurrentLocation(0);
-							}
-						}
-						else
-							vehicle.arrive();
+						vehicle.moveToNextStreet();
 					}
 					if (!vehicle.isArrivedToDest()) {
 						double factor = 1-(vehicle.getCurrentStreet().capcityPoint(vehicle.getCurrentLocation(),
-										vehicle.getCurrentLocation()+1000)) ;
+										vehicle.getCurrentLocation()+1000,vehicle)) ;
 						if (vehicle instanceof Bus) vehicle.move(Bus.MAX_FORWARD * factor );
 						else if (vehicle instanceof Sedan) vehicle.move(Sedan.MAX_FORWARD * factor );
 						else if (vehicle instanceof SUV) vehicle.move(SUV.MAX_FORWARD * factor );
@@ -199,9 +191,9 @@ public class MakkahCity {
 	private static void addCivilVehicleNoise() {
 
 		for (Street street: stdStreet) {
-			int numOfSedan = (int)getRandom(7, 15);
-			int numOfSUV = (int)getRandom(5, 10);
-			int numOfTruck = (int)getRandom(0, 2);
+			int numOfSedan = (int)getRandom(40,50);
+			int numOfSUV = (int)getRandom(20,30);
+			int numOfTruck = (int)getRandom(10,12);
 
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSedan = (int) (numOfSedan * 1.5);
