@@ -139,4 +139,20 @@ public class Street {
     	
     		
     	}
+
+    public int getNumberOfBuses() {
+        int number = 0;
+        for (Vehicle vehicle : this.getVehicles()) {
+            if (vehicle instanceof Bus) number++;
+        }
+        return number;
+    }
+
+    public int getNumberOfLocalCars() {
+        int number = 0;
+        for (Vehicle vehicle : this.getVehicles()) {
+            if (vehicle instanceof CivilVehicle && !(vehicle instanceof Bus)) number++;
+        }
+        return number;
+    }
 }

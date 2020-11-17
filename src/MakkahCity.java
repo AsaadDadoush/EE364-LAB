@@ -335,8 +335,8 @@ public class MakkahCity {
 					street.getName().name(),
 					cap,
 					street.getVehicles().size(),
-					getNumberOfBuses(street),
-					getNumberOfLocalCars(street));
+					street.getNumberOfBuses(),
+					street.getNumberOfLocalCars());
 		}
 		return report;
 	}
@@ -396,22 +396,6 @@ public class MakkahCity {
 				return false;
 		
 		return true;
-	}
-
-	private static int getNumberOfBuses(Street street) {
-		int number = 0;
-		for (Vehicle vehicle : street.getVehicles()) {
-			if (vehicle instanceof Bus) number++;
-		}
-		return number;
-	}
-
-	private static int getNumberOfLocalCars(Street street) {
-		int number = 0;
-		for (Vehicle vehicle : street.getVehicles()) {
-			if (vehicle instanceof CivilVehicle && !(vehicle instanceof Bus)) number++;
-		}
-		return number;
 	}
 
 }
