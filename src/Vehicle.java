@@ -126,4 +126,20 @@ public abstract class Vehicle {
     public void setTimeOfArrival(Date timeOfArrival) {
         this.timeOfArrival = timeOfArrival;
     }
+    
+    public void moveToNextStreet() {
+    	
+    	int nxtIndex = route.indexOf(this.getCurrentStreet()) + 1;
+		if (nxtIndex <= route.getStreets().length - 1) {
+			if (this.getRoute().getStreets()[nxtIndex].capcityPoint(0, 1000) < 1) {
+			this.setCurrentStreet(route.getStreets()[nxtIndex]);
+			this.setCurrentLocation(0);
+			}
+		}
+		else
+			this.arrive();
+    }
+    
 }
+
+
