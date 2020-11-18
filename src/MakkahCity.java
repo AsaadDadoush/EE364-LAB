@@ -9,7 +9,7 @@ public class MakkahCity {
 
 	private static final PDate timeManager = new PDate(
 		new GregorianCalendar(2020, Calendar.JANUARY, 1, 4, 0, 0),
-		new GregorianCalendar(2020, Calendar.JANUARY, 1, 17, 0, 0)
+		new GregorianCalendar(2020, Calendar.JANUARY, 2, 17, 0, 0)
 	);
 
 	public static void main(String[] args) {
@@ -36,10 +36,7 @@ public class MakkahCity {
 		while(!timeManager.isEnded()) {
 			//Start of Every hour
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 0){
-				if (isAllArrived()) {
-					System.out.println("\nAll campaigns have arrived before " + timeManager.getCurrentTime());
-					break;
-				}
+				//TODO: removed break here. now should schedule.
 			}
 			//Start of Every half-hour
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
@@ -49,7 +46,6 @@ public class MakkahCity {
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
 				addCivilVehicleNoise();
 				System.out.println("\n\n" + getStreetsReport());
-				printFinalRep();
 			}
 
 			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
@@ -109,6 +105,16 @@ public class MakkahCity {
 		}
 	}
 
+	/**
+	 * Checks if 'now' is within range of coming to arafat and leaving mena.
+	 * Arafat day range ends 01/01/2020 05:00PM
+	 */
+	private static boolean isArafatDayRange() {
+		Calendar arafatDayStart = (GregorianCalendar)timeManager.getStartCalendar().clone();
+		Calendar arafatDayEnd = new GregorianCalendar(2020, Calendar.JANUARY, 1, 17, 0, 0);
+		Calendar now = timeManager.getCurrentCalendar();
+		return now.after(arafatDayStart) && now.before(arafatDayEnd);
+	}
 
 	private static double getRandom(double min, double max) {
 		return (Math.random() * (max - min) + min);
@@ -332,10 +338,10 @@ public class MakkahCity {
 	private static String getStreetsReport() {
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s\n" +
-						"   Street name    |remaining capacity| Total | Buses | Local Vehicles |\n";
+						"   Street name    |Street Load| Total | Buses | Local Vehicles |\n";
 		String report = "";
 		report = report + String.format(headerFormat, timeManager.getCurrentTime());
-		String entryFormat = "%-17s | %%%-15s | %5d | %5d | %14d |\n";
+		String entryFormat = "%-17s | %%%-8s | %5d | %5d | %14d |\n";
 		for (Street street : stdStreet) {
 			int cap = street.getPercentRemainingCapacity();
 			report = report + String.format(entryFormat,
@@ -345,19 +351,21 @@ public class MakkahCity {
 					street.getNumberOfBuses(),
 					street.getNumberOfLocalCars());
 		}
+		report = report + getFinalRep();
+		report = report + "*************************";
 		return report;
 	}
 	
-	private static void printFinalRep() {
+	private static String getFinalRep() {
 		int numberOfBusses = 0;
 		int numberOfArrivedBuses = getNumberOfArrivedBusses();
 		//Redundant loops slow down execution. find better sol.
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
 		}
-		System.out.printf("Buses: %d Buses done: %d Average trip time: %s\n",
+		String s = String.format("Buses: %d Buses done: %d Average trip time: %s\n",
 				numberOfBusses, numberOfArrivedBuses, avgTimeOfTrip());
-		avgTimeOfTrip();
+		return s;
 	}
 
 	/**
