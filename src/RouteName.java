@@ -1,10 +1,14 @@
 
 public enum RouteName {
-	 mashierToAlMansoor1,
-	 mashierToAlMansoor2 ,
-	 mashierToAlMansoor3,
-	 mashierToAlHijra1,
-	 mashierToAlHijra2,
-	 mashierToAlAzizi1
+	 AlMansoorToArafat1,
+	 AlMansoorToArafat2,
+	 AlMansoorToArafat3,
+	 AlHijraToArafat1,
+	 AlHijraToArafat2,
+	 AlAziziToArafat1,
+	 
+	 
+	 
+	 
 
 }

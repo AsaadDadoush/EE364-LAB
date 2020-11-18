@@ -5,7 +5,7 @@ public class MakkahCity {
 	private static final ArrayList<Campaign> listOfCampaigns = new ArrayList<>();
 	private static final ArrayList<Vehicle> listOfVehicles = new ArrayList<>();
 	private static final Route[] stdRoutes = new Route[6];
-	private static final Street[] stdStreet = new Street[9];
+	private static final Street[] stdStreet = new Street[10];
 
 	private static final PDate timeManager = new PDate(
 		new GregorianCalendar(2020, Calendar.JANUARY, 1, 4, 0, 0),
@@ -124,61 +124,66 @@ public class MakkahCity {
 
 	private static void makeStreets(){
 		stdStreet[StreetNames.KA_STREET.ordinal()] = new Street(4700,3, StreetNames.KA_STREET);
-		stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()] = new Street(9700,4, StreetNames.FOURTH_HIGHWAY);
+		stdStreet[StreetNames.FOURTH_HIGHWAY1.ordinal()] = new Street(4850,4, StreetNames.FOURTH_HIGHWAY1);
+		stdStreet[StreetNames.FOURTH_HIGHWAY2.ordinal()] = new Street(4850,4, StreetNames.FOURTH_HIGHWAY2);
 		stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()] = new Street(8200,3, StreetNames.THIRD_HIGHWAY);
 		stdStreet[StreetNames.STREET1.ordinal()] = new Street(7800,3, StreetNames.STREET1);
 		stdStreet[StreetNames.STREET2.ordinal()] = new Street(2400,3,StreetNames.STREET2);
 		stdStreet[StreetNames.STREET3.ordinal()] = new Street(4800,2, StreetNames.STREET3);
 		stdStreet[StreetNames.STREET4.ordinal()] = new Street(3800,3,StreetNames.STREET4);
-		stdStreet[StreetNames.STREET5.ordinal()] = new Street(3200,2, StreetNames.STREET5);
-		stdStreet[StreetNames.IBRAHIM_ALKHALIL.ordinal()] = new Street(4500,3, StreetNames.IBRAHIM_ALKHALIL);
+		stdStreet[StreetNames.IBRAHIM_ALKHALIL2.ordinal()] = new Street(3200,2, StreetNames.IBRAHIM_ALKHALIL2);
+		stdStreet[StreetNames.IBRAHIM_ALKHALIL1.ordinal()] = new Street(4500,3, StreetNames.IBRAHIM_ALKHALIL1);
 	}
 
 	private static void makeRoutes() {
 
-		stdRoutes[RouteName.mashierToAlHijra1.ordinal()] = new Route(
+		stdRoutes[RouteName.AlHijraToArafat1.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()],
 						stdStreet[StreetNames.STREET2.ordinal()],
-						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()]},
+						stdStreet[StreetNames.STREET1.ordinal()]},
 				District.ALHIJRA, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlHijra2.ordinal()] = new Route(new Street[]{
-						stdStreet[StreetNames.STREET1.ordinal()],
-						stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()],
-						stdStreet[StreetNames.STREET4.ordinal()]
+		stdRoutes[RouteName.AlHijraToArafat2.ordinal()] = new Route(new Street[]{
+						stdStreet[StreetNames.STREET4.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY2.ordinal()],
+						stdStreet[StreetNames.STREET1.ordinal()]
 		},District.ALHIJRA, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlMansoor1.ordinal()] = new Route(
+		stdRoutes[RouteName.AlMansoorToArafat1.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1.ordinal()],
-						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.STREET3.ordinal()],
 						stdStreet[StreetNames.KA_STREET.ordinal()],
-						stdStreet[StreetNames.STREET3.ordinal()]
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.STREET1.ordinal()]
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlMansoor2.ordinal()] = new Route(
+		stdRoutes[RouteName.AlMansoorToArafat2.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1.ordinal()],
-						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL2.ordinal()],
 						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()],
-						stdStreet[StreetNames.STREET5.ordinal()]//TODO: [8]is actually half of ibrahim khalil.
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.STREET1.ordinal()]//TODO: [8]is actually half of ibrahim khalil.
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
 		//Optimal for Almansoor
-		stdRoutes[RouteName.mashierToAlMansoor3.ordinal()] = new Route(
+		stdRoutes[RouteName.AlMansoorToArafat3.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1.ordinal()],
-						stdStreet[StreetNames.FOURTH_HIGHWAY.ordinal()],
-						stdStreet[StreetNames.IBRAHIM_ALKHALIL.ordinal()]
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL2.ordinal()],
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL1.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY1.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY2.ordinal()],
+						stdStreet[StreetNames.STREET1.ordinal()]
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
-		stdRoutes[RouteName.mashierToAlAzizi1.ordinal()] = new Route(
+		stdRoutes[RouteName.AlAziziToArafat1.ordinal()] = new Route(
 				new Street[]{
-						stdStreet[StreetNames.STREET1.ordinal()],
+						stdStreet[StreetNames.KA_STREET.ordinal()],
 						stdStreet[StreetNames.STREET2.ordinal()],
-						stdStreet[StreetNames.KA_STREET.ordinal()]
+						stdStreet[StreetNames.STREET1.ordinal()]
 		},District.ALAZIZIYA, Mashier.ARAFAT);
+		
+		
 
 	}
 
@@ -195,9 +200,10 @@ public class MakkahCity {
 			int numOfSUV = (int)getRandom(20,30);
 			int numOfTruck = (int)getRandom(10,12);
 
-			if (street.getName() == StreetNames.FOURTH_HIGHWAY) numOfSedan = (int) (numOfSedan * 0.5);
+			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSedan = (int) (numOfSedan * 0.5);
+			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSedan = (int) (numOfSedan * 1.5);
-			if (street.getName() == StreetNames.STREET5) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
 			for (int x = 0; x < numOfSedan; x++) {
 				Sedan car = new Sedan(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -210,9 +216,10 @@ public class MakkahCity {
 
 			}
 
-			if (street.getName() == StreetNames.FOURTH_HIGHWAY) numOfTruck = (int) (numOfTruck * 0.5);
+			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfTruck = (int) (numOfTruck * 0.5);
+			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfTruck = (int) (numOfTruck * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfTruck = (int) (numOfTruck * 1.5);
-			if (street.getName() == StreetNames.STREET5) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
 			for (int x = 0; x < numOfTruck; x++) {
 				Truck car = new Truck(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -224,9 +231,10 @@ public class MakkahCity {
 				}
 			}
 
-			if (street.getName() == StreetNames.FOURTH_HIGHWAY) numOfSUV = (int) (numOfSUV * 0.5);
+			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSUV = (int) (numOfSUV * 0.5);
+			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSUV = (int) (numOfSUV * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSUV = (int) (numOfSUV * 1.5);
-			if (street.getName() == StreetNames.STREET5) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
 			for (int x = 0; x < numOfSUV; x++) {
 				SUV car = new SUV(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -325,10 +333,10 @@ public class MakkahCity {
 	private static String getStreetsReport() {
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s\n" +
-						"   Street name   |remaining capacity| Total | Buses | Local Vehicles |\n";
+						"   Street name    |remaining capacity| Total | Buses | Local Vehicles |\n";
 		String report = "";
 		report = report + String.format(headerFormat, timeManager.getCurrentTime());
-		String entryFormat = "%-16s | %%%-15s | %5d | %5d | %14d |\n";
+		String entryFormat = "%-17s | %%%-15s | %5d | %5d | %14d |\n";
 		for (Street street : stdStreet) {
 			int cap = street.getPercentRemainingCapacity();
 			report = report + String.format(entryFormat,
