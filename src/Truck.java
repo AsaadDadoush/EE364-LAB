@@ -3,7 +3,6 @@ public class Truck extends CivilVehicle {
 	private String UID;
 	private static int numeberOfTruck;
     private final int TIME_TO_FIX = 20; //in minutes
-   // public static final int MAX_FORWARD = ????; //TODO what is the speed here ??
     public Truck(double vehicleSize){
         super(vehicleSize);
         generateUID();

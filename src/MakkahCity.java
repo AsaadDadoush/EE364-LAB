@@ -66,7 +66,6 @@ public class MakkahCity {
 				}
 				 if (vehicle.getCurrentStreet() != null && vehicle.getCurrentStreet().capcityPoint(currentLocation,
 						currentLocation+1000) < 1 ) {
-				 	//TODO: Possible bug. Checks 1Km ahead. Street may not be that long(checks as ok).
 
 					if (currentLocation >= vehicle.getCurrentStreet().getLength()) {
 						//Move to next street
@@ -163,7 +162,7 @@ public class MakkahCity {
 						stdStreet[StreetNames.IBRAHIM_ALKHALIL2.ordinal()],
 						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()],
 						stdStreet[StreetNames.STREET2.ordinal()],
-						stdStreet[StreetNames.STREET1.ordinal()]//TODO: [8]is actually half of ibrahim khalil.
+						stdStreet[StreetNames.STREET1.ordinal()]
 				},District.ALMANSOOR, Mashier.ARAFAT);
 
 		//Optimal for Almansoor
@@ -366,6 +365,7 @@ public class MakkahCity {
 	 * @return "hh:mm"
 	 */
 	private static String avgTimeOfTrip() {
+		//TODO: does output diff value even after all have arrived.
 		Calendar now = timeManager.getCurrentCalendar();
 		Calendar from = (GregorianCalendar)now.clone();
 		from.roll(Calendar.MINUTE, -10);
