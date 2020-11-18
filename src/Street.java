@@ -72,7 +72,7 @@ public class Street {
     }
 
     public int getPercentRemainingCapacity() {
-        return (int) (capcity()/(this.length*this.numberOfLanes)*100);
+        return (int) (100 - (capcity()/(this.length*this.numberOfLanes)*100));
     }
     
     public boolean canTakeVehicles( Vehicle vehicle ) {
