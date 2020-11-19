@@ -27,14 +27,14 @@ public abstract class Vehicle {
     public void arrive() {
         setArrivedToDest(true);
         setMoving(false);
-        setTimeOfArrival(MakkahCity.getTimeManager().getCurrentTime());
+        setTimeOfArrival(MakkahCity.getTimeMan().getCurrentTime());
         getCurrentStreet().getVehicles().remove(this);
     }
 
     public void move(double distance) {
         if (!isMoving()) {
             setMoving(true);
-            setTimeStartedMoving(MakkahCity.getTimeManager().getCurrentTime());
+            setTimeStartedMoving(MakkahCity.getTimeMan().getCurrentTime());
         }
         setCurrentLocation(getCurrentLocation() + distance);
         setTotalDistanceTraveled(getTotalDistanceTraveled() + distance);
@@ -42,8 +42,7 @@ public abstract class Vehicle {
 
     public void setRoute(Route route) {
         this.route = route;
-        //this.currentStreet = route.getStreets()[0];
-        //this.route.getStreets()[0].addVehicle(this);
+        this.arrivedToDest = false;
     }
 
     private void setVehicleSize(double vehicleSize) {
@@ -80,7 +79,8 @@ public abstract class Vehicle {
             this.currentStreet.getVehicles().remove(this);
         }
         this.currentStreet = currentStreet;
-        this.currentStreet.addVehicle(this);
+        if (this.currentStreet != null)
+            this.currentStreet.addVehicle(this);
     }
 
     public void setCurrentLocation(double currentLocation) {
@@ -128,7 +128,6 @@ public abstract class Vehicle {
     }
     
     public void moveToNextStreet() {
-    	
     	int nxtIndex = route.indexOf(this.getCurrentStreet()) + 1;
 		if (nxtIndex <= route.getStreets().length - 1) {
 			if (this.getRoute().getStreets()[nxtIndex].capcityPoint(0, 1000) < 1) {

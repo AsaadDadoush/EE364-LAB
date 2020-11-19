@@ -4,13 +4,20 @@ public class MakkahCity {
 
 	private static final ArrayList<Campaign> listOfCampaigns = new ArrayList<>();
 	private static final ArrayList<Vehicle> listOfVehicles = new ArrayList<>();
-	private static final Route[] stdRoutes = new Route[6];
-	private static final Street[] stdStreet = new Street[10];
+	private static final Route[] stdRoutes = new Route[RouteName.values().length];
+	private static final Street[] stdStreet = new Street[StreetNames.values().length];
 
-	private static final PDate timeManager = new PDate(
+	private static final PDate firstDayTimeMan = new PDate(
 		new GregorianCalendar(2020, Calendar.JANUARY, 1, 4, 0, 0),
-		new GregorianCalendar(2020, Calendar.JANUARY, 2, 17, 0, 0)
+		new GregorianCalendar(2020, Calendar.JANUARY, 1, 18, 0, 0)
 	);
+
+	private static final PDate lastDayTimeMan = new PDate(
+			new GregorianCalendar(2020, Calendar.JANUARY, 4, 12, 0, 0),
+			new GregorianCalendar(2020, Calendar.JANUARY, 4, 20, 0, 0)
+	);
+
+	private static PDate currenttimeManager = firstDayTimeMan;
 
 	public static void main(String[] args) {
 
@@ -30,26 +37,25 @@ public class MakkahCity {
 		makeRoutes();
 
 		//Set Routes for Campaigns
-		setRoutesForCampaigns();
-
+		setRoutesForCampaigns(Mashier.ARAFAT);
 		//TODO: use Queues or Wating area for each street?
-		while(!timeManager.isEnded()) {
+		while(!firstDayTimeMan.isEnded()) {
 			//Start of Every hour
-			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == 0){
+			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				//TODO: removed break here. now should schedule.
 			}
 			//Start of Every half-hour
-			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
+			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
 			}
 			//Start of every 10min
-			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
+			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
 				addCivilVehicleNoise();
 				System.out.println("\n\n" + getStreetsReport());
 			}
 
-			if (timeManager.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
-		 		&& timeManager.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
+			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
+		 		&& firstDayTimeMan.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
 
 			}
 
@@ -77,31 +83,72 @@ public class MakkahCity {
 					}
 				}
 			}
-//			Vehicle v = listOfVehicles.get(150);
-//			if (v.getCurrentStreet() != null) {
-//				System.out.printf("St: %s distance: %f total: %f %s\n",
-//						v.getCurrentStreet().getName(),
-//						v.getCurrentLocation(),
-//						v.getTotalDistanceTraveled(),
-//						timeManager.getCurrentTime());
-			//}
-			
 			//noise based on time of day (From PDate)
-		
+			firstDayTimeMan.step(Calendar.MINUTE, 1);
+		}
+		//TODO make report
+		currenttimeManager = lastDayTimeMan;
+		System.out.println("*************FINSHIED FIRST DAY*********************");
+		setRoutesForCampaigns(Mashier.MINA);
+		for (Vehicle vehicle : listOfVehicles) {
+			vehicle.setCurrentStreet(null);
+		}
+		//TODO make all camps not arrived
+		//TODO: check 5000% capacity bug.
 
-			/*
-			Output:
-			Street stats
-			Campaigns avg (at end)
-			 */
-			timeManager.step(Calendar.MINUTE, 1);
+		while(!lastDayTimeMan.isEnded()) {
+			//Start of Every hour
+			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
+				//TODO: removed break here. now should schedule.
+			}
+			//Start of Every half-hour
+			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
+
+			}
+			//Start of every 10min
+			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
+				addCivilVehicleNoise();
+				System.out.println("\n\n" + getStreetsReport());
+			}
+
+			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
+					&& lastDayTimeMan.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
+
+			}
+
+			for (Vehicle vehicle : listOfVehicles) {
+				Route route = vehicle.getRoute();
+				double currentLocation = vehicle.getCurrentLocation();
+				if (vehicle.getCurrentStreet() == null &&
+						route.getStreets()[0].capcityPoint(0,1000) < 1) {
+					vehicle.setCurrentStreet(route.getStreets()[0]);
+				}
+				if (vehicle.getCurrentStreet() != null && vehicle.getCurrentStreet().capcityPoint(currentLocation,
+						currentLocation+1000) < 1 ) {
+
+					if (currentLocation >= vehicle.getCurrentStreet().getLength()) {
+						//Move to next street
+						vehicle.moveToNextStreet();
+					}
+					if (!vehicle.isArrivedToDest()) {
+						double factor = 1-(vehicle.getCurrentStreet().capcityPoint(vehicle.getCurrentLocation(),
+								vehicle.getCurrentLocation()+1000,vehicle)) ;
+						if (vehicle instanceof Bus) vehicle.move(Bus.MAX_FORWARD * factor );
+						else if (vehicle instanceof Sedan) vehicle.move(Sedan.MAX_FORWARD * factor );
+						else if (vehicle instanceof SUV) vehicle.move(SUV.MAX_FORWARD * factor );
+						else if (vehicle instanceof Truck) vehicle.move(Bus.MAX_FORWARD * factor );
+					}
+				}
+			}
+			//noise based on time of day (From PDate)
+			lastDayTimeMan.step(Calendar.MINUTE, 1);
 		}
 		//TODO: print final report 
 	}
 
-	private static void setRoutesForCampaigns() {
+	private static void setRoutesForCampaigns(Mashier mashier) {
 		for (Campaign camp : listOfCampaigns){
-			camp.setDestToHousingRoute(getShortestRoute(camp));
+			camp.setRoute(getShortestRoute(camp, mashier));
 		}
 	}
 
@@ -110,9 +157,9 @@ public class MakkahCity {
 	 * Arafat day range ends 01/01/2020 05:00PM
 	 */
 	private static boolean isArafatDayRange() {
-		Calendar arafatDayStart = (GregorianCalendar)timeManager.getStartCalendar().clone();
+		Calendar arafatDayStart = (GregorianCalendar) firstDayTimeMan.getStartCalendar().clone();
 		Calendar arafatDayEnd = new GregorianCalendar(2020, Calendar.JANUARY, 1, 17, 0, 0);
-		Calendar now = timeManager.getCurrentCalendar();
+		Calendar now = firstDayTimeMan.getCurrentCalendar();
 		return now.after(arafatDayStart) && now.before(arafatDayEnd);
 	}
 
@@ -131,17 +178,21 @@ public class MakkahCity {
 		stdStreet[StreetNames.KA_STREET.ordinal()] = new Street(4700,3, StreetNames.KA_STREET);
 		stdStreet[StreetNames.FOURTH_HIGHWAY1.ordinal()] = new Street(4850,4, StreetNames.FOURTH_HIGHWAY1);
 		stdStreet[StreetNames.FOURTH_HIGHWAY2.ordinal()] = new Street(4850,4, StreetNames.FOURTH_HIGHWAY2);
+		stdStreet[StreetNames.FOURTH_HIGHWAY3.ordinal()] = new Street(4500,4, StreetNames.FOURTH_HIGHWAY3);
 		stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()] = new Street(8200,3, StreetNames.THIRD_HIGHWAY);
 		stdStreet[StreetNames.STREET1.ordinal()] = new Street(7800,3, StreetNames.STREET1);
 		stdStreet[StreetNames.STREET2.ordinal()] = new Street(2400,3,StreetNames.STREET2);
 		stdStreet[StreetNames.STREET3.ordinal()] = new Street(4800,2, StreetNames.STREET3);
-		stdStreet[StreetNames.STREET4.ordinal()] = new Street(3800,3,StreetNames.STREET4);
+		stdStreet[StreetNames.JABAL_THAWR_STREET.ordinal()] = new Street(3800,3,StreetNames.JABAL_THAWR_STREET);
 		stdStreet[StreetNames.IBRAHIM_ALKHALIL2.ordinal()] = new Street(3200,2, StreetNames.IBRAHIM_ALKHALIL2);
 		stdStreet[StreetNames.IBRAHIM_ALKHALIL1.ordinal()] = new Street(4500,3, StreetNames.IBRAHIM_ALKHALIL1);
+		stdStreet[StreetNames.KKH_STREET.ordinal()] = new Street(3300,3, StreetNames.KKH_STREET);
+
 	}
 
 	private static void makeRoutes() {
 
+		//******Arafat day
 		stdRoutes[RouteName.AlHijraToArafat1.ordinal()] = new Route(
 				new Street[]{
 						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()],
@@ -150,7 +201,7 @@ public class MakkahCity {
 				District.ALHIJRA, Mashier.ARAFAT);
 
 		stdRoutes[RouteName.AlHijraToArafat2.ordinal()] = new Route(new Street[]{
-						stdStreet[StreetNames.STREET4.ordinal()],
+						stdStreet[StreetNames.JABAL_THAWR_STREET.ordinal()],
 						stdStreet[StreetNames.FOURTH_HIGHWAY2.ordinal()],
 						stdStreet[StreetNames.STREET1.ordinal()]
 		},District.ALHIJRA, Mashier.ARAFAT);
@@ -187,8 +238,67 @@ public class MakkahCity {
 						stdStreet[StreetNames.STREET2.ordinal()],
 						stdStreet[StreetNames.STREET1.ordinal()]
 		},District.ALAZIZIYA, Mashier.ARAFAT);
-		
-		
+
+		//******Arafat day end
+
+		//******Mina Leave
+		stdRoutes[RouteName.MinaToAlMansoor1.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.KKH_STREET.ordinal()],
+						stdStreet[StreetNames.KA_STREET.ordinal()],
+						stdStreet[StreetNames.STREET3.ordinal()]
+				},District.ALMANSOOR, Mashier.MINA);
+
+		stdRoutes[RouteName.MinaToAlMansoor2.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.FOURTH_HIGHWAY3.ordinal()],
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()],
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL2.ordinal()]
+				},District.ALMANSOOR, Mashier.MINA);
+
+		stdRoutes[RouteName.MinaToAlMansoor3.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.FOURTH_HIGHWAY3.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY2.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY1.ordinal()],
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL1.ordinal()],
+						stdStreet[StreetNames.IBRAHIM_ALKHALIL2.ordinal()]
+				},District.ALMANSOOR, Mashier.MINA);
+
+		stdRoutes[RouteName.MinaToAlhijra1.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.FOURTH_HIGHWAY3.ordinal()],
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()]
+				},District.ALHIJRA, Mashier.MINA);
+
+		stdRoutes[RouteName.MinaToAlhijra2.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.FOURTH_HIGHWAY3.ordinal()],
+						stdStreet[StreetNames.FOURTH_HIGHWAY2.ordinal()],
+						stdStreet[StreetNames.JABAL_THAWR_STREET.ordinal()]
+				},District.ALHIJRA, Mashier.MINA);
+
+		stdRoutes[RouteName.MinaToAlhijra3.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.KKH_STREET.ordinal()],
+						stdStreet[StreetNames.THIRD_HIGHWAY.ordinal()]
+				},District.ALHIJRA, Mashier.MINA);
+
+		stdRoutes[RouteName.MinaToAlaziziya1.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.KKH_STREET.ordinal()],
+						stdStreet[StreetNames.KA_STREET.ordinal()],
+				},District.ALAZIZIYA, Mashier.MINA);
+
+		stdRoutes[RouteName.MinaToAlaziziya2.ordinal()] = new Route(
+				new Street[]{
+						stdStreet[StreetNames.FOURTH_HIGHWAY3.ordinal()],
+						stdStreet[StreetNames.STREET2.ordinal()],
+						stdStreet[StreetNames.KA_STREET.ordinal()],
+				},District.ALAZIZIYA, Mashier.MINA);
+		//******Mina Leave end
 
 	}
 
@@ -280,8 +390,8 @@ public class MakkahCity {
 		return cars;
 	}
 
-	public static PDate getTimeManager() {
-		return timeManager;
+	public static PDate getTimeMan() {
+		return currenttimeManager;
 	}
 
 	/**
@@ -289,14 +399,16 @@ public class MakkahCity {
 	 * @param campaign
 	 * @return
 	 */
-	private static Route getShortestRoute(Campaign campaign) {
+	private static Route getShortestRoute(Campaign campaign, Mashier mashier) {
 		Route[] routes = getRoutesToDistrict(campaign.getHotelDistrict());
 		Route route = null;
 		double min = Double.MAX_VALUE;
 		for (Route r : routes) {
-			if (r.getTotalLength() < min) {
-				min = r.getTotalLength();
-				route = r;
+			if (r.getMashier() == mashier){
+				if (r.getTotalLength() < min) {
+					min = r.getTotalLength();
+					route = r;
+				}
 			}
 		}
 		return route;
@@ -336,11 +448,12 @@ public class MakkahCity {
 	
 	
 	private static String getStreetsReport() {
+		//TODO fix layout
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s\n" +
 						"   Street name    |Street Load| Total | Buses | Local Vehicles |\n";
 		String report = "";
-		report = report + String.format(headerFormat, timeManager.getCurrentTime());
+		report = report + String.format(headerFormat, firstDayTimeMan.getCurrentTime());
 		String entryFormat = "%-17s | %%%-8s | %5d | %5d | %14d |\n";
 		for (Street street : stdStreet) {
 			int cap = street.getPercentRemainingCapacity();
@@ -374,7 +487,7 @@ public class MakkahCity {
 	 */
 	private static String avgTimeOfTrip() {
 		//TODO: does output diff value even after all have arrived.
-		Calendar now = timeManager.getCurrentCalendar();
+		Calendar now = firstDayTimeMan.getCurrentCalendar();
 		Calendar from = (GregorianCalendar)now.clone();
 		from.roll(Calendar.MINUTE, -10);
 		int counter = 1;

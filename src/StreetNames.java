@@ -7,14 +7,12 @@ public enum StreetNames {
      THIRD_HIGHWAY,
      FOURTH_HIGHWAY1,
      FOURTH_HIGHWAY2,
+     FOURTH_HIGHWAY3,
      STREET1,
      STREET2,
      STREET3,
-     STREET4,
+     JABAL_THAWR_STREET,
      IBRAHIM_ALKHALIL2,
      IBRAHIM_ALKHALIL1,
-     
-    
-     
-
+     KKH_STREET
 }

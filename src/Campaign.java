@@ -9,8 +9,7 @@ public class Campaign {
     //private String name;
     private District hotelDistrict;
 
-    private Route housingToDestRoute;
-    private Route destToHousingRoute;
+    private Route route;
 
     private ArrayList<Vehicle> vehicles = new ArrayList<>();
 
@@ -41,22 +40,14 @@ public class Campaign {
         return numberOfAriivedBuses == vehicles.size();
     }
 
-    public Route getHousingToDestRoute() {
-        return housingToDestRoute;
+    public Route getRoute() {
+        return route;
     }
 
-    public void setHousingToDestRoute(Route housingToDestRoute) {
-        this.housingToDestRoute = housingToDestRoute;
-    }
-
-    public Route getDestToHousingRoute() {
-        return destToHousingRoute;
-    }
-
-    public void setDestToHousingRoute(Route destToHousingRoute) {
-        this.destToHousingRoute = destToHousingRoute;
-        for(Vehicle vehicle : this.getVehicles()){
-            vehicle.setRoute(destToHousingRoute);
+    public void setRoute(Route route) {
+        this.route = route;
+        for (Vehicle vehicle : vehicles) {
+            vehicle.setRoute(route);
         }
     }
 
@@ -67,7 +58,7 @@ public class Campaign {
     }
 
     public void setTimeToLeaveToDest(Date timeToLeaveToDest) throws OutOfSimulationTimeException {
-        if(PDate.isWithInTimeline(timeToLeaveToDest, MakkahCity.getTimeManager()))
+        if(PDate.isWithInTimeline(timeToLeaveToDest, MakkahCity.getTimeMan()))
             this.timeToLeaveToDest = timeToLeaveToDest;
         else throw new OutOfSimulationTimeException();
     }
@@ -77,7 +68,7 @@ public class Campaign {
     }
 
     public void setTimeToLeaveToHousing(Date timeToLeaveToHousing) throws OutOfSimulationTimeException {
-        if(PDate.isWithInTimeline(timeToLeaveToHousing, MakkahCity.getTimeManager()))
+        if(PDate.isWithInTimeline(timeToLeaveToHousing, MakkahCity.getTimeMan()))
             this.timeToLeaveToHousing = timeToLeaveToHousing;
         else throw new OutOfSimulationTimeException();
     }

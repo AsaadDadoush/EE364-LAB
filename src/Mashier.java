@@ -1,6 +1,6 @@
 public enum  Mashier {
     ARAFAT,
-    MENA,
+    MINA,
     ALHARAM,
     MOZDALIFA
 }
