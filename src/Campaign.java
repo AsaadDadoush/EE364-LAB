@@ -49,6 +49,8 @@ public class Campaign {
         for (Vehicle vehicle : vehicles) {
             vehicle.setRoute(route);
         }
+        //since a route is set, reset buses.
+        this.numberOfAriivedBuses = 0;
     }
 
     public District getHotelDistrict(){ return this.hotelDistrict; }
