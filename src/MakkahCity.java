@@ -32,12 +32,10 @@ public class MakkahCity {
 
 		fillBusesToList();
 
-		//Make Streets
 		makeStreets();
 
 		addCivilVehicleNoise();
 
-		//Make Routes
 		makeRoutes();
 
 		//Set Routes for Campaigns
@@ -49,7 +47,7 @@ public class MakkahCity {
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				System.out.println("\n\n" + getStreetsReport());
 			}
-			else System.out.printf("%s\r", currenttimeManager.getCurrentTime());
+			else System.out.printf("simulation time: %s\r", currenttimeManager.getCurrentTime());
 			//Start of Every half-hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
@@ -63,14 +61,7 @@ public class MakkahCity {
 		 		&& firstDayTimeMan.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
 
 			}
-			//Clear civil cars from list
-			for (int i = 0; i < listOfVehicles.size();){
-				Vehicle vehicle = listOfVehicles.get(i);
-				if (!(vehicle instanceof Bus) && vehicle.isArrivedToDest())
-					listOfVehicles.remove(vehicle);
-				else i++;
-
-			}
+			clearDoneCivilVehicles();
 			for (Vehicle vehicle : listOfVehicles) {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
@@ -97,7 +88,7 @@ public class MakkahCity {
 			}
 			//noise based on time of day (From PDate)
 			firstDayTimeMan.step(Calendar.MINUTE, 1);
-			for (int i = 0; i < 28; i++) System.out.print(" ");
+			for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
 		//TODO make report
 		currenttimeManager = lastDayTimeMan;
@@ -113,7 +104,7 @@ public class MakkahCity {
 				//TODO: removed break here. now should schedule.
 				System.out.println("\n\n" + getStreetsReport());
 			}
-			else System.out.printf("%s\r", currenttimeManager.getCurrentTime());
+			else System.out.printf("simulation time: %s\r", currenttimeManager.getCurrentTime());
 			//Start of Every half-hour
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
@@ -127,7 +118,7 @@ public class MakkahCity {
 					&& lastDayTimeMan.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
 
 			}
-
+			clearDoneCivilVehicles();
 			for (Vehicle vehicle : listOfVehicles) {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
@@ -154,9 +145,20 @@ public class MakkahCity {
 			}
 			//noise based on time of day (From PDate)
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
-			for (int i = 0; i < 28; i++) System.out.print(" ");
+			for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
 		//TODO: print final report 
+	}
+
+	private static void clearDoneCivilVehicles() {
+		//Clear civil cars from list
+		for (int i = 0; i < listOfVehicles.size();){
+			Vehicle vehicle = listOfVehicles.get(i);
+			if (!(vehicle instanceof Bus) && vehicle.isArrivedToDest())
+				listOfVehicles.remove(vehicle);
+			else i++;
+
+		}
 	}
 
 	private static void setRoutesForCampaigns(Mashier mashier) {
@@ -335,12 +337,12 @@ public class MakkahCity {
 			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
 			for (int x = 0; x < numOfSedan; x++) {
 				Sedan car = new Sedan(getRandom(4, 5));
-				double pointOfEntry = getRandom(0, street.getLength());
+				double pointOfEntry = getRandom(0, street.getLength());//TODO: consider getLength - x
 				if (street.capcityPoint(pointOfEntry, pointOfEntry+1500) < 1){
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					car.setCurrentStreet(street);
+					//car.setCurrentStreet(street);
 				}
 
 			}
@@ -356,7 +358,7 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					car.setCurrentStreet(street);
+					//car.setCurrentStreet(street);
 				}
 			}
 
@@ -371,7 +373,7 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					car.setCurrentStreet(street);
+					//car.setCurrentStreet(street);
 				}
 			}
 
@@ -498,7 +500,7 @@ public class MakkahCity {
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
 		}
-		String s = String.format("Buses: %d Buses done: %d Average trip in last hour time: %s\n",
+		String s = String.format("Buses: %d Buses done: %d Average trip in last hour: %s\n",
 				numberOfBusses, numberOfArrivedBuses, avgTimeOfTrip());
 		return s;
 	}
