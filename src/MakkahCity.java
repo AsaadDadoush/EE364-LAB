@@ -4,6 +4,7 @@ public class MakkahCity {
 
 	private static final ArrayList<Campaign> listOfCampaigns = new ArrayList<>();
 	private static final ArrayList<Vehicle> listOfVehicles = new ArrayList<>();
+	private static final ArrayList<Campaign>[] campPerDistrict = new ArrayList[District.values().length];
 	private static final Route[] stdRoutes = new Route[RouteName.values().length];
 	private static final Street[] stdStreet = new Street[StreetNames.values().length];
 
@@ -14,7 +15,7 @@ public class MakkahCity {
 
 	private static final PDate lastDayTimeMan = new PDate(
 			new GregorianCalendar(2020, Calendar.JANUARY, 4, 12, 0, 0),
-			new GregorianCalendar(2020, Calendar.JANUARY, 4, 20, 0, 0)
+			new GregorianCalendar(2020, Calendar.JANUARY, 4, 22, 0, 0)
 	);
 
 	private static PDate currenttimeManager = firstDayTimeMan;
@@ -22,6 +23,9 @@ public class MakkahCity {
 	public static void main(String[] args) {
 
 		//Gen Camp
+		campPerDistrict[District.ALMANSOOR.ordinal()] = new ArrayList<>();
+		campPerDistrict[District.ALAZIZIYA.ordinal()] = new ArrayList<>();
+		campPerDistrict[District.ALHIJRA.ordinal()] = new ArrayList<>();
 		generateCamps(District.ALAZIZIYA, (int)getRandom(1200, 1400));
 		generateCamps(District.ALMANSOOR, (int)getRandom(1600, 1800));
 		generateCamps(District.ALHIJRA, (int)getRandom(1400, 1600));
@@ -38,12 +42,14 @@ public class MakkahCity {
 
 		//Set Routes for Campaigns
 		setRoutesForCampaigns(Mashier.ARAFAT);
+		//TODO: print info before simulation. (Camps per District ...)
 		//TODO: use Queues or Wating area for each street?
 		while(!firstDayTimeMan.isEnded()) {
 			//Start of Every hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
-				//TODO: removed break here. now should schedule.
+				System.out.println("\n\n" + getStreetsReport());
 			}
+			else System.out.printf("%s\r", currenttimeManager.getCurrentTime());
 			//Start of Every half-hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
@@ -51,14 +57,20 @@ public class MakkahCity {
 			//Start of every 10min
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
 				addCivilVehicleNoise();
-				System.out.println("\n\n" + getStreetsReport());
 			}
 
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
 		 		&& firstDayTimeMan.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
 
 			}
+			//Clear civil cars from list
+			for (int i = 0; i < listOfVehicles.size();){
+				Vehicle vehicle = listOfVehicles.get(i);
+				if (!(vehicle instanceof Bus) && vehicle.isArrivedToDest())
+					listOfVehicles.remove(vehicle);
+				else i++;
 
+			}
 			for (Vehicle vehicle : listOfVehicles) {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
@@ -85,22 +97,23 @@ public class MakkahCity {
 			}
 			//noise based on time of day (From PDate)
 			firstDayTimeMan.step(Calendar.MINUTE, 1);
+			for (int i = 0; i < 28; i++) System.out.print(" ");
 		}
 		//TODO make report
 		currenttimeManager = lastDayTimeMan;
-		System.out.println("*************FINSHIED FIRST DAY*********************");
+		System.out.println("***************FINSHIED ARAFAT DAY***************");
 		setRoutesForCampaigns(Mashier.MINA);
 		for (Vehicle vehicle : listOfVehicles) {
 			vehicle.setCurrentStreet(null);
 		}
-		//TODO make all camps not arrived
-		//TODO: check 5000% capacity bug.
-
+		System.out.println("***************STARTING LAST DAY***************");
 		while(!lastDayTimeMan.isEnded()) {
 			//Start of Every hour
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				//TODO: removed break here. now should schedule.
+				System.out.println("\n\n" + getStreetsReport());
 			}
+			else System.out.printf("%s\r", currenttimeManager.getCurrentTime());
 			//Start of Every half-hour
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
@@ -108,7 +121,6 @@ public class MakkahCity {
 			//Start of every 10min
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
 				addCivilVehicleNoise();
-				System.out.println("\n\n" + getStreetsReport());
 			}
 
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
@@ -142,6 +154,7 @@ public class MakkahCity {
 			}
 			//noise based on time of day (From PDate)
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
+			for (int i = 0; i < 28; i++) System.out.print(" ");
 		}
 		//TODO: print final report 
 	}
@@ -171,6 +184,7 @@ public class MakkahCity {
 		for (int i = 0; i < count; i++){
 			Campaign camp = new Campaign(area, (int)getRandom(10, 15));
 			listOfCampaigns.add(camp);
+			campPerDistrict[area.ordinal()].add(camp);
 		}
 	}
 
@@ -309,7 +323,7 @@ public class MakkahCity {
 	}
 
 	private static void addCivilVehicleNoise() {
-
+		//TODO: adds to only two streets
 		for (Street street: stdStreet) {
 			int numOfSedan = (int)getRandom(40,50);
 			int numOfSUV = (int)getRandom(20,30);
@@ -448,23 +462,31 @@ public class MakkahCity {
 	
 	
 	private static String getStreetsReport() {
-		//TODO fix layout
+		String status = "";
+		if (currenttimeManager == firstDayTimeMan) status = "   Status: Heading to Arafat";
+		else status = "   Status: Heading to hotels";
 		String headerFormat = "******Streets report*****\n" +
-						"Time: %s\n" +
-						"   Street name    |Street Load| Total | Buses | Local Vehicles |\n";
+						"Time: %s%s\n" +
+						"    Street name    |Street Load| Total | Buses | Local Vehicles |" +
+						"*********| District  | Average Arrival\n";
 		String report = "";
-		report = report + String.format(headerFormat, firstDayTimeMan.getCurrentTime());
-		String entryFormat = "%-17s | %%%-8s | %5d | %5d | %14d |\n";
-		for (Street street : stdStreet) {
-			int cap = street.getPercentRemainingCapacity();
-			report = report + String.format(entryFormat,
-					street.getName().name(),
+		report = report + String.format(headerFormat, currenttimeManager.getCurrentTime(), status);
+		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d |";
+		String districtForamt = "         | %-9s | %%%2d ";
+		for (int i = 0; i < stdStreet.length; i++) {
+			int cap = stdStreet[i].getPercentRemainingCapacity();
+			report = report + String.format(streetFormat,
+					stdStreet[i].getName().name(),
 					cap,
-					street.getVehicles().size(),
-					street.getNumberOfBuses(),
-					street.getNumberOfLocalCars());
+					stdStreet[i].getVehicles().size(),
+					stdStreet[i].getNumberOfBuses(),
+					stdStreet[i].getNumberOfLocalCars());
+			if (i < 3){
+				report = report + String.format(districtForamt, District.values()[i], getAvgOfDistrict(District.values()[i]));
+			}
+			report += "\n";
 		}
-		report = report + getFinalRep();
+		report = report + "\n"+getFinalRep();
 		report = report + "*************************";
 		return report;
 	}
@@ -476,7 +498,7 @@ public class MakkahCity {
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
 		}
-		String s = String.format("Buses: %d Buses done: %d Average trip time: %s\n",
+		String s = String.format("Buses: %d Buses done: %d Average trip in last hour time: %s\n",
 				numberOfBusses, numberOfArrivedBuses, avgTimeOfTrip());
 		return s;
 	}
@@ -489,7 +511,7 @@ public class MakkahCity {
 		//TODO: does output diff value even after all have arrived.
 		Calendar now = firstDayTimeMan.getCurrentCalendar();
 		Calendar from = (GregorianCalendar)now.clone();
-		from.roll(Calendar.MINUTE, -10);
+		from.roll(Calendar.HOUR, -1);
 		int counter = 1;
 		int sum = 0;
 		for (Campaign campaign : listOfCampaigns){
@@ -506,6 +528,14 @@ public class MakkahCity {
 		int hours = sum / 60;
 		int minutes = sum % 60;
 		return String.format("%2d:%02d", hours,minutes);
+	}
+
+	private static int getAvgOfDistrict(District district) {
+		int sum = 0;
+		for (Campaign campaign : campPerDistrict[district.ordinal()]) {
+			sum += campaign.getPercentArrived();
+		}
+		return sum/campPerDistrict[district.ordinal()].size();
 	}
 
 	private static int getNumberOfArrivedBusses() {

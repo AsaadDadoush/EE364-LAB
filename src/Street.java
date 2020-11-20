@@ -112,7 +112,7 @@ public class Street {
     		double reamingLength = max - getLength();
     		double y = capcityPoint(min, getLength(),vehicle);
     		double z = getNextStreet(vehicle).capcityPoint(0, reamingLength, vehicle);
-    			return ((y + z)/2);
+                return (((getLength() - min)/(max - min)) * y) + (((reamingLength)/(max - min)) * z);
     	}
         double totalLength =  (max - min) * numberOfLanes;
         double totalLenthofCar=0;

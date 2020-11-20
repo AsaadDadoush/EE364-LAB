@@ -29,6 +29,7 @@ public abstract class Vehicle {
         setMoving(false);
         setTimeOfArrival(MakkahCity.getTimeMan().getCurrentTime());
         getCurrentStreet().getVehicles().remove(this);
+        this.currentLocation = 0;
     }
 
     public void move(double distance) {

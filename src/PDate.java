@@ -7,6 +7,10 @@ import java.util.GregorianCalendar;
  */
 public class PDate extends Calendar {
 
+    /*
+    Rewrite this class to use it's own members. Extending calendar is pointless like this.
+    - H.B.
+     */
     public final Calendar startCalendar;
     public final Calendar endCalendar;
     private final Calendar currentCalendar;

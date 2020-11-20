@@ -108,4 +108,8 @@ public class Campaign {
     public String getUID(){
         return this.UID;
     }
+
+    public int getPercentArrived() {
+        return ((numberOfAriivedBuses/vehicles.size()) *100);
+    }
 }
