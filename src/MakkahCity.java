@@ -325,12 +325,11 @@ public class MakkahCity {
 	}
 
 	private static void addCivilVehicleNoise() {
-		//TODO: adds to only two streets
+		//TODO: rewrite to avoid factoring (deviding) the values down to zero.
+		int numOfSedan = (int)getRandom(40,50);
+		int numOfSUV = (int)getRandom(20,30);
+		int numOfTruck = (int)getRandom(10,12);
 		for (Street street: stdStreet) {
-			int numOfSedan = (int)getRandom(40,50);
-			int numOfSUV = (int)getRandom(20,30);
-			int numOfTruck = (int)getRandom(10,12);
-
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSedan = (int) (numOfSedan * 1.5);
