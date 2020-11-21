@@ -326,10 +326,11 @@ public class MakkahCity {
 
 	private static void addCivilVehicleNoise() {
 		//TODO: rewrite to avoid factoring (deviding) the values down to zero.
-		int numOfSedan = (int)getRandom(40,50);
-		int numOfSUV = (int)getRandom(20,30);
-		int numOfTruck = (int)getRandom(10,12);
+
 		for (Street street: stdStreet) {
+			int numOfSedan = (int)getRandom(40,50);
+			int numOfSUV = (int)getRandom(20,30);
+			int numOfTruck = (int)getRandom(10,12);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSedan = (int) (numOfSedan * 1.5);
@@ -498,7 +499,9 @@ public class MakkahCity {
 		//Redundant loops slow down execution. find better sol.
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
-		}
+		} //TODO Add max min time, Add  how many arrived. Estimated arrivel if taken street.
+		//TODO: And print all routes with their streets.
+		//TODO: Print time when all have finished
 		String s = String.format("Buses: %d Buses done: %d Average trip in last hour: %s\n",
 				numberOfBusses, numberOfArrivedBuses, avgTimeOfTrip());
 		return s;
@@ -515,6 +518,7 @@ public class MakkahCity {
 		from.roll(Calendar.HOUR, -1);
 		int counter = 1;
 		int sum = 0;
+		//TODO check last day avg
 		for (Campaign campaign : listOfCampaigns){
 			for (Vehicle bus : campaign.getVehicles()){
 				if (bus.isArrivedToDest() && bus.getTimeOfArrival().before(now.getTime())
