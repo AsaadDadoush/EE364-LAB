@@ -88,7 +88,7 @@ public class MakkahCity {
 			}
 			//noise based on time of day (From PDate)
 			firstDayTimeMan.step(Calendar.MINUTE, 1);
-			for (int i = 0; i < 46; i++) System.out.print("\b");
+			//for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
 		//TODO make report
 		currenttimeManager = lastDayTimeMan;
@@ -145,7 +145,7 @@ public class MakkahCity {
 			}
 			//noise based on time of day (From PDate)
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
-			for (int i = 0; i < 46; i++) System.out.print("\b");
+			//for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
 		//TODO: print final report 
 	}
