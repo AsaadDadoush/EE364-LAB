@@ -10,6 +10,11 @@ public class SUV extends CivilVehicle {
         generateUID();
     }
 
+    @Override
+    public int getMaxSpeed() {
+        return MAX_FORWARD;
+    }
+
     public int getTimeToFix(){
     	return TIME_TO_FIX; 
     }

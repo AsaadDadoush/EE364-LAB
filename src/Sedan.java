@@ -10,10 +10,9 @@ public class Sedan extends CivilVehicle {
         super(vehicleSize);
         generateUID();
     }
+
     @Override
-    public int getTimeToFix(){ return TIME_TO_FIX; 
-    
-    }
+    public int getTimeToFix(){ return TIME_TO_FIX; }
     
     private void generateUID() {
     	numeberOfSedan++;
@@ -24,7 +23,9 @@ public class Sedan extends CivilVehicle {
     public String getUID(){
         return this.UID;
     }
-    
 
-
+    @Override
+    public int getMaxSpeed() {
+        return MAX_FORWARD;
+    }
 }

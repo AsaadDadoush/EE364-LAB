@@ -23,4 +23,9 @@ public class TrafficPoliceCar extends Vehicle implements CanBeGovtCar, CanFixAcc
     public String getGovtID() {
     	return this.TPC_UID;
     }
+
+    @Override
+    public int getMaxSpeed() {
+        return Sedan.MAX_FORWARD;
+    }
 }

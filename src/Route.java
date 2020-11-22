@@ -34,6 +34,14 @@ public class Route {
         return totalLength;
     }
 
+    public String getFastestTimeOfTravel(Vehicle vehicle) {
+        double totalLength = getTotalLength();
+        int maxSpeed = vehicle.getMaxSpeed();
+        int totalTime = (int) (totalLength/maxSpeed);
+        String result = String.format("%2d:%2d",totalTime % 60, totalTime /60);
+        return result;
+    }
+
     public District getHotelArea() {
         return hotelArea;
     }

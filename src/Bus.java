@@ -15,6 +15,11 @@ public class Bus extends CivilVehicle {
     }
 
     @Override
+    public int getMaxSpeed() {
+        return MAX_FORWARD;
+    }
+
+    @Override
     public void arrive() {
         super.arrive();
         campaign.busArived(this);

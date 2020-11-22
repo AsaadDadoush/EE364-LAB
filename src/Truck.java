@@ -3,6 +3,12 @@ public class Truck extends CivilVehicle {
 	private String UID;
 	private static int numeberOfTruck;
     private final int TIME_TO_FIX = 20; //in minutes
+
+    @Override
+    public int getMaxSpeed() {
+        return Bus.MAX_FORWARD;
+    }
+
     public Truck(double vehicleSize){
         super(vehicleSize);
         generateUID();

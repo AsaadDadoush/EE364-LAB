@@ -12,6 +12,8 @@ public abstract class Vehicle {
     private Date timeStartedMoving;
     private Date timeOfArrival;
 
+    public abstract int getMaxSpeed();
+
     public Vehicle(double vehicleSize){
         setVehicleSize(vehicleSize);
     }
