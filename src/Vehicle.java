@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.HashMap;
 
 public abstract class Vehicle {
 
@@ -11,6 +12,10 @@ public abstract class Vehicle {
     private boolean moving;
     private Date timeStartedMoving;
     private Date timeOfArrival;
+    private Date timeStartedOnCurrentStreet;
+
+    //Map Street to Minutes
+    private HashMap<Street, Long> routeTimeHistory = new HashMap<>();
 
     public abstract int getMaxSpeed();
 
@@ -84,6 +89,7 @@ public abstract class Vehicle {
         this.currentStreet = currentStreet;
         if (this.currentStreet != null)
             this.currentStreet.addVehicle(this);
+        this.timeStartedOnCurrentStreet = MakkahCity.getTimeMan().getCurrentTime();
     }
 
     public void setCurrentLocation(double currentLocation) {
@@ -131,6 +137,7 @@ public abstract class Vehicle {
     }
     
     public void moveToNextStreet() {
+        this.routeTimeHistory.put(this.currentStreet, MakkahCity.getTimeMan().getCurrentTime().getTime() - timeStartedOnCurrentStreet.getTime());
     	int nxtIndex = route.indexOf(this.getCurrentStreet()) + 1;
 		if (nxtIndex <= route.getStreets().length - 1) {
 			if (this.getRoute().getStreets()[nxtIndex].capcityPoint(0, 1000) < 1) {

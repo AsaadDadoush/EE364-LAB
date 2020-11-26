@@ -12,6 +12,7 @@ public class Campaign {
     private Route route;
 
     private ArrayList<Vehicle> vehicles = new ArrayList<>();
+    private ArrayList<Vehicle> arrivedVehicles = new ArrayList<>();
 
     private Date timeToLeaveToDest;
     private Date timeToLeaveToHousing;
@@ -32,8 +33,8 @@ public class Campaign {
 
     public void busArived(Bus bus) {
         if(numberOfAriivedBuses < vehicles.size())
+            arrivedVehicles.add(bus);
             numberOfAriivedBuses++;
-        //Check if it is in list before increment?
     }
 
     public boolean isDone() {
@@ -49,7 +50,8 @@ public class Campaign {
         for (Vehicle vehicle : vehicles) {
             vehicle.setRoute(route);
         }
-        //since a route is set, reset buses.
+        //since a route is set, reset buses and clear arrivedBussesList
+        this.arrivedVehicles.clear();
         this.numberOfAriivedBuses = 0;
     }
 
@@ -81,6 +83,15 @@ public class Campaign {
             if (vehicle instanceof Bus) busses++;
         }
         return busses;
+    }
+
+    public int getNumberOfArrivedBuses() {
+        return getArrivedVehicles().size();
+    }
+
+    //Use this in Makkah to optimize later
+    public ArrayList<Vehicle> getArrivedVehicles() {
+        return arrivedVehicles;
     }
 
     public ArrayList<Vehicle> getVehicles() {
