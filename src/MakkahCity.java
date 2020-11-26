@@ -46,7 +46,7 @@ public class MakkahCity {
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				System.out.println("\n\n" + getStreetsReport());
 			}
-			else System.out.printf("simulation time: %s\r", currenttimeManager.getCurrentTime());
+			else System.out.print(".");
 			//Start of Every half-hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
@@ -103,7 +103,7 @@ public class MakkahCity {
 				//TODO: removed break here. now should schedule.
 				System.out.println("\n\n" + getStreetsReport());
 			}
-			else System.out.printf("simulation time: %s\r", currenttimeManager.getCurrentTime());
+			else System.out.print(".");
 			//Start of Every half-hour
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
