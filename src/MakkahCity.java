@@ -472,12 +472,12 @@ public class MakkahCity {
 						"*********| District  | Average Arrival\n";
 		StringBuilder report = new StringBuilder();
 		report.append(String.format(headerFormat, currenttimeManager.getCurrentTime(), status));
-		String streetFormat = "%-27s | %%%-8s | %5d | %5d | %14d |";
+		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d |";
 		String districtForamt = "         | %-9s | %%%2d ";
 		for (int i = 0; i < stdStreet.length; i++) {
 			int cap = stdStreet[i].getPercentRemainingCapacity();
 			report.append(String.format(streetFormat,
-					getColoredStreetName(stdStreet[i], cap),
+					stdStreet[i].getName().name(),
 					cap,
 					stdStreet[i].getVehicles().size(),
 					stdStreet[i].getNumberOfBuses(),
