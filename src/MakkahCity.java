@@ -600,6 +600,7 @@ public class MakkahCity {
 			report.append(String.format("%-9s|",campPerDistrict[i].get(0).getHotelDistrict().name()));
 
 			report.append(String.format(" %-10d|",campPerDistrict[i].size()));
+			report.append(String.format(" %-7d|", busesInDistrict(District.values()[i])));
 			//Calc values per dist here.
 
 			report.append("\n");
@@ -623,6 +624,14 @@ public class MakkahCity {
 		int minutes = sum % 60;
 		if (hours == 0 && minutes == 0) return "n/a";
 		return String.format("%02d:%02d", hours, minutes);
+	}
+
+	private static int busesInDistrict(District district){
+		int buses = 0;
+		for (Campaign campaign : campPerDistrict[district.ordinal()]){
+			buses += campaign.getNumberOfBusses();
+		}
+		return buses;
 	}
 
 	public static final String ANSI_RESET = "\u001B[0m";
