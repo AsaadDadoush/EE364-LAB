@@ -40,8 +40,7 @@ public class MakkahCity {
 
 		//Set Routes for Campaigns
 		setRoutesForCampaigns(Mashier.ARAFAT);
-		//TODO: print info before simulation. (Camps per District ...)
-		//TODO: use Queues or Wating area for each street?
+		System.out.println(preSimulationReport());
 		while(!firstDayTimeMan.isEnded()) {
 			//Start of Every hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
@@ -471,26 +470,26 @@ public class MakkahCity {
 						"Time: %s%s\n" +
 						"    Street name    |Street Load| Total | Buses | Local Vehicles |" +
 						"*********| District  | Average Arrival\n";
-		String report = "";
-		report = report + String.format(headerFormat, currenttimeManager.getCurrentTime(), status);
+		StringBuilder report = new StringBuilder();
+		report.append(String.format(headerFormat, currenttimeManager.getCurrentTime(), status));
 		String streetFormat = "%-27s | %%%-8s | %5d | %5d | %14d |";
 		String districtForamt = "         | %-9s | %%%2d ";
 		for (int i = 0; i < stdStreet.length; i++) {
 			int cap = stdStreet[i].getPercentRemainingCapacity();
-			report = report + String.format(streetFormat,
-					getColoredStreetName(stdStreet[i],cap),
+			report.append(String.format(streetFormat,
+					getColoredStreetName(stdStreet[i], cap),
 					cap,
 					stdStreet[i].getVehicles().size(),
 					stdStreet[i].getNumberOfBuses(),
-					stdStreet[i].getNumberOfLocalCars());
+					stdStreet[i].getNumberOfLocalCars()));
 			if (i < 3){
-				report = report + String.format(districtForamt, District.values()[i], getAvgOfDistrict(District.values()[i]));
+				report.append(String.format(districtForamt, District.values()[i], getAvgOfDistrict(District.values()[i])));
 			}
-			report += "\n";
+			report.append("\n");
 		}
-		report = report + "\n"+getFinalRep();
-		report = report + "*************************";
-		return report;
+		report.append("\n").append(getFinalRep());
+		report.append("*************************");
+		return report.toString();
 	}
 	
 	private static String getFinalRep() {
@@ -570,6 +569,22 @@ public class MakkahCity {
 		else if (capacity > 60) s = ANSI_YELLOW + name;
 		else s = ANSI_GREEN + name;
 		return s + ANSI_RESET;
+	}
+
+	private static String preSimulationReport() {
+		StringBuilder report = new StringBuilder();
+		report.append("******************************District details******************************\n");
+		report.append("District | Campaigns | Busses | Est. time to Arafat | Est. time to District \n");
+		for (int i = 0; i < campPerDistrict.length; i++) {
+			//Per District, i denotes district index
+			report.append(String.format("%-9s|",campPerDistrict[i].get(0).getHotelDistrict().name()));
+
+			report.append(String.format(" %-10d|",campPerDistrict[i].size()));
+			//Calc values per dist here.
+
+			report.append("\n");
+		}
+		return report.toString();
 	}
 
 	public static final String ANSI_RESET = "\u001B[0m";
