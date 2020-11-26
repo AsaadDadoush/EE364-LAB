@@ -468,11 +468,11 @@ public class MakkahCity {
 		else status = "   Status: Heading to hotels";
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s%s\n" +
-						"    Street name    |Street Load| Total | Buses | Local Vehicles |" +
+						"    Street name    |Street Load| Total | Buses | Local Vehicles | Avg. Time" +
 						"*********| District  | Average Arrival | Avg. time\n";
 		StringBuilder report = new StringBuilder();
 		report.append(String.format(headerFormat, currenttimeManager.getCurrentTime(), status));
-		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d |";
+		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d | %-9s";
 		String districtForamt = "         | %-9s | %%%-14d | %s";
 		for (int i = 0; i < stdStreet.length; i++) {
 			int cap = stdStreet[i].getPercentRemainingCapacity();
@@ -481,7 +481,8 @@ public class MakkahCity {
 					cap,
 					stdStreet[i].getVehicles().size(),
 					stdStreet[i].getNumberOfBuses(),
-					stdStreet[i].getNumberOfLocalCars()));
+					stdStreet[i].getNumberOfLocalCars(),
+					avgTimeOnStreet(stdStreet[i])));
 			if (i < 3){
 				report.append(String.format(districtForamt, District.values()[i], getPercentArrival(District.values()[i]),getAvgTimeOfTrip(District.values()[i])));
 			}
@@ -604,6 +605,24 @@ public class MakkahCity {
 			report.append("\n");
 		}
 		return report.toString();
+	}
+
+	//TODO: Bug: values are too low for second day (8, 9, 12 minutes?)
+	//This is for ALL vehicles, should make it for last hour to be consistent with the report.
+	public static String avgTimeOnStreet(Street street) {
+		int sum = 0;
+		int counter = 1;
+		for (Campaign campaign : listOfCampaigns)
+			for (Vehicle vehicle : campaign.getArrivedVehicles())
+				if (vehicle.hasCrossedStreet(street)){
+					sum += vehicle.getTimeOnStreet(street);
+					counter++;
+				}
+		sum /= counter;
+		int hours = sum / 60;
+		int minutes = sum % 60;
+		if (hours == 0 && minutes == 0) return "n/a";
+		return String.format("%02d:%02d", hours, minutes);
 	}
 
 	public static final String ANSI_RESET = "\u001B[0m";

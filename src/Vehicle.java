@@ -15,7 +15,7 @@ public abstract class Vehicle {
     private Date timeStartedOnCurrentStreet;
 
     //Map Street to Minutes
-    private HashMap<Street, Long> routeTimeHistory = new HashMap<>();
+    private HashMap<Street, Integer> routeTimeHistory = new HashMap<>();
 
     public abstract int getMaxSpeed();
 
@@ -51,6 +51,7 @@ public abstract class Vehicle {
     public void setRoute(Route route) {
         this.route = route;
         this.arrivedToDest = false;
+        this.routeTimeHistory.clear();
     }
 
     private void setVehicleSize(double vehicleSize) {
@@ -137,7 +138,8 @@ public abstract class Vehicle {
     }
     
     public void moveToNextStreet() {
-        this.routeTimeHistory.put(this.currentStreet, MakkahCity.getTimeMan().getCurrentTime().getTime() - timeStartedOnCurrentStreet.getTime());
+        this.routeTimeHistory.put(this.currentStreet,
+                (int) (MakkahCity.getTimeMan().getCurrentTime().getTime() - timeStartedOnCurrentStreet.getTime())/60000);
     	int nxtIndex = route.indexOf(this.getCurrentStreet()) + 1;
 		if (nxtIndex <= route.getStreets().length - 1) {
 			if (this.getRoute().getStreets()[nxtIndex].capcityPoint(0, 1000) < 1) {
@@ -147,6 +149,22 @@ public abstract class Vehicle {
 		}
 		else
 			this.arrive();
+    }
+
+    /**
+     * Get value in minutes of time spent travling on street. If did not, return 0.
+     * @param street
+     * @return Time in minutes
+     */
+    public int getTimeOnStreet(Street street) {
+        if (routeTimeHistory.containsKey(street)) {
+            return routeTimeHistory.get(street);
+        }
+        return 0;
+    }
+
+    public boolean hasCrossedStreet(Street street) {
+        return routeTimeHistory.containsKey(street);
     }
     
 }
