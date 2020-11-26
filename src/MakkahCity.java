@@ -532,6 +532,7 @@ public class MakkahCity {
 		sum = sum /counter;
 		int hours = sum / 60;
 		int minutes = sum % 60;
+		if (hours == 0 && minutes == 0) return "(No arrivals) in last Hour";
 		return String.format("%2d:%02d", hours,minutes);
 	}
 
