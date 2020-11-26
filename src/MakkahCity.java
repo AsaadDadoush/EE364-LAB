@@ -364,7 +364,7 @@ public class MakkahCity {
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSUV = (int) (numOfSUV * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSUV = (int) (numOfSUV * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSUV = (int) (numOfSUV * 1.5);
-			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSUV = (int) (numOfSedan * 1.5);
 			for (int x = 0; x < numOfSUV; x++) {
 				SUV car = new SUV(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -469,11 +469,11 @@ public class MakkahCity {
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s%s\n" +
 						"    Street name    |Street Load| Total | Buses | Local Vehicles |" +
-						"*********| District  | Average Arrival\n";
+						"*********| District  | Average Arrival | Avg. time\n";
 		StringBuilder report = new StringBuilder();
 		report.append(String.format(headerFormat, currenttimeManager.getCurrentTime(), status));
 		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d |";
-		String districtForamt = "         | %-9s | %%%2d ";
+		String districtForamt = "         | %-9s | %%%-14d | %s";
 		for (int i = 0; i < stdStreet.length; i++) {
 			int cap = stdStreet[i].getPercentRemainingCapacity();
 			report.append(String.format(streetFormat,
@@ -483,7 +483,7 @@ public class MakkahCity {
 					stdStreet[i].getNumberOfBuses(),
 					stdStreet[i].getNumberOfLocalCars()));
 			if (i < 3){
-				report.append(String.format(districtForamt, District.values()[i], getAvgOfDistrict(District.values()[i])));
+				report.append(String.format(districtForamt, District.values()[i], getPercentArrival(District.values()[i]),getAvgTimeOfTrip(District.values()[i])));
 			}
 			report.append("\n");
 		}
@@ -535,12 +535,31 @@ public class MakkahCity {
 		return String.format("%2d:%02d", hours,minutes);
 	}
 
-	private static int getAvgOfDistrict(District district) {
+	private static int getPercentArrival(District district) {
 		int sum = 0;
 		for (Campaign campaign : campPerDistrict[district.ordinal()]) {
 			sum += campaign.getPercentArrived();
 		}
 		return sum/campPerDistrict[district.ordinal()].size();
+	}
+
+	private static String getAvgTimeOfTrip(District district){
+		int sum = 0;
+		int counter = 1;
+		for (Campaign campaign : campPerDistrict[district.ordinal()]) {
+			for (Vehicle vehicle : campaign.getVehicles()) {
+				if (vehicle.isArrivedToDest()) {
+					long minutes = (vehicle.getTimeOfArrival().getTime() - vehicle.getTimeStartedMoving().getTime())/60000;
+					sum+= minutes;
+					counter++;
+				}
+			}
+		}//Make the following a method since it is the same other method
+		sum = sum /counter;
+		int hours = sum / 60;
+		int minutes = sum % 60;
+		if (hours == 0 && minutes == 0) return "No arrivals yet";
+		return String.format("%2d:%02d", hours,minutes);
 	}
 
 	private static int getNumberOfArrivedBusses() {
@@ -562,7 +581,7 @@ public class MakkahCity {
 		return true;
 	}
 
-	private static String  getColoredStreetName(Street street, int capacity) {
+	private static String getColoredStreetName(Street street, int capacity) {
 		String s = "";
 		String name = street.getName().name();
 		if (capacity > 80) s = ANSI_RED + name;
