@@ -19,11 +19,6 @@ public class InputListener implements Runnable {
                 input = in.next();
                 hasNew = true;
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         System.out.println("Stopped input listener");
     }

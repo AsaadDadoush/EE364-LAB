@@ -152,6 +152,7 @@ public class MakkahCity {
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
 			//for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
+		inputListener.stop();
 		t.interrupt();
 		//TODO: print final report 
 	}
@@ -160,16 +161,11 @@ public class MakkahCity {
 		String input = "";
 		if (inputListener.hasNew()){
 			input = inputListener.getInput();
-			if (input.equals("p")){
+			if (input.equals("m")){
 				System.out.println("PAUSED: "+ currenttimeManager.getCurrentTime());
 				inputListener.pause();
 				startMenu();
 				inputListener.unpause();
-			}
-			else if (input.equals("s")) {
-				inputListener.stop();
-				t.interrupt();
-				System.exit(0);
 			}
 		}
 	}
@@ -180,10 +176,12 @@ public class MakkahCity {
 							"[1] View Vehicles\n" +
 							"[2] View Streets\n" +
 							"[3] View Campaigns\n" +
-							"[4] View Routes");
+							"[4] View Routes\n" +
+							"[5] Continue\n" +
+							"[6] Exit");
 		String chose = in.next();
 		if (chose.equals("1")){
-			System.out.printf("choose from 0 to %d", listOfVehicles.size()-1);
+			System.out.printf("choose from 0 to %d\n", listOfVehicles.size()-1);
 			String c = in.next();
 			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
 			//TODO: override toString() in vehicle then Bus. This will throw cast ex.
@@ -191,7 +189,6 @@ public class MakkahCity {
 								"Arrived: %s Starting time: %s Arrive Time: %s\n",
 					v.toString(), ((Bus)v).getCampaign().getUID(),v.getCurrentStreet().getName().name(),
 					v.getCurrentLocation(),v.isArrivedToDest(),v.getTimeStartedMoving(),v.getTimeOfArrival());
-			startMenu();
 		}
 		if (chose.equals("4")){
 			for (int i = 0; i < stdRoutes.length; i++){
@@ -199,6 +196,13 @@ public class MakkahCity {
 			}
 			String c = in.next();
 		}
+		if (chose.equals("5")) return;
+		if (chose.equals("6")) {
+			inputListener.stop();
+			t.interrupt();
+			System.exit(0);
+		}
+		startMenu();
 	}
 
 	private static void clearDoneCivilVehicles() {
@@ -540,7 +544,7 @@ public class MakkahCity {
 			}
 			report.append("\n");
 		}
-		report.append("\n").append(getFinalRep());
+		report.append("\n").append(getFinalRep()).append("\nType m+Enter to view menu\n");
 		report.append("*************************");
 		return report.toString();
 	}
