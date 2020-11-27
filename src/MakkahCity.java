@@ -152,7 +152,7 @@ public class MakkahCity {
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
 			//for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
-		inputListener.stop();
+		t.interrupt();
 		//TODO: print final report 
 	}
 
@@ -182,6 +182,23 @@ public class MakkahCity {
 							"[3] View Campaigns\n" +
 							"[4] View Routes");
 		String chose = in.next();
+		if (chose.equals("1")){
+			System.out.printf("choose from 0 to %d", listOfVehicles.size()-1);
+			String c = in.next();
+			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
+			//TODO: override toString() in vehicle then Bus. This will throw cast ex.
+			System.out.printf("%s\n Campaign: %s Street: %s Location: %.1f\n" +
+								"Arrived: %s Starting time: %s Arrive Time: %s\n",
+					v.toString(), ((Bus)v).getCampaign().getUID(),v.getCurrentStreet().getName().name(),
+					v.getCurrentLocation(),v.isArrivedToDest(),v.getTimeStartedMoving(),v.getTimeOfArrival());
+			startMenu();
+		}
+		if (chose.equals("4")){
+			for (int i = 0; i < stdRoutes.length; i++){
+				System.out.printf("[%d] %s\n", i, stdRoutes[i]);
+			}
+			String c = in.next();
+		}
 	}
 
 	private static void clearDoneCivilVehicles() {
@@ -350,8 +367,6 @@ public class MakkahCity {
 				},District.ALAZIZIYA, Mashier.MINA);
 		//******Mina Leave end
 
-//		for (Route r : stdRoutes)
-//			System.out.println(r.toString());
 	}
 
 	private static void fillBusesToList() {

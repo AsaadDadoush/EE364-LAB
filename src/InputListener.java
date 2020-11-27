@@ -4,9 +4,9 @@ public class InputListener implements Runnable {
 
     private volatile String input = "";
     private volatile boolean hasNew;
+    private volatile boolean pause;
     private final Scanner in;
     private boolean stop;
-    private boolean pause;
 
     public InputListener() {
         in = new Scanner(System.in);
