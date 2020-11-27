@@ -161,12 +161,10 @@ public class MakkahCity {
 		if (inputListener.hasNew()){
 			input = inputListener.getInput();
 			if (input.equals("p")){
-				System.out.println("PAUSED");
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				System.out.println("PAUSED: "+ currenttimeManager.getCurrentTime());
+				inputListener.pause();
+				startMenu();
+				inputListener.unpause();
 			}
 			else if (input.equals("s")) {
 				inputListener.stop();
@@ -174,6 +172,16 @@ public class MakkahCity {
 				System.exit(0);
 			}
 		}
+	}
+
+	private static void startMenu() {
+		Scanner in = new Scanner(System.in);
+		System.out.println("---------------------------\n" +
+							"[1] View Vehicles\n" +
+							"[2] View Streets\n" +
+							"[3] View Campaigns\n" +
+							"[4] View Routes");
+		String chose = in.next();
 	}
 
 	private static void clearDoneCivilVehicles() {
