@@ -315,6 +315,8 @@ public class MakkahCity {
 				},District.ALAZIZIYA, Mashier.MINA);
 		//******Mina Leave end
 
+//		for (Route r : stdRoutes)
+//			System.out.println(r.toString());
 	}
 
 	private static void fillBusesToList() {

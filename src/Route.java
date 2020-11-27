@@ -42,6 +42,20 @@ public class Route {
         return result;
     }
 
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(super.toString())
+                .append("\n").append(String.format("%s:%s",getHotelArea().name(),getMashier().name()))
+                .append("\n")
+                .append("Length: ").append(getTotalLength())
+                .append("\n")
+                .append("Streets: ");
+        for (Street street : this.getStreets())
+            s.append(street.getName().name()).append(" ");
+        s.append("\nBest Time: ").append(getFastestTimeOfTravel(new Bus())).append("\n");
+        return s.toString();
+    }
+
     public District getHotelArea() {
         return hotelArea;
     }
