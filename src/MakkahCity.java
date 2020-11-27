@@ -20,8 +20,12 @@ public class MakkahCity {
 
 	private static PDate currenttimeManager = firstDayTimeMan;
 
+	private static final InputListener inputListener = new InputListener();
+	private static final Thread t = new Thread(inputListener,"InputThread-Makkah");
+
 	public static void main(String[] args) {
 
+		t.start();
 		//Gen Camp
 		campPerDistrict[District.ALMANSOOR.ordinal()] = new ArrayList<>();
 		campPerDistrict[District.ALAZIZIYA.ordinal()] = new ArrayList<>();
@@ -42,6 +46,7 @@ public class MakkahCity {
 		setRoutesForCampaigns(Mashier.ARAFAT);
 		System.out.println(preSimulationReport());
 		while(!firstDayTimeMan.isEnded()) {
+			checkInput();
 			//Start of Every hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				System.out.println("\n\n" + getStreetsReport());
@@ -98,6 +103,7 @@ public class MakkahCity {
 		}
 		System.out.println("***************STARTING LAST DAY***************");
 		while(!lastDayTimeMan.isEnded()) {
+			checkInput();
 			//Start of Every hour
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				//TODO: removed break here. now should schedule.
@@ -146,7 +152,28 @@ public class MakkahCity {
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
 			//for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
+		inputListener.stop();
 		//TODO: print final report 
+	}
+
+	private static void checkInput() {
+		String input = "";
+		if (inputListener.hasNew()){
+			input = inputListener.getInput();
+			if (input.equals("p")){
+				System.out.println("PAUSED");
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (input.equals("s")) {
+				inputListener.stop();
+				t.interrupt();
+				System.exit(0);
+			}
+		}
 	}
 
 	private static void clearDoneCivilVehicles() {
