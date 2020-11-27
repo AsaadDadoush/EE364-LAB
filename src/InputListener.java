@@ -6,6 +6,7 @@ public class InputListener implements Runnable {
     private volatile boolean hasNew;
     private final Scanner in;
     private boolean stop;
+    private boolean pause;
 
     public InputListener() {
         in = new Scanner(System.in);
@@ -14,8 +15,15 @@ public class InputListener implements Runnable {
     @Override
     public void run() {
         while(!stop) {
-            input = in.next();
-            hasNew = true;
+            if (!pause){
+                input = in.next();
+                hasNew = true;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("Stopped input listener");
     }
@@ -31,5 +39,13 @@ public class InputListener implements Runnable {
 
     public boolean hasNew() {
         return hasNew;
+    }
+
+    public void pause() {
+        pause = true;
+    }
+
+    public void unpause() {
+        pause = false;
     }
 }
