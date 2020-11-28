@@ -91,7 +91,7 @@ public class MakkahCity {
 		}
 		//TODO make report
 		currenttimeManager = lastDayTimeMan;
-		System.out.println("***************FINSHIED ARAFAT DAY***************");
+		System.out.println("\n***************FINSHIED ARAFAT DAY***************");
 		setRoutesForCampaigns(Mashier.MINA);
 		for (Vehicle vehicle : listOfVehicles) {
 			vehicle.setCurrentStreet(null);
@@ -100,7 +100,6 @@ public class MakkahCity {
 		while(!lastDayTimeMan.isEnded()) {
 			//Start of Every hour
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
-				//TODO: removed break here. now should schedule.
 				System.out.println("\n\n" + getStreetsReport());
 			}
 			else System.out.print(".");
