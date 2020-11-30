@@ -135,9 +135,7 @@ public class Street {
     		if(vehicle.getRoute().getStreets().length > nextIndex) 
     		return 	(vehicle.getRoute().getStreets()[nextIndex]);
     			else
-    				return null;
-    	
-    		
+    				return null;    		
     	}
 
     public int getNumberOfBuses() {
@@ -155,4 +153,12 @@ public class Street {
         }
         return number;
     }
+    
+    public boolean isContainsBuses() {
+    	for (Vehicle vehicle : this.vehicles) {
+    		if (vehicle instanceof Bus)
+    			return true;
+    	}
+    	return false;		
+	}
 }
