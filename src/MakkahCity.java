@@ -178,8 +178,9 @@ public class MakkahCity {
 							"[4] View Routes\n" +
 							"[5] Continue\n" +
 							"[6] Exit");
-		String chose = in.next();
-		if (chose.equals("1")){
+		String choice = in.next();
+		//Split into methods?
+		if (choice.equals("1")){
 			System.out.printf("choose from 0 to %d\n", listOfVehicles.size()-1);
 			String c = in.next();
 			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
@@ -189,14 +190,22 @@ public class MakkahCity {
 					v.toString(), ((Bus)v).getCampaign().getUID(),v.getCurrentStreet().getName().name(),
 					v.getCurrentLocation(),v.isArrivedToDest(),v.getTimeStartedMoving(),v.getTimeOfArrival());
 		}
-		if (chose.equals("4")){
+		if (choice.equals("2")){
+			for (int i = 0; i < stdStreet.length; i++) {
+				System.out.printf("[%d] %s\nm",i, stdStreet[i].getName().name());
+			}
+			String input = in.next();
+			int index = Integer.parseInt(input);//TODO: unhandled ex
+			System.out.print(stdStreet[index].toString());
+		}
+		if (choice.equals("4")){
 			for (int i = 0; i < stdRoutes.length; i++){
 				System.out.printf("[%d] %s\n", i, stdRoutes[i]);
 			}
 			String c = in.next();
 		}
-		if (chose.equals("5")) return;
-		if (chose.equals("6")) {
+		if (choice.equals("5")) return;
+		if (choice.equals("6")) {
 			inputListener.stop();
 			t.interrupt();
 			System.exit(0);

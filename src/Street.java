@@ -178,11 +178,12 @@ public class Street {
         for (int i = 0; i < 32; i++){
             printedStreet.append("----");
         }
-        return String.format("Street name: %s, Length: %f, Lanes: %d, Vehicles: %d\nDensity:\n%s\n",
+        return String.format("Street name: %s, Length: %.2f, Lanes: %d, Vehicles: %d, Capacity: %%%s\nDensity:\n%s\n",
                 name.name(),
                 length,
                 numberOfLanes,
                 vehicles.size(),
+                getPercentRemainingCapacity(),
                 printedStreet.toString());
     }
 }
