@@ -135,7 +135,7 @@ public class Street {
     		if(vehicle.getRoute().getStreets().length > nextIndex) 
     		return 	(vehicle.getRoute().getStreets()[nextIndex]);
     			else
-    				return null;    		
+    				return null;
     	}
 
     public int getNumberOfBuses() {
@@ -153,12 +153,42 @@ public class Street {
         }
         return number;
     }
-    
+
     public boolean isContainsBuses() {
     	for (Vehicle vehicle : this.vehicles) {
     		if (vehicle instanceof Bus)
     			return true;
     	}
-    	return false;		
+    	return false;
 	}
+
+    public String toString(){
+        StringBuilder printedStreet = new StringBuilder();
+        //Imagine steert is 32 units in lengths (scale down)
+        for (int i = 0; i < 32; i++){
+            printedStreet.append("----");
+        }
+        printedStreet.append("\n");
+        //This is vary bad. Should copy vehicles list and reduce when a vehicle is counted;
+        for (int i = 0; i < 32; i++){
+            int cars = 0;
+            for (Vehicle vehicle : vehicles){
+                double realLocation = vehicle.getCurrentLocation();
+                int scaledLocation = (int)((realLocation*32) / this.length);
+                if (scaledLocation == i) cars++;
+            }
+            //if 'cars' is 4 digits or more it will distort the output
+            printedStreet.append(String.format("%03d ", cars));
+        }
+        printedStreet.append("\n");
+        for (int i = 0; i < 32; i++){
+            printedStreet.append("----");
+        }
+        return String.format("Street name: %s, Length: %f, Lanes: %d, Vehicles: %d\nDensity:\n%s\n",
+                name.name(),
+                length,
+                numberOfLanes,
+                vehicles.size(),
+                printedStreet.toString());
+    }
 }
