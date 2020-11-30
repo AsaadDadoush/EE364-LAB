@@ -171,7 +171,7 @@ public class MakkahCity {
 
 	private static void startMenu() {
 		Scanner in = new Scanner(System.in);
-		System.out.println(currenttimeManager.getCurrentTime()+"\n"+
+		System.out.println("\n"+currenttimeManager.getCurrentTime()+"\n"+
 							"---------------------------\n" +
 							"[1] View Vehicles\n" +
 							"[2] View Streets\n" +
@@ -186,7 +186,7 @@ public class MakkahCity {
 			String c = in.next();
 			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
 			//TODO: override toString() in vehicle then Bus. This will throw cast ex.
-			System.out.print("\n\n"+v.toString()+"\n\n");
+			showVehicle(v);
 			//meybe add option here to go to members (Campaign, Street ...)
 		}
 		if (choice.equals("2")){
@@ -195,7 +195,7 @@ public class MakkahCity {
 			}
 			String input = in.next();
 			int index = Integer.parseInt(input);//TODO: unhandled ex
-			System.out.print(stdStreet[index].toString());
+			showStreet(stdStreet[index]);
 		}
 		if (choice.equals("4")){
 			for (int i = 0; i < stdRoutes.length; i++){
@@ -209,6 +209,35 @@ public class MakkahCity {
 			System.exit(0);
 		}
 		startMenu();
+	}
+
+	private static void showVehicle(Vehicle vehicle) {
+		System.out.print("\n\n"+vehicle.getUID()+"\n"+vehicle.toString()+"\n\n");
+		//TODO: Continue here for more options or return
+	}
+
+	private static void showCampaign(Campaign campaign){
+
+	}
+
+	private static void showStreet(Street street) {
+		String choice = "";
+		Scanner in = new Scanner(System.in);
+		System.out.println("\n"+street.getName().name());
+		System.out.println("---------------------------\n"+
+				"[1] Details\n" +
+				"[2] Select vehicle\n" +
+				"[3] Get history for vehicle (NOT IMPLEMENTED YET)\n" +
+				"[4] Return");
+		choice = in.next();
+		if (choice.equals("1")) System.out.println("\n\n"+street.toString());
+		if (choice.equals("2")){
+			System.out.printf("Select from 0 to %d\n", street.getVehicles().size());
+			choice = in.next();
+			showVehicle(street.getVehicles().get(Integer.parseInt(choice)));
+		}
+		if (choice.equals("4")) return;
+		showStreet(street);
 	}
 
 	private static void clearDoneCivilVehicles() {
