@@ -185,10 +185,7 @@ public class MakkahCity {
 			String c = in.next();
 			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
 			//TODO: override toString() in vehicle then Bus. This will throw cast ex.
-			System.out.printf("%s\n Campaign: %s Street: %s Location: %.1f\n" +
-								"Arrived: %s Starting time: %s Arrive Time: %s\n",
-					v.toString(), ((Bus)v).getCampaign().getUID(),v.getCurrentStreet().getName().name(),
-					v.getCurrentLocation(),v.isArrivedToDest(),v.getTimeStartedMoving(),v.getTimeOfArrival());
+			System.out.print(v.toString());
 		}
 		if (choice.equals("2")){
 			for (int i = 0; i < stdStreet.length; i++) {

@@ -166,7 +166,14 @@ public abstract class Vehicle {
     public boolean hasCrossedStreet(Street street) {
         return routeTimeHistory.containsKey(street);
     }
-    
+
+    public String toString() {
+        return String.format("%s\nStreet: %s Location: %.1f\n" +
+                        "Arrived: %s Starting time: %s Arrive Time: %s\n",
+                super.toString(), this.getCurrentStreet().getName().name(),
+                this.getCurrentLocation(), this.isArrivedToDest(),
+                this.getTimeStartedMoving(), this.getTimeOfArrival());
+    }
 }
 
 
