@@ -161,7 +161,7 @@ public class MakkahCity {
 		if (inputListener.hasNew()){
 			input = inputListener.getInput();
 			if (input.equals("m")){
-				System.out.println("PAUSED: "+ currenttimeManager.getCurrentTime());
+				System.out.println("PAUSED");
 				inputListener.pause();
 				startMenu();
 				inputListener.unpause();
@@ -171,7 +171,8 @@ public class MakkahCity {
 
 	private static void startMenu() {
 		Scanner in = new Scanner(System.in);
-		System.out.println("---------------------------\n" +
+		System.out.println(currenttimeManager.getCurrentTime()+"\n"+
+							"---------------------------\n" +
 							"[1] View Vehicles\n" +
 							"[2] View Streets\n" +
 							"[3] View Campaigns\n" +
@@ -200,7 +201,6 @@ public class MakkahCity {
 			for (int i = 0; i < stdRoutes.length; i++){
 				System.out.printf("[%d] %s\n", i, stdRoutes[i]);
 			}
-			String c = in.next();
 		}
 		if (choice.equals("5")) return;
 		if (choice.equals("6")) {
