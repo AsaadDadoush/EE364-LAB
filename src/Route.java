@@ -42,10 +42,11 @@ public class Route {
         return result;
     }
 
+    @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append(super.toString())
-                .append("\n").append(String.format("%s:%s",getHotelArea().name(),getMashier().name()))
+                .append("\n").append(String.format("%s:%s",getHotelArea(),getMashier()))
                 .append("\n")
                 .append("Length: ").append(getTotalLength())
                 .append("\n")
