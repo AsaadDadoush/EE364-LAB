@@ -18,6 +18,7 @@ public abstract class Vehicle {
     private HashMap<Street, Integer> routeTimeHistory = new HashMap<>();
 
     public abstract int getMaxSpeed();
+    public abstract String getUID();
 
     public Vehicle(double vehicleSize){
         setVehicleSize(vehicleSize);
@@ -168,9 +169,12 @@ public abstract class Vehicle {
     }
 
     public String toString() {
-        return String.format("%s\nStreet: %s Location: %.1f\n" +
+        Street st = this.currentStreet;
+        String streetString = "null";
+        if (st != null) streetString = st.getName().name();
+        return String.format("%s\nRoute: %s\nStreet: %s, Location: %.1f\n" +
                         "Arrived: %s Starting time: %s Arrive Time: %s\n",
-                super.toString(), this.getCurrentStreet().getName().name(),
+                super.toString(), this.route, streetString,
                 this.getCurrentLocation(), this.isArrivedToDest(),
                 this.getTimeStartedMoving(), this.getTimeOfArrival());
     }

@@ -185,7 +185,8 @@ public class MakkahCity {
 			String c = in.next();
 			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
 			//TODO: override toString() in vehicle then Bus. This will throw cast ex.
-			System.out.print(v.toString());
+			System.out.print("\n\n"+v.toString()+"\n\n");
+			//meybe add option here to go to members (Campaign, Street ...)
 		}
 		if (choice.equals("2")){
 			for (int i = 0; i < stdStreet.length; i++) {
