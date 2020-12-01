@@ -13,13 +13,13 @@ public class MakkahCity {
 	private static Date allArrivedToHotelsTime;
 
 	private static final PDate firstDayTimeMan = new PDate(
-		new GregorianCalendar(2020, Calendar.JANUARY, 1, 4, 0, 0),
-		new GregorianCalendar(2020, Calendar.JANUARY, 1, 18, 0, 0)
+		new GregorianCalendar(1442, Calendar.JANUARY, 9, 4, 0, 0),
+		new GregorianCalendar(1442, Calendar.JANUARY, 9, 18, 0, 0)
 	);
 
 	private static final PDate lastDayTimeMan = new PDate(
-			new GregorianCalendar(2020, Calendar.JANUARY, 4, 12, 0, 0),
-			new GregorianCalendar(2020, Calendar.JANUARY, 4, 22, 0, 0)
+			new GregorianCalendar(1442, Calendar.JANUARY, 12, 12, 0, 0),
+			new GregorianCalendar(1442, Calendar.JANUARY, 12, 22, 0, 0)
 	);
 
 	private static PDate currenttimeManager = firstDayTimeMan;

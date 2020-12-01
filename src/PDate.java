@@ -35,15 +35,15 @@ public class PDate extends Calendar {
     }
 
     public Date getStartTime() {
-        return startCalendar.getTime();
+        return new HijriDate(startCalendar.getTimeInMillis());
     }
 
     public Date getEndTime(){
-        return endCalendar.getTime();
+        return new HijriDate(endCalendar.getTimeInMillis());
     }
 
     public Date getCurrentTime() {
-        return currentCalendar.getTime();
+        return new HijriDate(currentCalendar.getTimeInMillis());
     }
 
     public void step(int key, int value){
