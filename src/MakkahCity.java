@@ -1,6 +1,6 @@
 import java.util.*;
 
-import com.sun.org.apache.xerces.internal.impl.dv.dtd.NMTOKENDatatypeValidator;
+
 
 public class MakkahCity {
 
@@ -513,8 +513,8 @@ public class MakkahCity {
 		} //TODO Add max min time, Add  how many arrived. Estimated arrivel if taken street.
 		//TODO: And print all routes with their streets.
 		//TODO: Print time when all have finished
-		String s = String.format("Buses: %d Buses done: %d Average trip in last hour: %s\n",
-				numberOfBusses, numberOfArrivedBuses, avgTimeOfTrip());
+		String s = String.format("Buses: %d, Buses done: %d\nBuses arrived in the last hour: %d, Average trip in last hour: %s\n",
+				numberOfBusses, numberOfArrivedBuses, getNumberOfArrivedBussesPerHour(), avgTimeOfTrip());
 		return s;
 	}
 
@@ -583,6 +583,31 @@ public class MakkahCity {
 			}
 		}
 		return num;
+	}
+	private static int getNumberOfArrivedBussesPerHour() {
+				Calendar now = firstDayTimeMan.getCurrentCalendar();
+				Calendar from = (GregorianCalendar)now.clone();
+				from.roll(Calendar.HOUR, -1);
+				int counter = 1;
+				int sum = 0;
+				int num = 0;
+				for (Campaign campaign : listOfCampaigns){
+					for (Vehicle bus : campaign.getVehicles()){
+						if (bus.isArrivedToDest() && bus.getTimeOfArrival().before(now.getTime())
+						&& bus.getTimeOfArrival().after(from.getTime())) {
+						
+							counter++;
+							num++;
+						}
+					}
+				}
+				sum = sum /counter;
+				int hours = sum / 60;
+				int minutes = sum % 60;
+				if (hours == 0 && minutes == 0) return num;
+				return num;
+			
+		
 	}
 	
 	private static boolean isAllArrived() {
