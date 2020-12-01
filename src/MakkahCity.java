@@ -1,5 +1,7 @@
 import java.util.*;
 
+import com.sun.org.apache.xerces.internal.impl.dv.dtd.NMTOKENDatatypeValidator;
+
 public class MakkahCity {
 
 	private static final ArrayList<Campaign> listOfCampaigns = new ArrayList<>();
@@ -58,7 +60,7 @@ public class MakkahCity {
 			}
 			//Start of every 10min
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
-				addCivilVehicleNoise();
+
 			}
 
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
@@ -66,6 +68,7 @@ public class MakkahCity {
 
 			}
 			clearDoneCivilVehicles();
+			addCivilVehicleNoise();
 			for (Vehicle vehicle : listOfVehicles) {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
@@ -115,7 +118,7 @@ public class MakkahCity {
 			}
 			//Start of every 10min
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
-				addCivilVehicleNoise();
+				
 			}
 
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
@@ -123,6 +126,7 @@ public class MakkahCity {
 
 			}
 			clearDoneCivilVehicles();
+			addCivilVehicleNoise();
 			for (Vehicle vehicle : listOfVehicles) {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
@@ -170,6 +174,8 @@ public class MakkahCity {
 	}
 
 	private static void startMenu() {
+		//TODO: add used by (District) in street menu as option
+		//TODO: add capacity to street list output avg time too?
 		Scanner in = new Scanner(System.in);
 		System.out.println("\n"+currenttimeManager.getCurrentTime()+"\n"+
 							"---------------------------\n" +
@@ -177,21 +183,21 @@ public class MakkahCity {
 							"[2] View Streets\n" +
 							"[3] View Campaigns\n" +
 							"[4] View Routes\n" +
-							"[5] Continue\n" +
-							"[6] Exit");
+							"[5] Print report\n" +
+							"[6] Continue\n" +
+							"[7] Exit");
 		String choice = in.next();
 		//Split into methods?
 		if (choice.equals("1")){
 			System.out.printf("choose from 0 to %d\n", listOfVehicles.size()-1);
 			String c = in.next();
 			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
-			//TODO: override toString() in vehicle then Bus. This will throw cast ex.
 			showVehicle(v);
 			//meybe add option here to go to members (Campaign, Street ...)
 		}
 		if (choice.equals("2")){
 			for (int i = 0; i < stdStreet.length; i++) {
-				System.out.printf("[%d] %s\nm",i, stdStreet[i].getName().name());
+				System.out.printf("[%d] %s\n",i, stdStreet[i].getName().name());
 			}
 			String input = in.next();
 			int index = Integer.parseInt(input);//TODO: unhandled ex
@@ -207,8 +213,9 @@ public class MakkahCity {
 				System.out.printf("[%d] %sUsed By %d buses\n\n", i, stdRoutes[i], count);
 			}
 		}
-		if (choice.equals("5")) return;
-		if (choice.equals("6")) {
+		if (choice.equals("5")) System.out.println(getStreetsReport());
+		if (choice.equals("6")) return;
+		if (choice.equals("7")) {
 			inputListener.stop();
 			t.interrupt();
 			System.exit(0);
@@ -423,13 +430,21 @@ public class MakkahCity {
 		//TODO: rewrite to avoid factoring (deviding) the values down to zero.
 
 		for (Street street: stdStreet) {
-			int numOfSedan = (int)getRandom(40,50);
-			int numOfSUV = (int)getRandom(20,30);
-			int numOfTruck = (int)getRandom(10,12);
+			if (street.getPercentRemainingCapacity() >= 100) 
+				continue;
+			
+			int numOfSedan = (int)getRandom(10,15);
+			int numOfSUV = (int)getRandom(5,9);
+			int numOfTruck = (int)getRandom(3,6);
+			if (!street.isContainsBuses()) {
+				numOfSedan *= 5;
+				numOfSUV *= 5;
+				numOfTruck *= 2;
+			}
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSedan = (int) (numOfSedan * 1.5);
-			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.2);
 			for (int x = 0; x < numOfSedan; x++) {
 				Sedan car = new Sedan(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());//TODO: consider getLength - x
@@ -437,7 +452,7 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					//car.setCurrentStreet(street);
+					car.setCurrentStreet(street);
 				}
 
 			}
@@ -445,7 +460,7 @@ public class MakkahCity {
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfTruck = (int) (numOfTruck * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfTruck = (int) (numOfTruck * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfTruck = (int) (numOfTruck * 1.5);
-			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.2);
 			for (int x = 0; x < numOfTruck; x++) {
 				Truck car = new Truck(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -453,14 +468,14 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					//car.setCurrentStreet(street);
+					car.setCurrentStreet(street);
 				}
 			}
 
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSUV = (int) (numOfSUV * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSUV = (int) (numOfSUV * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSUV = (int) (numOfSUV * 1.5);
-			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSUV = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSUV = (int) (numOfSedan * 1.2);
 			for (int x = 0; x < numOfSUV; x++) {
 				SUV car = new SUV(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -468,7 +483,7 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					//car.setCurrentStreet(street);
+					car.setCurrentStreet(street);
 				}
 			}
 
