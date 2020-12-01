@@ -1,19 +1,31 @@
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class Street implements Travelable {
 
     private double length;
     private int numberOfLanes;
-    private ArrayList<Vehicle> vehicles;
+    private ArrayList<Vehicle> vehicles; //Current
+    private HashMap<Vehicle, ArrayList<Date>> vehiclesHistory;//History of vehicles
     private StreetNames name;
   
   
 
     public Street(double length, int numberOfLanes, StreetNames name) {
         vehicles = new ArrayList<>();
+        vehiclesHistory = new HashMap<>();
         setLength(length);
         setNumberOfLanes(numberOfLanes);
         this.name = name;
+    }
+
+    public Date[] getHistoryForVehicle(Vehicle vehicle){
+        if (vehiclesHistory.containsKey(vehicle)){
+            Date[] hist = new Date[vehiclesHistory.get(vehicle).size()];
+            return vehiclesHistory.get(vehicle).toArray(hist);
+        }
+        return null;
     }
 
     private void setLength(double length) {
@@ -83,10 +95,15 @@ public class Street implements Travelable {
     }
 
     public void addVehicle(Vehicle vehicle) {
-        //if(capcity() > vehicle.getVehicleSize() + 0.5) {
-            //adds incoming vehicle in last.
-            vehicles.add(vehicle);
-        //}
+        vehicles.add(vehicle);
+        addHistoryEntry(vehicle);
+    }
+
+    private void addHistoryEntry(Vehicle vehicle) {
+        if (!vehiclesHistory.containsKey(vehicle)) {
+            vehiclesHistory.put(vehicle, new ArrayList<>());
+        }
+        vehiclesHistory.get(vehicle).add(MakkahCity.getTimeMan().getCurrentTime());//Add time
     }
 
     public double capcityPoint(double min, double max) {
@@ -154,21 +171,6 @@ public class Street implements Travelable {
         return number;
     }
 
-    public boolean isContainsBuses() {
-    	for (Vehicle vehicle : this.vehicles) {
-    		if (vehicle instanceof Bus)
-    			return true;
-    	}
-    	return false;
-	}
-
-	public String getFastestTimeOfTravel(Vehicle vehicle) {
-        double totalLength = length;
-        int maxSpeed = vehicle.getMaxSpeed();
-        int totalTime = (int) (totalLength/maxSpeed);
-        return String.format("%02d:%02d",totalTime / 60, totalTime % 60);
-    }
-
     public String toString(){
         StringBuilder printedStreet = new StringBuilder();
         //Imagine steert is 32 units in lengths (scale down)
@@ -191,11 +193,27 @@ public class Street implements Travelable {
         for (int i = 0; i < 32; i++){
             printedStreet.append("----");
         }
-        return String.format("Street name: %s, Length: %f, Lanes: %d, Vehicles: %d\nDensity:\n%s\n",
+        return String.format("Street name: %s, Length: %.2f, Lanes: %d, Vehicles: %d, Capacity: %%%s\nDensity:\n%s\n",
                 name.name(),
                 length,
                 numberOfLanes,
                 vehicles.size(),
+                getPercentRemainingCapacity(),
                 printedStreet.toString());
+    }
+
+    public boolean isContainsBuses() {
+    	for (Vehicle vehicle : this.vehicles) {
+    		if (vehicle instanceof Bus)
+    			return true;
+    	}
+    	return false;
+	}
+
+	public String getFastestTimeOfTravel(Vehicle vehicle) {
+        double totalLength = length;
+        int maxSpeed = vehicle.getMaxSpeed();
+        int totalTime = (int) (totalLength/maxSpeed);
+        return String.format("%02d:%02d",totalTime / 60, totalTime % 60);
     }
 }

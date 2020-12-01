@@ -24,8 +24,12 @@ public class MakkahCity {
 
 	private static PDate currenttimeManager = firstDayTimeMan;
 
+	private static final InputListener inputListener = new InputListener();
+	private static final Thread t = new Thread(inputListener,"InputThread-Makkah");
+
 	public static void main(String[] args) {
 
+		t.start();
 		//Gen Camp
 		campPerDistrict[District.ALMANSOOR.ordinal()] = new ArrayList<>();
 		campPerDistrict[District.ALAZIZIYA.ordinal()] = new ArrayList<>();
@@ -45,6 +49,7 @@ public class MakkahCity {
 		//Set Routes for Campaigns
 		setRoutesForCampaigns(Mashier.ARAFAT);
 		while(!firstDayTimeMan.isEnded()) {
+			checkInput();
 			//Start of Every hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				System.out.println("\n\n" + getStreetsReport());
@@ -89,6 +94,7 @@ public class MakkahCity {
 		}
 		System.out.println("***************STARTING LAST DAY***************");
 		while(!lastDayTimeMan.isEnded()) {
+			checkInput();
 			//Start of Every hour
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
 				System.out.println("\n\n" + getStreetsReport());
@@ -124,7 +130,101 @@ public class MakkahCity {
 			if (isAllArrived()) allArrivedToHotelsTime = (Date)currenttimeManager.getCurrentTime().clone();
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
 		}
+		inputListener.stop();
+		t.interrupt();
 		//TODO: print final report 
+	}
+
+	private static void checkInput() {
+		String input = "";
+		if (inputListener.hasNew()){
+			input = inputListener.getInput();
+			if (input.equals("m")){
+				System.out.println("PAUSED");
+				inputListener.pause();
+				startMenu();
+				inputListener.unpause();
+			}
+		}
+	}
+
+	private static void startMenu() {
+		//TODO: add used by (District) in street menu as option
+		//TODO: add capacity to street list output avg time too?
+		Scanner in = new Scanner(System.in);
+		System.out.println("\n"+currenttimeManager.getCurrentTime()+"\n"+
+							"---------------------------\n" +
+							"[1] View Vehicles\n" +
+							"[2] View Streets\n" +
+							"[3] View Campaigns\n" +
+							"[4] View Routes\n" +
+							"[5] Print report\n" +
+							"[6] Continue\n" +
+							"[7] Exit");
+		String choice = in.next();
+		//Split into methods?
+		if (choice.equals("1")){
+			System.out.printf("choose from 0 to %d\n", listOfVehicles.size()-1);
+			String c = in.next();
+			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
+			showVehicle(v);
+			//meybe add option here to go to members (Campaign, Street ...)
+		}
+		if (choice.equals("2")){
+			for (int i = 0; i < stdStreet.length; i++) {
+				System.out.printf("[%d] %s\n",i, stdStreet[i].getName().name());
+			}
+			String input = in.next();
+			int index = Integer.parseInt(input);//TODO: unhandled ex
+			showStreet(stdStreet[index]);
+		}
+		if (choice.equals("4")){
+			for (int i = 0; i < stdRoutes.length; i++){
+				int count = 0;
+				for (Campaign campaign : listOfCampaigns)
+					if (campaign.getRoute() == stdRoutes[i])
+						count += campaign.getVehicles().size();
+
+				System.out.printf("[%d] %sUsed By %d buses\n\n", i, stdRoutes[i], count);
+			}
+		}
+		if (choice.equals("5")) System.out.println(getStreetsReport());
+		if (choice.equals("6")) return;
+		if (choice.equals("7")) {
+			inputListener.stop();
+			t.interrupt();
+			System.exit(0);
+		}
+		startMenu();
+	}
+
+	private static void showVehicle(Vehicle vehicle) {
+		System.out.print("\n\n"+vehicle.getUID()+"\n"+vehicle.toString()+"\n\n");
+		//TODO: Continue here for more options or return
+	}
+
+	private static void showCampaign(Campaign campaign){
+
+	}
+
+	private static void showStreet(Street street) {
+		String choice = "";
+		Scanner in = new Scanner(System.in);
+		System.out.println("\n"+street.getName().name());
+		System.out.println("---------------------------\n"+
+				"[1] Details\n" +
+				"[2] Select vehicle\n" +
+				"[3] Get history for vehicle (NOT IMPLEMENTED YET)\n" +
+				"[4] Return");
+		choice = in.next();
+		if (choice.equals("1")) System.out.println("\n\n"+street.toString());
+		if (choice.equals("2")){
+			System.out.printf("Select from 0 to %d\n", street.getVehicles().size());
+			choice = in.next();
+			showVehicle(street.getVehicles().get(Integer.parseInt(choice)));
+		}
+		if (choice.equals("4")) return;
+		showStreet(street);
 	}
 
 	private static void clearDoneCivilVehicles() {
@@ -418,7 +518,7 @@ public class MakkahCity {
 			report.append("\n");
 		}
 		report.append("\n").append(getFinalRep()).append("\n");
-		report.append(preSimulationReport());
+		report.append(preSimulationReport()).append("Type m+Enter to view menu");
 		return report.toString();
 	}
 	

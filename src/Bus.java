@@ -29,7 +29,15 @@ public class Bus extends CivilVehicle {
     public int getTimeToFix() {
         return TIME_TO_FIX;
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(super.toString());
+        s.append(String.format("ID: %s, Campaign ID: %s\n",this.getUID() , getCampaign().getUID()));
+        return s.toString();
+    }
+
     private void generateUID() {
         numeberOfBuses++;
         this.UID = String.format("BUS%04d", numeberOfBuses);
