@@ -170,6 +170,8 @@ public class MakkahCity {
 	}
 
 	private static void startMenu() {
+		//TODO: add used by (District) in street menu as option
+		//TODO: add capacity to street list output avg time too?
 		Scanner in = new Scanner(System.in);
 		System.out.println("\n"+currenttimeManager.getCurrentTime()+"\n"+
 							"---------------------------\n" +
@@ -177,21 +179,21 @@ public class MakkahCity {
 							"[2] View Streets\n" +
 							"[3] View Campaigns\n" +
 							"[4] View Routes\n" +
-							"[5] Continue\n" +
-							"[6] Exit");
+							"[5] Print report\n" +
+							"[6] Continue\n" +
+							"[7] Exit");
 		String choice = in.next();
 		//Split into methods?
 		if (choice.equals("1")){
 			System.out.printf("choose from 0 to %d\n", listOfVehicles.size()-1);
 			String c = in.next();
 			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
-			//TODO: override toString() in vehicle then Bus. This will throw cast ex.
 			showVehicle(v);
 			//meybe add option here to go to members (Campaign, Street ...)
 		}
 		if (choice.equals("2")){
 			for (int i = 0; i < stdStreet.length; i++) {
-				System.out.printf("[%d] %s\nm",i, stdStreet[i].getName().name());
+				System.out.printf("[%d] %s\n",i, stdStreet[i].getName().name());
 			}
 			String input = in.next();
 			int index = Integer.parseInt(input);//TODO: unhandled ex
@@ -202,8 +204,9 @@ public class MakkahCity {
 				System.out.printf("[%d] %s\n", i, stdRoutes[i]);
 			}
 		}
-		if (choice.equals("5")) return;
-		if (choice.equals("6")) {
+		if (choice.equals("5")) System.out.println(getStreetsReport());
+		if (choice.equals("6")) return;
+		if (choice.equals("7")) {
 			inputListener.stop();
 			t.interrupt();
 			System.exit(0);
