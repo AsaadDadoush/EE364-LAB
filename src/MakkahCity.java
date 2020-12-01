@@ -132,7 +132,6 @@ public class MakkahCity {
 		}
 		inputListener.stop();
 		t.interrupt();
-		//TODO: print final report 
 	}
 
 	private static void checkInput() {
@@ -391,7 +390,6 @@ public class MakkahCity {
 	}
 
 	private static void addCivilVehicleNoise() {
-		//TODO: rewrite to avoid factoring (deviding) the values down to zero.
 
 		for (Street street: stdStreet) {
 			if (street.getPercentRemainingCapacity() >= 100) 
@@ -530,7 +528,6 @@ public class MakkahCity {
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
 		} //TODO Add max min time.
-		//TODO: And print all routes with their streets.
 		String fFormat = "All arrived to %s at: %s";
 		boolean arr = isAllArrived();//since it has looping. use once.
 		if (arr && allArrivedToArafatTime != null)
@@ -652,7 +649,6 @@ public class MakkahCity {
 		return report.toString();
 	}
 
-	//TODO: Bug: values are too low for second day (8, 9, 12 minutes?)
 	//This is for ALL vehicles, should make it for last hour to be consistent with the report.
 	public static String avgTimeOnStreet(Street street) {
 		int sum = 0;

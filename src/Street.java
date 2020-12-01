@@ -147,13 +147,13 @@ public class Street implements Travelable {
         	return capcity;
     }
     
-    	public Street getNextStreet(Vehicle vehicle) {
-    		int nextIndex = vehicle.getRoute().indexOf(vehicle.getCurrentStreet()) +1 ;
-    		if(vehicle.getRoute().getStreets().length > nextIndex) 
-    		return 	(vehicle.getRoute().getStreets()[nextIndex]);
-    			else
-    				return null;
-    	}
+    public Street getNextStreet(Vehicle vehicle) {
+        int nextIndex = vehicle.getRoute().indexOf(vehicle.getCurrentStreet()) +1 ;
+        if(vehicle.getRoute().getStreets().length > nextIndex)
+        return 	(vehicle.getRoute().getStreets()[nextIndex]);
+            else
+                return null;
+    }
 
     public int getNumberOfBuses() {
         int number = 0;
