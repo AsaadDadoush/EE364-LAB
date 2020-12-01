@@ -539,13 +539,15 @@ public class MakkahCity {
 	private static String preSimulationReport() {
 		StringBuilder report = new StringBuilder();
 		report.append("******************************District details******************************\n");
-		report.append("District | Campaigns | Busses | Est. time to Arafat | Est. time to District \n");
+		report.append("District | Campaigns | Busses | Best time to Arafat | Best time to District \n");
 		for (int i = 0; i < campPerDistrict.length; i++) {
 			//Per District, i denotes district index
 			report.append(String.format("%-9s|",campPerDistrict[i].get(0).getHotelDistrict().name()));
 
 			report.append(String.format(" %-10d|",campPerDistrict[i].size()));
 			report.append(String.format(" %-7d|", busesInDistrict(District.values()[i])));
+			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.ARAFAT).getFastestTimeOfTravel(new Bus())));
+			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
 			//Calc values per dist here.
 
 			report.append("\n");

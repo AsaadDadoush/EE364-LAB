@@ -38,7 +38,7 @@ public class Route {
         double totalLength = getTotalLength();
         int maxSpeed = vehicle.getMaxSpeed();
         int totalTime = (int) (totalLength/maxSpeed);
-        String result = String.format("%2d:%2d",totalTime % 60, totalTime /60);
+        String result = String.format("%02d:%02d",totalTime / 60, totalTime % 60);
         return result;
     }
 
