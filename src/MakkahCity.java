@@ -1,5 +1,7 @@
 import java.util.*;
 
+import com.sun.org.apache.xerces.internal.impl.dv.dtd.NMTOKENDatatypeValidator;
+
 public class MakkahCity {
 
 	private static final ArrayList<Campaign> listOfCampaigns = new ArrayList<>();
@@ -58,7 +60,7 @@ public class MakkahCity {
 			}
 			//Start of every 10min
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
-				addCivilVehicleNoise();
+
 			}
 
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
@@ -66,6 +68,7 @@ public class MakkahCity {
 
 			}
 			clearDoneCivilVehicles();
+			addCivilVehicleNoise();
 			for (Vehicle vehicle : listOfVehicles) {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
@@ -115,7 +118,7 @@ public class MakkahCity {
 			}
 			//Start of every 10min
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
-				addCivilVehicleNoise();
+				
 			}
 
 			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
@@ -123,6 +126,7 @@ public class MakkahCity {
 
 			}
 			clearDoneCivilVehicles();
+			addCivilVehicleNoise();
 			for (Vehicle vehicle : listOfVehicles) {
 				Route route = vehicle.getRoute();
 				double currentLocation = vehicle.getCurrentLocation();
@@ -421,13 +425,21 @@ public class MakkahCity {
 		//TODO: rewrite to avoid factoring (deviding) the values down to zero.
 
 		for (Street street: stdStreet) {
-			int numOfSedan = (int)getRandom(40,50);
-			int numOfSUV = (int)getRandom(20,30);
-			int numOfTruck = (int)getRandom(10,12);
+			if (street.getPercentRemainingCapacity() >= 100) 
+				continue;
+			
+			int numOfSedan = (int)getRandom(10,15);
+			int numOfSUV = (int)getRandom(5,9);
+			int numOfTruck = (int)getRandom(3,6);
+			if (!street.isContainsBuses()) {
+				numOfSedan *= 5;
+				numOfSUV *= 5;
+				numOfTruck *= 2;
+			}
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSedan = (int) (numOfSedan * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSedan = (int) (numOfSedan * 1.5);
-			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.2);
 			for (int x = 0; x < numOfSedan; x++) {
 				Sedan car = new Sedan(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());//TODO: consider getLength - x
@@ -435,7 +447,7 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					//car.setCurrentStreet(street);
+					car.setCurrentStreet(street);
 				}
 
 			}
@@ -443,7 +455,7 @@ public class MakkahCity {
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfTruck = (int) (numOfTruck * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfTruck = (int) (numOfTruck * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfTruck = (int) (numOfTruck * 1.5);
-			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSedan = (int) (numOfSedan * 1.2);
 			for (int x = 0; x < numOfTruck; x++) {
 				Truck car = new Truck(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -451,14 +463,14 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					//car.setCurrentStreet(street);
+					car.setCurrentStreet(street);
 				}
 			}
 
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY1) numOfSUV = (int) (numOfSUV * 0.5);
 			if (street.getName() == StreetNames.FOURTH_HIGHWAY2) numOfSUV = (int) (numOfSUV * 0.5);
 			if (street.getName() == StreetNames.STREET3) numOfSUV = (int) (numOfSUV * 1.5);
-			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSUV = (int) (numOfSedan * 1.5);
+			if (street.getName() == StreetNames.IBRAHIM_ALKHALIL2) numOfSUV = (int) (numOfSedan * 1.2);
 			for (int x = 0; x < numOfSUV; x++) {
 				SUV car = new SUV(getRandom(4, 5));
 				double pointOfEntry = getRandom(0, street.getLength());
@@ -466,7 +478,7 @@ public class MakkahCity {
 					listOfVehicles.add(car);
 					car.setCurrentLocation(pointOfEntry);
 					car.setRoute(new Route(street));
-					//car.setCurrentStreet(street);
+					car.setCurrentStreet(street);
 				}
 			}
 
