@@ -169,17 +169,6 @@ public class MakkahCity {
 		}
 	}
 
-	/**
-	 * Checks if 'now' is within range of coming to arafat and leaving mena.
-	 * Arafat day range ends 01/01/2020 05:00PM
-	 */
-	private static boolean isArafatDayRange() {
-		Calendar arafatDayStart = (GregorianCalendar) firstDayTimeMan.getStartCalendar().clone();
-		Calendar arafatDayEnd = new GregorianCalendar(2020, Calendar.JANUARY, 1, 17, 0, 0);
-		Calendar now = firstDayTimeMan.getCurrentCalendar();
-		return now.after(arafatDayStart) && now.before(arafatDayEnd);
-	}
-
 	private static double getRandom(double min, double max) {
 		return (Math.random() * (max - min) + min);
 	}
@@ -524,7 +513,7 @@ public class MakkahCity {
 	 */
 	private static String avgTimeOfTrip() {
 		//TODO: does output diff value even after all have arrived.
-		Calendar now = firstDayTimeMan.getCurrentCalendar();
+		Calendar now = currenttimeManager.getCurrentCalendar();
 		Calendar from = (GregorianCalendar)now.clone();
 		from.roll(Calendar.HOUR, -1);
 		int counter = 1;
@@ -585,29 +574,19 @@ public class MakkahCity {
 		return num;
 	}
 	private static int getNumberOfArrivedBussesPerHour() {
-				Calendar now = firstDayTimeMan.getCurrentCalendar();
-				Calendar from = (GregorianCalendar)now.clone();
-				from.roll(Calendar.HOUR, -1);
-				int counter = 1;
-				int sum = 0;
-				int num = 0;
-				for (Campaign campaign : listOfCampaigns){
-					for (Vehicle bus : campaign.getVehicles()){
-						if (bus.isArrivedToDest() && bus.getTimeOfArrival().before(now.getTime())
-						&& bus.getTimeOfArrival().after(from.getTime())) {
-						
-							counter++;
-							num++;
-						}
-					}
+		Calendar now = currenttimeManager.getCurrentCalendar();
+		Calendar from = (GregorianCalendar)now.clone();
+		from.roll(Calendar.HOUR, -1);
+		int num = 0;
+		for (Campaign campaign : listOfCampaigns){
+			for (Vehicle bus : campaign.getVehicles()){
+				if (bus.isArrivedToDest() && bus.getTimeOfArrival().before(now.getTime())
+				&& bus.getTimeOfArrival().after(from.getTime())) {
+					num++;
 				}
-				sum = sum /counter;
-				int hours = sum / 60;
-				int minutes = sum % 60;
-				if (hours == 0 && minutes == 0) return num;
-				return num;
-			
-		
+			}
+		}
+		return num;
 	}
 	
 	private static boolean isAllArrived() {
