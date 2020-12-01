@@ -49,19 +49,7 @@ public class MakkahCity {
 				System.out.println("\n\n" + getStreetsReport());
 			}
 			else System.out.print(".");
-			//Start of Every half-hour
-			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
-			}
-			//Start of every 10min
-			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
-
-			}
-
-			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
-		 		&& firstDayTimeMan.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
-
-			}
 			clearDoneCivilVehicles();
 			addCivilVehicleNoise();
 			for (Vehicle vehicle : listOfVehicles) {
@@ -88,9 +76,7 @@ public class MakkahCity {
 					}
 				}
 			}
-			//noise based on time of day (From PDate)
 			firstDayTimeMan.step(Calendar.MINUTE, 1);
-			//for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
 		//TODO make report
 		currenttimeManager = lastDayTimeMan;
@@ -106,19 +92,7 @@ public class MakkahCity {
 				System.out.println("\n\n" + getStreetsReport());
 			}
 			else System.out.print(".");
-			//Start of Every half-hour
-			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 30 == 0){
 
-			}
-			//Start of every 10min
-			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) % 10 == 0){
-				
-			}
-
-			if (lastDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == getRandom(0,59)
-					&& lastDayTimeMan.getCurrentCalendar().get(Calendar.SECOND) == getRandom(0,59)){
-
-			}
 			clearDoneCivilVehicles();
 			addCivilVehicleNoise();
 			for (Vehicle vehicle : listOfVehicles) {
@@ -145,9 +119,7 @@ public class MakkahCity {
 					}
 				}
 			}
-			//noise based on time of day (From PDate)
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
-			//for (int i = 0; i < 46; i++) System.out.print("\b");
 		}
 		//TODO: print final report 
 	}
@@ -379,32 +351,6 @@ public class MakkahCity {
 		}
 	}
 
-	/**
-	 * Generates 'noise' cars to be used in streets
-	 * @param numberOfCars
-	 * @return Array of 70% Sedans and 30% SUVs
-	 */
-	private static CivilVehicle[] generateCivilVehicles(int numberOfCars) {
-
-		CivilVehicle[] cars = new CivilVehicle[numberOfCars];
-		int sedans = (int)(numberOfCars*0.7);
-		int SUVs = numberOfCars - sedans;
-
-		for (int i = 0; i < sedans; i++) {
-			cars[i] = new Sedan(getRandom(25,32)/10);
-		}
-
-		for (int i = 0; i < SUVs; i++) {
-			try {
-				cars[sedans+i] = new SUV(getRandom(35,45)/10);
-			}
-			catch (IndexOutOfBoundsException ex) {
-				break;
-			}
-		}
-		return cars;
-	}
-
 	public static PDate getTimeMan() {
 		return currenttimeManager;
 	}
@@ -445,23 +391,6 @@ public class MakkahCity {
 		return routes.toArray(routesArray);
 	}
 	
-	
-	
-	private static void printReport() {
-		for(Street street : stdStreet) {
-			System.out.printf("StreetName: %s NumberOfVheciles : %d  Capcity: %f\n",
-					street.getName().name(),street.getVehicles().size(), street.capcity());
-			int qurter = (int) street.getLength()/4;
-			double capcity = 0;
-				for(int i = 0; i < 4; i++) {
-					capcity = street.capcityPoint(i * qurter, qurter * (i+1));
-					System.out.printf("qurter%d: %.2f ", (i+1) , capcity );
-					}
-				System.out.println("\n");	
-		}	
-	}
-	
-	
 	private static String getStreetsReport() {
 		String status = "";
 		if (currenttimeManager == firstDayTimeMan) status = "   Status: Heading to Arafat";
@@ -499,7 +428,7 @@ public class MakkahCity {
 		//Redundant loops slow down execution. find better sol.
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
-		} //TODO Add max min time, Add  how many arrived. Estimated arrivel if taken street.
+		} //TODO Add max min time, Estimated arrivel if taken street.
 		//TODO: And print all routes with their streets.
 		//TODO: Print time when all have finished
 		String s = String.format("Buses: %d, Buses done: %d\nBuses arrived in the last hour: %d, Average trip in last hour: %s\n",
@@ -518,7 +447,6 @@ public class MakkahCity {
 		from.roll(Calendar.HOUR, -1);
 		int counter = 1;
 		int sum = 0;
-		//TODO check last day avg
 		for (Campaign campaign : listOfCampaigns){
 			for (Vehicle bus : campaign.getVehicles()){
 				if (bus.isArrivedToDest() && bus.getTimeOfArrival().before(now.getTime())
@@ -573,6 +501,7 @@ public class MakkahCity {
 		}
 		return num;
 	}
+
 	private static int getNumberOfArrivedBussesPerHour() {
 		Calendar now = currenttimeManager.getCurrentCalendar();
 		Calendar from = (GregorianCalendar)now.clone();
@@ -595,15 +524,6 @@ public class MakkahCity {
 				return false;
 		
 		return true;
-	}
-
-	private static String getColoredStreetName(Street street, int capacity) {
-		String s = "";
-		String name = street.getName().name();
-		if (capacity > 80) s = ANSI_RED + name;
-		else if (capacity > 60) s = ANSI_YELLOW + name;
-		else s = ANSI_GREEN + name;
-		return s + ANSI_RESET;
 	}
 
 	private static String preSimulationReport() {
@@ -648,15 +568,4 @@ public class MakkahCity {
 		}
 		return buses;
 	}
-
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_BLACK = "\u001B[30m";
-	public static final String ANSI_RED = "\u001B[31m";
-	public static final String ANSI_GREEN = "\u001B[32m";
-	public static final String ANSI_YELLOW = "\u001B[33m";
-	public static final String ANSI_BLUE = "\u001B[34m";
-	public static final String ANSI_PURPLE = "\u001B[35m";
-	public static final String ANSI_CYAN = "\u001B[36m";
-	public static final String ANSI_WHITE = "\u001B[37m";
-
 }
