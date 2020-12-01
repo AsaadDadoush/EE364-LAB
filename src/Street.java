@@ -162,6 +162,13 @@ public class Street {
     	return false;
 	}
 
+	public String getFastestTimeOfTravel(Vehicle vehicle) {
+        double totalLength = length;
+        int maxSpeed = vehicle.getMaxSpeed();
+        int totalTime = (int) (totalLength/maxSpeed);
+        return String.format("%02d:%02d",totalTime / 60, totalTime % 60);
+    }
+
     public String toString(){
         StringBuilder printedStreet = new StringBuilder();
         //Imagine steert is 32 units in lengths (scale down)

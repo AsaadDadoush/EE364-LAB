@@ -44,7 +44,6 @@ public class MakkahCity {
 
 		//Set Routes for Campaigns
 		setRoutesForCampaigns(Mashier.ARAFAT);
-		System.out.println(preSimulationReport());
 		while(!firstDayTimeMan.isEnded()) {
 			//Start of Every hour
 			if (firstDayTimeMan.getCurrentCalendar().get(Calendar.MINUTE) == 0){
@@ -401,12 +400,12 @@ public class MakkahCity {
 		else status = "   Status: Heading to hotels";
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s%s\n" +
-						"    Street name    |Street Load| Total | Buses | Local Vehicles | Avg. Time" +
-						"*********| District  | Average Arrival | Avg. time\n";
+						"    Street name    |Street Load| Total | Buses | Local Vehicles | Avg. Time\n";
+
 		StringBuilder report = new StringBuilder();
 		report.append(String.format(headerFormat, currenttimeManager.getCurrentTime(), status));
 		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d | %-9s";
-		String districtForamt = "         | %-9s | %%%-14d | %s";
+
 		for (int i = 0; i < stdStreet.length; i++) {
 			int cap = stdStreet[i].getPercentRemainingCapacity();
 			report.append(String.format(streetFormat,
@@ -416,13 +415,10 @@ public class MakkahCity {
 					stdStreet[i].getNumberOfBuses(),
 					stdStreet[i].getNumberOfLocalCars(),
 					avgTimeOnStreet(stdStreet[i])));
-			if (i < 3){
-				report.append(String.format(districtForamt, District.values()[i], getPercentArrival(District.values()[i]),getAvgTimeOfTrip(District.values()[i])));
-			}
 			report.append("\n");
 		}
-		report.append("\n").append(getFinalRep());
-		report.append("*************************");
+		report.append("\n").append(getFinalRep()).append("\n");
+		report.append(preSimulationReport());
 		return report.toString();
 	}
 	
@@ -433,7 +429,7 @@ public class MakkahCity {
 		//Redundant loops slow down execution. find better sol.
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
-		} //TODO Add max min time, Estimated arrivel if taken street.
+		} //TODO Add max min time.
 		//TODO: And print all routes with their streets.
 		String fFormat = "All arrived to %s at: %s";
 		boolean arr = isAllArrived();//since it has looping. use once.
@@ -471,7 +467,7 @@ public class MakkahCity {
 		int hours = sum / 60;
 		int minutes = sum % 60;
 		if (hours == 0 && minutes == 0) return "(No arrivals) in last Hour";
-		return String.format("%2d:%02d", hours,minutes);
+		return String.format("%2d:%02d", hours, minutes);
 	}
 
 	private static int getPercentArrival(District district) {
@@ -539,15 +535,16 @@ public class MakkahCity {
 	private static String preSimulationReport() {
 		StringBuilder report = new StringBuilder();
 		report.append("******************************District details******************************\n");
-		report.append("District | Campaigns | Busses | Best time to Arafat | Best time to District \n");
+		report.append("District | Campaigns | Busses | Avg arrival | Best time to Arafat | Best time to District \n");
 		for (int i = 0; i < campPerDistrict.length; i++) {
 			//Per District, i denotes district index
 			report.append(String.format("%-9s|",campPerDistrict[i].get(0).getHotelDistrict().name()));
 
 			report.append(String.format(" %-10d|",campPerDistrict[i].size()));
 			report.append(String.format(" %-7d|", busesInDistrict(District.values()[i])));
+			report.append(String.format(" %%%-11d|", getPercentArrival(District.values()[i])));
 			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.ARAFAT).getFastestTimeOfTravel(new Bus())));
-			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
+			report.append(String.format(" %-20s", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
 			//Calc values per dist here.
 
 			report.append("\n");
@@ -569,7 +566,7 @@ public class MakkahCity {
 		sum /= counter;
 		int hours = sum / 60;
 		int minutes = sum % 60;
-		if (hours == 0 && minutes == 0) return "n/a";
+		if (hours == 0 && minutes == 0) return street.getFastestTimeOfTravel(new Bus());
 		return String.format("%02d:%02d", hours, minutes);
 	}
 
