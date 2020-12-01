@@ -9,6 +9,8 @@ public class MakkahCity {
 	private static final ArrayList<Campaign>[] campPerDistrict = new ArrayList[District.values().length];
 	private static final Route[] stdRoutes = new Route[RouteName.values().length];
 	private static final Street[] stdStreet = new Street[StreetNames.values().length];
+	private static Date allArrivedToArafatTime;
+	private static Date allArrivedToHotelsTime;
 
 	private static final PDate firstDayTimeMan = new PDate(
 		new GregorianCalendar(2020, Calendar.JANUARY, 1, 4, 0, 0),
@@ -76,6 +78,7 @@ public class MakkahCity {
 					}
 				}
 			}
+			if (isAllArrived()) allArrivedToArafatTime = (Date)currenttimeManager.getCurrentTime().clone();
 			firstDayTimeMan.step(Calendar.MINUTE, 1);
 		}
 		//TODO make report
@@ -119,6 +122,7 @@ public class MakkahCity {
 					}
 				}
 			}
+			if (isAllArrived()) allArrivedToHotelsTime = (Date)currenttimeManager.getCurrentTime().clone();
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
 		}
 		//TODO: print final report 
@@ -423,6 +427,7 @@ public class MakkahCity {
 	}
 	
 	private static String getFinalRep() {
+		StringBuilder s = new StringBuilder();
 		int numberOfBusses = 0;
 		int numberOfArrivedBuses = getNumberOfArrivedBusses();
 		//Redundant loops slow down execution. find better sol.
@@ -430,10 +435,15 @@ public class MakkahCity {
 			numberOfBusses += campaign.getNumberOfBusses();
 		} //TODO Add max min time, Estimated arrivel if taken street.
 		//TODO: And print all routes with their streets.
-		//TODO: Print time when all have finished
-		String s = String.format("Buses: %d, Buses done: %d\nBuses arrived in the last hour: %d, Average trip in last hour: %s\n",
-				numberOfBusses, numberOfArrivedBuses, getNumberOfArrivedBussesPerHour(), avgTimeOfTrip());
-		return s;
+		String fFormat = "All arrived to %s at: %s";
+		boolean arr = isAllArrived();//since it has looping. use once.
+		if (arr && allArrivedToArafatTime != null)
+			s.append(String.format(fFormat,"Arafat",allArrivedToArafatTime)).append("\n");
+		if (arr && allArrivedToHotelsTime != null)
+			s.append(String.format(fFormat,"Hotels",allArrivedToHotelsTime)).append("\n");
+		s.append(String.format("Buses: %d, Buses done: %d\nBuses arrived in the last hour: %d, Average trip in last hour: %s\n",
+				numberOfBusses, numberOfArrivedBuses, getNumberOfArrivedBussesPerHour(), avgTimeOfTrip()));
+		return s.toString();
 	}
 
 	/**
