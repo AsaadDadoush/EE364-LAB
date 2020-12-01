@@ -1,4 +1,4 @@
-public class Route {
+public class Route implements Travelable {
 
     private Street[] streets;
     private District hotelArea;

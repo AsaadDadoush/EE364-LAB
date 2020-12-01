@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Street {
+public class Street implements Travelable {
 
     private double length;
     private int numberOfLanes;
