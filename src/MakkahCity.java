@@ -199,7 +199,12 @@ public class MakkahCity {
 		}
 		if (choice.equals("4")){
 			for (int i = 0; i < stdRoutes.length; i++){
-				System.out.printf("[%d] %s\n", i, stdRoutes[i]);
+				int count = 0;
+				for (Campaign campaign : listOfCampaigns)
+					if (campaign.getRoute() == stdRoutes[i])
+						count += campaign.getVehicles().size();
+
+				System.out.printf("[%d] %sUsed By %d buses\n\n", i, stdRoutes[i], count);
 			}
 		}
 		if (choice.equals("5")) return;
