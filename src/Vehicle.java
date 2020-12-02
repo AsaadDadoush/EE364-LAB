@@ -42,6 +42,7 @@ public abstract class Vehicle {
         this.currentLocation = 0;
         maxArrived();
         minArrived();
+        if (totalDistanceTraveled > route.getTotalLength()) totalDistanceTraveled = route.getTotalLength();
     }
     
     public void maxArrived() {
@@ -225,6 +226,24 @@ public abstract class Vehicle {
         return 0;
     }
 
+    public String getProgress() {
+        int p = (int)((totalDistanceTraveled/route.getTotalLength())*100);
+        if (p > 100) p = 100;
+        return String.format("%%%d", p);
+    }
+
+    public String getTripTime() {
+        long minutes = 0;
+        if (timeStartedMoving != null && timeOfArrival != null){
+            minutes = (getTimeOfArrival().getTime() - getTimeStartedMoving().getTime())/60000;
+
+        }
+        else if (timeStartedMoving != null) { //compare to now
+            minutes = (MakkahCity.getTimeMan().getCurrentTime().getTime() - getTimeStartedMoving().getTime())/60000;
+        }
+        return String.format("%d:%02d", minutes /60, minutes % 60);
+    }
+
     public boolean hasCrossedStreet(Street street) {
         return routeTimeHistory.containsKey(street);
     }
@@ -233,11 +252,11 @@ public abstract class Vehicle {
         Street st = this.currentStreet;
         String streetString = "null";
         if (st != null) streetString = st.getName().name();
-        return String.format("%s\nRoute: %s\nStreet: %s, Location: %.1f, Distance covered: %.1f\n" +
-                        "Arrived: %s Starting time: %s Arrive Time: %s\n",
+        return String.format("%s\nRoute: %s\nStreet: %s, Location: %.1f, Distance covered: %.1f, Progress: %s\n" +
+                        "Arrived: %s Starting time: %s Arrive Time: %s, Trip time: %s\n",
                 super.toString(), this.route, streetString,
-                this.getCurrentLocation(),this.totalDistanceTraveled, this.isArrivedToDest(),
-                this.getTimeStartedMoving(), this.getTimeOfArrival());
+                this.getCurrentLocation(), this.totalDistanceTraveled, getProgress(), this.isArrivedToDest(),
+                this.getTimeStartedMoving(), this.getTimeOfArrival(), getTripTime());
     }
 }
 
