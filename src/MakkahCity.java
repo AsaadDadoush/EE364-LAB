@@ -523,11 +523,11 @@ public class MakkahCity {
 		else status = "   Status: Heading to hotels";
 		String headerFormat = "******Streets report*****\n" +
 						"Time: %s%s\n" +
-						"    Street name    |Street Load| Total | Buses | Local Vehicles | Avg. Time\n";
+						"    Street name    |Street Load| Total | Buses | Local Vehicles | Avg. Time |\n";
 
 		StringBuilder report = new StringBuilder();
 		report.append(String.format(headerFormat, currenttimeManager.getCurrentTime(), status));
-		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d | %-9s";
+		String streetFormat = "%-18s | %%%-8s | %5d | %5d | %14d | %-10s|";
 
 		for (int i = 0; i < stdStreet.length; i++) {
 			int cap = stdStreet[i].getPercentRemainingCapacity();
@@ -567,8 +567,8 @@ public class MakkahCity {
 	private static String minMaxRep() {
 		StringBuilder report = new StringBuilder();
 		if (Vehicle.getMaxArrived() != null && Vehicle.getMinArrived() != null) {
-			report.append(String.format(" maximum trip %s", Vehicle.getMaxArrived().timeToString()));
-			report.append(String.format(" minimum trip %s", Vehicle.getMinArrived().timeToString()));
+			report.append(String.format(" Maximum trip %s,", Vehicle.getMaxArrived().timeToString()));
+			report.append(String.format(" Minimum trip %s", Vehicle.getMinArrived().timeToString()));
 			}		
 		return report.toString();
 	}
@@ -637,7 +637,7 @@ public class MakkahCity {
 			}
 		}
 		return num;
-	}//???
+	}
 
 	private static int getNumberOfArrivedBussesPerHour() {
 		Calendar now = currenttimeManager.getCurrentCalendar();
@@ -666,16 +666,16 @@ public class MakkahCity {
 	private static String preSimulationReport() {
 		StringBuilder report = new StringBuilder();
 		report.append("******************************District details******************************\n");
-		report.append("District | Campaigns | Busses | Avg arrival | Best time to Arafat | Best time to District \n");
+		report.append(" District | Campaigns | Busses | Avg arrival | Best time to Arafat | Best time to District |\n");
 		for (int i = 0; i < campPerDistrict.length; i++) {
 			//Per District, i denotes district index
-			report.append(String.format("%-9s|",campPerDistrict[i].get(0).getHotelDistrict().name()));
+			report.append(String.format("%-10s|",campPerDistrict[i].get(0).getHotelDistrict().name()));
 
 			report.append(String.format(" %-10d|",campPerDistrict[i].size()));
 			report.append(String.format(" %-7d|", busesInDistrict(District.values()[i])));
 			report.append(String.format(" %%%-11d|", getPercentArrival(District.values()[i])));
 			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.ARAFAT).getFastestTimeOfTravel(new Bus())));
-			report.append(String.format(" %-20s", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
+			report.append(String.format(" %-22s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
 			//Calc values per dist here.
 
 			report.append("\n");
