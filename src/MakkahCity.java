@@ -624,7 +624,7 @@ public class MakkahCity {
 		sum = sum /counter;
 		int hours = sum / 60;
 		int minutes = sum % 60;
-		if (hours == 0 && minutes == 0) return "No arrivals yet";
+		if (hours == 0 && minutes == 0) return " n/a";
 		return String.format("%2d:%02d", hours,minutes);
 	}
 
@@ -666,14 +666,15 @@ public class MakkahCity {
 	private static String preSimulationReport() {
 		StringBuilder report = new StringBuilder();
 		report.append("******************************District details******************************\n");
-		report.append(" District | Campaigns | Busses | Avg arrival | Best time to Arafat | Best time to District |\n");
+		report.append(" District | Campaigns | Busses | Arrival | Avg Time | Best time to Arafat | Best time to District |\n");
 		for (int i = 0; i < campPerDistrict.length; i++) {
 			//Per District, i denotes district index
 			report.append(String.format("%-10s|",campPerDistrict[i].get(0).getHotelDistrict().name()));
 
 			report.append(String.format(" %-10d|",campPerDistrict[i].size()));
 			report.append(String.format(" %-7d|", busesInDistrict(District.values()[i])));
-			report.append(String.format(" %%%-11d|", getPercentArrival(District.values()[i])));
+			report.append(String.format(" %%%-7d|", getPercentArrival(District.values()[i])));
+			report.append(String.format(" %-9s|", getAvgTimeOfTrip(District.values()[i])));
 			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.ARAFAT).getFastestTimeOfTravel(new Bus())));
 			report.append(String.format(" %-22s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
 			//Calc values per dist here.
