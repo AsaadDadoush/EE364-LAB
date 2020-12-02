@@ -13,6 +13,8 @@ public abstract class Vehicle {
     private Date timeStartedMoving;
     private Date timeOfArrival;
     private Date timeStartedOnCurrentStreet;
+    private static Vehicle max;
+    private static Vehicle min;
 
     //Map Street to Minutes
     private HashMap<Street, Integer> routeTimeHistory = new HashMap<>();
@@ -38,8 +40,67 @@ public abstract class Vehicle {
         setTimeOfArrival(MakkahCity.getTimeMan().getCurrentTime());
         getCurrentStreet().getVehicles().remove(this);
         this.currentLocation = 0;
+        maxArrived();
+        minArrived();
     }
+    
+    public void maxArrived() {
+    	if (this instanceof Bus) {
+    		if (max == null)
+    			max = this;
+    		else {
+    			long thisMinutes = (getTimeOfArrival().getTime() - getTimeStartedMoving().getTime())/60000;
+    			long maxMinutes = (max.getTimeOfArrival().getTime() - max.getTimeStartedMoving().getTime())/60000;
+    			if (thisMinutes > maxMinutes)
+    				max = this;
+    		}
+    	}
+	}
+    
+    
+    
+    public void minArrived() {
+    	if (this instanceof Bus) {
+    		if (min == null)
+    			min = this;
+    		else {
+    			long thisMinutes = (getTimeOfArrival().getTime() - getTimeStartedMoving().getTime())/60000;
+    			long maxMinutes = (min.getTimeOfArrival().getTime() - min.getTimeStartedMoving().getTime())/60000;
+    			if (thisMinutes < maxMinutes)
+    				min = this;
+    		}
+    	}
+	}
+    
+    public String timeToString() {
+    	if (this == null)
+    		return "null";
+    	else {
+		long minutes = (getTimeOfArrival().getTime() - getTimeStartedMoving().getTime())/60000;
+		int hours =(int) minutes / 60;
+		minutes %= 60;
+		return String.format("%2d:%02d", hours,minutes);}
 
+	}
+ 
+    
+    public static Vehicle getMaxArrived() {
+		return max;
+	}
+
+	public static Vehicle getMinArrived() {
+		return min;
+	}
+	
+	public static void resetMaxArrived() {
+		Vehicle.max = null;
+	}
+	
+	public static void resetMinArrived() {
+		Vehicle.min = null;
+	}
+	
+	
     public void move(double distance) {
         if (!isMoving()) {
             setMoving(true);
