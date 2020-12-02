@@ -19,7 +19,7 @@ public class MakkahCity {
 
 	private static final PDate lastDayTimeMan = new PDate(
 			new GregorianCalendar(1442, Calendar.JANUARY, 12, 12, 0, 0),
-			new GregorianCalendar(1442, Calendar.JANUARY, 12, 22, 0, 0)
+			new GregorianCalendar(1442, Calendar.JANUARY, 12, 23, 0, 0)
 	);
 
 	private static PDate currenttimeManager = firstDayTimeMan;
@@ -134,9 +134,8 @@ public class MakkahCity {
 			if (isAllArrived()) allArrivedToHotelsTime = (Date)currenttimeManager.getCurrentTime().clone();
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
 		}
-		inputListener.stop();
-		t.interrupt();
-		System.exit(0);
+		//When done show menu to analyze. Exit from menu too.
+		startMenu();
 	}
 
 	private static void checkInput() {
