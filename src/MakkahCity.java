@@ -136,6 +136,7 @@ public class MakkahCity {
 		}
 		inputListener.stop();
 		t.interrupt();
+		System.exit(0);
 	}
 
 	private static void checkInput() {
