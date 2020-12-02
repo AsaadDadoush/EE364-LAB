@@ -115,6 +115,9 @@ public abstract class Vehicle {
         this.route = route;
         this.arrivedToDest = false;
         this.routeTimeHistory.clear();
+        this.timeStartedOnCurrentStreet = null;
+        this.timeStartedMoving = null;
+        this.timeOfArrival = null;
     }
 
     private void setVehicleSize(double vehicleSize) {
