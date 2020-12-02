@@ -153,7 +153,7 @@ public class MakkahCity {
 		Scanner in = new Scanner(System.in);
 		System.out.println("\n"+currenttimeManager.getCurrentTime()+"\n"+
 							"---------------------------\n" +
-							"[1] View Vehicles\n" +
+							"[1] View Buses\n" +
 							"[2] View Streets\n" +
 							"[3] View Campaigns\n" +
 							"[4] View Routes\n" +
@@ -163,9 +163,12 @@ public class MakkahCity {
 		String choice = in.next();
 		//Split into methods?
 		if (choice.equals("1")){
-			System.out.printf("choose from 0 to %d\n", listOfVehicles.size()-1);
+			ArrayList<Vehicle> buses = new ArrayList<>();
+			for (Campaign campaign : listOfCampaigns)
+				buses.addAll(campaign.getVehicles());
+			System.out.printf("choose from 0 to %d\n", buses.size()-1);
 			String c = in.next();
-			Vehicle v = listOfVehicles.get(Integer.parseInt(c));
+			Vehicle v = buses.get(Integer.parseInt(c));
 			showVehicle(v);
 			//meybe add option here to go to members (Campaign, Street ...)
 		}
@@ -198,8 +201,19 @@ public class MakkahCity {
 	}
 
 	private static void showVehicle(Vehicle vehicle) {
-		System.out.print("\n\n"+vehicle.getUID()+"\n"+vehicle.toString()+"\n\n");
-		//TODO: Continue here for more options or return
+		String choice = "";
+		Scanner in = new Scanner(System.in);
+		Bus bus = (Bus) vehicle; //Should always be bus since 'View buses'
+		System.out.print("\n\n"+vehicle.getUID()+"\n");
+		System.out.println("---------------------------\n"+
+						"[1] Details\n" +
+						"[2] Get Campaign\n" +
+						"[3] Return");
+		choice = in.next();
+		if (choice.equals("1")) System.out.println(bus.toString());
+		if (choice.equals("2")) showCampaign(bus.getCampaign());
+		if (choice.equals("3")) return;
+		showVehicle(vehicle);
 	}
 
 	private static void showCampaign(Campaign campaign){
