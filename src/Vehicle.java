@@ -233,10 +233,10 @@ public abstract class Vehicle {
         Street st = this.currentStreet;
         String streetString = "null";
         if (st != null) streetString = st.getName().name();
-        return String.format("%s\nRoute: %s\nStreet: %s, Location: %.1f\n" +
+        return String.format("%s\nRoute: %s\nStreet: %s, Location: %.1f, Distance covered: %.1f\n" +
                         "Arrived: %s Starting time: %s Arrive Time: %s\n",
                 super.toString(), this.route, streetString,
-                this.getCurrentLocation(), this.isArrivedToDest(),
+                this.getCurrentLocation(),this.totalDistanceTraveled, this.isArrivedToDest(),
                 this.getTimeStartedMoving(), this.getTimeOfArrival());
     }
 }
