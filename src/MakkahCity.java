@@ -207,16 +207,23 @@ public class MakkahCity {
 	private static void showVehicle(Vehicle vehicle) {
 		String choice = "";
 		Scanner in = new Scanner(System.in);
-		Bus bus = (Bus) vehicle; //Should always be bus since 'View buses'
-		System.out.print("\n\n"+vehicle.getUID()+"\n");
-		System.out.println("---------------------------\n"+
-						"[1] Details\n" +
-						"[2] Get Campaign\n" +
-						"[3] Return");
+		StringBuilder menu = new StringBuilder();
+		int opCount = 0;
+		menu.append("\n\n")
+				.append(vehicle.getUID())
+				.append("\n")
+				.append("---------------------------\n")
+				.append(String.format("[%d] Details\n",++opCount));
+		if (vehicle instanceof Bus) {
+			menu.append(String.format("[%d] Get Campaign\n", ++opCount));
+		}
+		menu.append(String.format("[%d] Return", ++opCount));
+		System.out.println(menu.toString());
 		choice = in.next();
-		if (choice.equals("1")) System.out.println(bus.toString());
-		if (choice.equals("2")) showCampaign(bus.getCampaign());
-		if (choice.equals("3")) return;
+		if (choice.equals("1")) System.out.println(vehicle.toString());
+		if (choice.equals("2") && opCount == 3) showCampaign(((Bus)vehicle).getCampaign());
+		else if (choice.equals("2")) return;
+		else if (choice.equals("3")) return;
 		showVehicle(vehicle);
 	}
 
