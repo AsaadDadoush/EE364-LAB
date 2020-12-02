@@ -92,6 +92,10 @@ public class MakkahCity {
 		for (Vehicle vehicle : listOfVehicles) {
 			vehicle.setCurrentStreet(null);
 		}
+		Vehicle.resetMaxArrived();
+		Vehicle.resetMinArrived();
+		addCivilVehicleNoise();
+
 		System.out.println("***************STARTING LAST DAY***************");
 		while(!lastDayTimeMan.isEnded()) {
 			checkInput();
@@ -548,9 +552,18 @@ public class MakkahCity {
 			s.append(String.format(fFormat,"Arafat",allArrivedToArafatTime)).append("\n");
 		if (arr && allArrivedToHotelsTime != null)
 			s.append(String.format(fFormat,"Hotels",allArrivedToHotelsTime)).append("\n");
-		s.append(String.format("Buses: %d, Buses done: %d\nBuses arrived in the last hour: %d, Average trip in last hour: %s\n",
-				numberOfBusses, numberOfArrivedBuses, getNumberOfArrivedBussesPerHour(), avgTimeOfTrip()));
+		s.append(String.format("Buses: %d, Buses done: %d %s\nBuses arrived in the last hour: %d, Average trip in last hour: %s\n",
+				numberOfBusses, numberOfArrivedBuses, minMaxRep() , getNumberOfArrivedBussesPerHour(), avgTimeOfTrip()));
 		return s.toString();
+	}
+	
+	private static String minMaxRep() {
+		StringBuilder report = new StringBuilder();
+		if (Vehicle.getMaxArrived() != null && Vehicle.getMinArrived() != null) {
+			report.append(String.format(" maximum trip %s", Vehicle.getMaxArrived().timeToString()));
+			report.append(String.format(" minimum trip %s", Vehicle.getMinArrived().timeToString()));
+			}		
+		return report.toString();
 	}
 
 	/**
@@ -617,7 +630,7 @@ public class MakkahCity {
 			}
 		}
 		return num;
-	}
+	}//???
 
 	private static int getNumberOfArrivedBussesPerHour() {
 		Calendar now = currenttimeManager.getCurrentCalendar();
