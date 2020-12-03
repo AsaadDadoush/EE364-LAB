@@ -135,6 +135,7 @@ public class MakkahCity {
 			lastDayTimeMan.step(Calendar.MINUTE, 1);
 		}
 		//When done show menu to analyze. Exit from menu too.
+		inputListener.pause();
 		startMenu();
 	}
 
