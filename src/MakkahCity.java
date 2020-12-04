@@ -179,7 +179,8 @@ public class MakkahCity {
 		}
 		if (choice.equals("2")){
 			for (int i = 0; i < stdStreet.length; i++) {
-				System.out.printf("[%d] %s\n",i, stdStreet[i].getName().name());
+				System.out.printf("[%d] %s (%%%d)\n",i, stdStreet[i].getName().name(),
+						stdStreet[i].getPercentRemainingCapacity());
 			}
 			String input = in.next();
 			int index = Integer.parseInt(input);//TODO: unhandled ex
