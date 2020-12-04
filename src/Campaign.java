@@ -123,4 +123,13 @@ public class Campaign {
     public int getPercentArrived() {
         return ((numberOfAriivedBuses/vehicles.size()) *100);
     }
+
+    public String toString(){
+        return String.format("ID: %s\n" +
+                "District: %s\n" +
+                "Bueses: %d, Arrived buses: %d\n",
+                getUID(),
+                getHotelDistrict().name(),
+                getNumberOfBusses(), getNumberOfArrivedBuses());
+    }
 }

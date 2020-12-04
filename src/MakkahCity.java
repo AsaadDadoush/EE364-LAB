@@ -229,7 +229,25 @@ public class MakkahCity {
 	}
 
 	private static void showCampaign(Campaign campaign){
-
+		String choice = "";
+		Scanner in = new Scanner(System.in);
+		System.out.println("\n"+campaign.toString());
+		System.out.println("\n"+campaign.getUID());
+		System.out.println("---------------------------\n" +
+				"[1] Details\n" +
+				"[2] Select bus\n" +
+				"[3] Get current Route\n" +
+				"[4] Return");
+		choice = in.next();
+		if (choice.equals("1")) System.out.println(campaign.toString());
+		if (choice.equals("2")){
+			System.out.printf("Choose from 0 to %d", campaign.getNumberOfBusses());
+			choice = in.next();
+			showVehicle(campaign.getVehicles().get(Integer.parseInt(choice)));
+		}
+		if (choice.equals("3")) showRoute(campaign.getRoute());
+		if (choice.equals("4")) return;
+		showCampaign(campaign);
 	}
 
 	private static void showStreet(Street street) {
@@ -250,6 +268,10 @@ public class MakkahCity {
 		}
 		if (choice.equals("4")) return;
 		showStreet(street);
+	}
+
+	private static void showRoute(Route route){
+		System.out.println(route.toString());
 	}
 
 	private static void clearDoneCivilVehicles() {
