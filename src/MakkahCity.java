@@ -1,5 +1,4 @@
-import java.util.*;
-
+import java.util.*; 
 
 
 public class MakkahCity {
@@ -37,9 +36,11 @@ public class MakkahCity {
 		generateCamps(District.ALAZIZIYA, (int)getRandom(1200, 1400));
 		generateCamps(District.ALMANSOOR, (int)getRandom(1600, 1800));
 		generateCamps(District.ALHIJRA, (int)getRandom(1400, 1600));
+		
+		Collections.shuffle(listOfCampaigns);
 
 		fillBusesToList();
-
+		
 		makeStreets();
 
 		addCivilVehicleNoise();
@@ -89,6 +90,7 @@ public class MakkahCity {
 		currenttimeManager = lastDayTimeMan;
 		System.out.println("\n***************FINSHIED ARAFAT DAY***************");
 		setRoutesForCampaigns(Mashier.MINA);
+		//Collections.shuffle(listOfVehicles);
 		for (Vehicle vehicle : listOfVehicles) {
 			vehicle.setCurrentStreet(null);
 		}
@@ -628,7 +630,7 @@ public class MakkahCity {
 	private static int getPercentArrival(District district) {
 		int sum = 0;
 		for (Campaign campaign : campPerDistrict[district.ordinal()]) {
-			sum += campaign.getPercentArrived();
+			sum += campaign.getNumberOfArrivedBuses();
 		}
 		return sum/campPerDistrict[district.ordinal()].size();
 	}
