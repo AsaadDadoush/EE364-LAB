@@ -56,6 +56,9 @@ public class MakkahCity {
 				System.out.println("\n\n" + getStreetsReport());
 			}
 			else System.out.print(".");
+			
+			//TODO: setRout rework
+			//TODO: find Best Rout method
 
 			clearDoneCivilVehicles();
 			addCivilVehicleNoise();
@@ -86,7 +89,7 @@ public class MakkahCity {
 			if (isAllArrived()) allArrivedToArafatTime = (Date)currenttimeManager.getCurrentTime().clone();
 			firstDayTimeMan.step(Calendar.MINUTE, 1);
 		}
-		//TODO make report
+		
 		currenttimeManager = lastDayTimeMan;
 		System.out.println("\n***************FINSHIED ARAFAT DAY***************");
 		setRoutesForCampaigns(Mashier.MINA);
@@ -578,7 +581,7 @@ public class MakkahCity {
 		//Redundant loops slow down execution. find better sol.
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
-		} //TODO Add max min time.
+		} 
 		String fFormat = "All arrived to %s at: %s";
 		boolean arr = isAllArrived();//since it has looping. use once.
 		if (arr && allArrivedToArafatTime != null)
@@ -704,7 +707,7 @@ public class MakkahCity {
 			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.ARAFAT).getFastestTimeOfTravel(new Bus())));
 			report.append(String.format(" %-22s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
 			//Calc values per dist here.
-
+			//TODO: add arrived buses colum
 			report.append("\n");
 		}
 		return report.toString();
