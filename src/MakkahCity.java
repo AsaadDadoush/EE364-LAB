@@ -1,5 +1,4 @@
-import java.util.*;
-
+import java.util.*; 
 
 
 public class MakkahCity {
@@ -37,9 +36,11 @@ public class MakkahCity {
 		generateCamps(District.ALAZIZIYA, (int)getRandom(1200, 1400));
 		generateCamps(District.ALMANSOOR, (int)getRandom(1600, 1800));
 		generateCamps(District.ALHIJRA, (int)getRandom(1400, 1600));
+		
+		Collections.shuffle(listOfCampaigns);
 
 		fillBusesToList();
-
+		
 		makeStreets();
 
 		addCivilVehicleNoise();
@@ -55,6 +56,9 @@ public class MakkahCity {
 				System.out.println("\n\n" + getStreetsReport());
 			}
 			else System.out.print(".");
+			
+			//TODO: setRout rework
+			//TODO: find Best Rout method
 
 			clearDoneCivilVehicles();
 			addCivilVehicleNoise();
@@ -85,10 +89,11 @@ public class MakkahCity {
 			if (isAllArrived()) allArrivedToArafatTime = (Date)currenttimeManager.getCurrentTime().clone();
 			firstDayTimeMan.step(Calendar.MINUTE, 1);
 		}
-		//TODO make report
+		
 		currenttimeManager = lastDayTimeMan;
 		System.out.println("\n***************FINSHIED ARAFAT DAY***************");
 		setRoutesForCampaigns(Mashier.MINA);
+		//Collections.shuffle(listOfVehicles);
 		for (Vehicle vehicle : listOfVehicles) {
 			vehicle.setCurrentStreet(null);
 		}
@@ -576,7 +581,7 @@ public class MakkahCity {
 		//Redundant loops slow down execution. find better sol.
 		for (Campaign campaign : listOfCampaigns) {
 			numberOfBusses += campaign.getNumberOfBusses();
-		} //TODO Add max min time.
+		} 
 		String fFormat = "All arrived to %s at: %s";
 		boolean arr = isAllArrived();//since it has looping. use once.
 		if (arr && allArrivedToArafatTime != null)
@@ -628,7 +633,7 @@ public class MakkahCity {
 	private static int getPercentArrival(District district) {
 		int sum = 0;
 		for (Campaign campaign : campPerDistrict[district.ordinal()]) {
-			sum += campaign.getPercentArrived();
+			sum += campaign.getNumberOfArrivedBuses();
 		}
 		return sum/campPerDistrict[district.ordinal()].size();
 	}
@@ -702,7 +707,7 @@ public class MakkahCity {
 			report.append(String.format(" %-20s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.ARAFAT).getFastestTimeOfTravel(new Bus())));
 			report.append(String.format(" %-22s|", getShortestRoute(campPerDistrict[i].get(0), Mashier.MINA).getFastestTimeOfTravel(new Bus())));
 			//Calc values per dist here.
-
+			//TODO: add arrived buses colum
 			report.append("\n");
 		}
 		return report.toString();
