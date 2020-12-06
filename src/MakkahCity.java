@@ -633,7 +633,7 @@ public class MakkahCity {
 	private static int getPercentArrival(District district) {
 		int sum = 0;
 		for (Campaign campaign : campPerDistrict[district.ordinal()]) {
-			sum += campaign.getNumberOfArrivedBuses();
+			sum += campaign.getPercentArrived();
 		}
 		return sum/campPerDistrict[district.ordinal()].size();
 	}
