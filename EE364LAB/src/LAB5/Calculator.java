@@ -45,7 +45,6 @@ public class Calculator extends Application {
 		VBox root = new VBox();
 		root.setStyle("-fx-background-color: BLACK; "
 			+ "-fx-padding: 20; -fx-font-size: 20;");
-		root.getChildren().add(Screen);
 		root.setPadding(new Insets(5));
 		root.setAlignment(Pos.CENTER);
 		GridPane Gpane = new GridPane();
@@ -67,7 +66,7 @@ public class Calculator extends Application {
 		Gpane.add(btMinus,1,3);
 		Gpane.add(btEqual,1,4);	
 		Gpane.add(btC,2,4);
-		root.getChildren().add(Gpane);
+		root.getChildren().addAll(Screen ,Gpane);
 		Screen.setMaxWidth(190);
 		Screen.setEditable(false);
 		//Buttons
@@ -86,6 +85,7 @@ public class Calculator extends Application {
 		btEqual.setPrefSize(60,50);
 		btPlus.setPrefSize(60,50);
 		btMinus.setPrefSize(60,50);
+		
 		//Event
 		bt1.setOnAction(e -> handleButtonAction(e));
 		bt2.setOnAction(e -> handleButtonAction(e));
